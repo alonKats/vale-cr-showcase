@@ -1,0 +1,92 @@
+/* v4.1-FIX B4 — IT IS A JUMP LIST AND IT NOW LOOKS LIKE ONE.
+
+   Measured before, on T3, all four items identical:
+
+     "Precios (3)"    fw=600  color=rgb(40,45,47)  border-bottom: 2px rgba(0,0,0,0)
+     "Ficha técnica"  fw=600  color=rgb(40,45,47)  border-bottom: 2px rgba(0,0,0,0)
+     "Similares (4)"  fw=600  color=rgb(40,45,47)  border-bottom: 2px rgba(0,0,0,0)
+     "Dónde comprar"  fw=600  color=rgb(40,45,47)  border-bottom: 2px rgba(0,0,0,0)
+
+   A 2px KEYLINE TRACK OF rgba(0,0,0,0) ON EVERY ITEM, no `aria-current` anywhere: the
+   slot for the indicator existed and the indicator did not, on the navigational spine
+   of all 2.170 product pages. It compounded — these are the only `<a>` in the product
+   rendered in --ink-2 instead of --act, so they did not read as links either. Every
+   affordance of a tab bar (43px items, a 1px rail beneath, a white sticky bar) and none
+   of the feedback, in either state. a11y passed because axe does not require
+   `aria-current` on in-page anchors; contrast passed because there is nothing to
+   contrast.
+
+   TWO WAYS OUT, AND THE MIDDLE IS NOT SHIPPABLE. Either build a real scroll-linked
+   active item (IntersectionObserver + `aria-current="true"` + the keyline in --ink +
+   a hover state) or stop claiming to be tabs. Taken: the second. A tab metaphor
+   promises panel-switching, and this page deliberately renders every section at once
+   because `seo-check.mjs` gate 1 asserts a product page says its prices, chains, specs
+   and reviews WITH JS OFF. The metaphor was lying about the one architectural decision
+   the route exists for — and this is also the smallest amount of code: no sticky, no
+   rail, no bar, no reserved keyline, no observer, no client component.
+
+   The sticky offset went with it: `.sec`'s `scroll-margin-block-start` dropped from
+   `--chrome-h + --s5` to `--chrome-h + --s2`, because there is no longer a 43px strip
+   under the chrome to clear. */
+
+.tabs {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s2);
+  margin-block-start: var(--s3);
+}
+
+/* `Saltar a:` — 12px/600 uppercase --ink-3. This is the eyebrow/caption role, which is
+   one of the three the floor is allowed to keep (B8). */
+.lb {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  flex: none;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s3);
+  min-width: 0;
+}
+
+/* LINKS ARE --act AND ONLY --act (N10). Non-interactive semantic colour (--go, --loud,
+   --deep) never appears as a bare coloured text run without a non-link cue; the
+   converse — an actual link rendered in --ink-2 — was the other half of the same
+   defect, and it lived here. No keyline track at rest, so there is no reserved
+   indicator to leave unfilled. */
+.tab {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--act);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* `:target` is the native way to say "this is the section you jumped to" and it costs
+   no JavaScript — but it is a property of the SECTION, not of this list, so it is not
+   pretended to be an active tab here. */
+.n {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .list {
+    gap: var(--s1) var(--s2);
+  }
+}

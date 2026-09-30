@@ -1,0 +1,23 @@
+/* 16px — one of only two non-form uses of that size in v4. The count is the one
+   line on a results page a reader has to find without looking for it. */
+.count {
+  font-size: var(--t3);
+  letter-spacing: var(--tr3);
+  color: var(--ink-2);
+  padding-block: var(--s1);
+}
+
+.n {
+  font-family: var(--display);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* `de 526` and the page window. Muted, but never absent when a filter is on: a
+   count that hides what the filter cost is a count the reader cannot trust. */
+.of {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+}

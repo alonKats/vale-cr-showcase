@@ -1,0 +1,552 @@
+/* THE CHROME — v8. Figma 6:5 (bar) + 6:25 (category strip) + 18:41 (freshness).
+
+   IT IS LIGHT NOW. v4's chrome was two dark tiers — --deep over --ink, 92px
+   at every width — and most of what made that build read as an instrument. The
+   redesign replaces it with white: a 74px bar over a 52px category strip, teal
+   type, one amber underline marking the active category. The whole dark-bar
+   argument in the v4 header is deleted rather than left standing.
+
+   THE HEIGHT IS STILL ONE TOKEN. v4 collapsed three magic offsets into
+   --chrome-h and that discipline survives the repaint; only the number moves,
+   92 → 126 (74 + 52). Anything that has to clear the chrome reads the token. */
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--card);
+  /* The page ground is #FAFCFC — one step off white — so a white chrome over it
+     has almost no edge of its own. The hairline is what stops the bar dissolving
+     into the page on every template whose first band is not tinted. */
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---- tier 1 · wordmark · search · actions -------------------------------- */
+
+.tier1 {
+  background: var(--card);
+}
+
+.in {
+  max-width: calc(var(--shell) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.tier1 .in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  min-height: 74px;
+  padding-block: var(--s2);
+}
+
+.mark {
+  flex: none;
+  text-decoration: none;
+  /* the wordmark carries its own colour; the link must not repaint it */
+  color: inherit;
+}
+
+/* ---- the search field ----------------------------------------------------
+   560px and fully round — DESIGN.md §Inputs: "an oversized component at the top
+   of the viewport… a rounded-xl shape to signal it as the primary tool". The
+   Figma draws it at rounded-[100px], so it is a pill rather than xl. */
+
+.find {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  width: 560px;
+  /* it is the middle child of a space-between row and must not win the row on a
+     narrow viewport, so it shrinks before the actions do */
+  min-width: 0;
+  flex: 0 1 560px;
+  padding: 12px var(--pad);
+  background: var(--tint);
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.find:focus-within {
+  background: var(--card);
+  border-color: var(--deep);
+}
+
+.icon {
+  flex: none;
+  color: var(--deep);
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--body);
+  /* 16px, MANDATORY and not a preference: iOS zooms the viewport on focus for
+     any font-size below 16 on a form control. Inherited from v4 §2.3 — it was a
+     rule there and the repaint does not make it a guideline. */
+  font-size: var(--t3);
+  line-height: 1.2;
+}
+
+.input::placeholder {
+  color: var(--ink-3);
+  /* the placeholder is the only 14px thing inside a 16px field: the Figma sets
+     the prompt smaller than the answer the visitor types */
+  font-size: var(--t2);
+}
+
+.input:focus {
+  outline: none; /* the ring is on .find, so it wraps the whole pill */
+}
+
+/* the type-to-clear affordance, unchanged in behaviour from v4 */
+.clear {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+
+.clear:hover {
+  color: var(--ink);
+}
+
+/* ---- the account row ----------------------------------------------------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex: none;
+}
+
+.store {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s1) var(--s2);
+  border: 1.5px solid var(--deep);
+  border-radius: var(--r3);
+  color: var(--deep);
+  font-family: var(--body);
+  font-size: var(--t-row);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.store:hover {
+  background: var(--deep);
+  color: var(--on-deep);
+}
+
+/* DESIGN.md §Buttons — the ONE motion the guide specifies, and it is specified
+   for every button, so it lives on each control rather than in a utility. */
+.store:active {
+  transform: scale(var(--press));
+}
+
+/* ---- tier 2 · the category strip ----------------------------------------- */
+
+.tier2 {
+  position: relative;
+  background: var(--card);
+}
+
+.tier2 .in {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  min-height: 52px;
+  padding-block: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* says "there is more" without a JS arrow implementation. mask-image ONLY —
+     never a background, see tokens.css §the gradient census. */
+  mask-image: var(--scroll-mask);
+}
+
+.tier2 .in::-webkit-scrollbar {
+  display: none;
+}
+
+.tier2 .in[data-at-end] {
+  mask-image: none;
+}
+
+.navLink {
+  flex: none;
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--fast) var(--ease);
+}
+
+.navLink:hover {
+  color: var(--deep);
+}
+
+/* THE ACTIVE MARK — a 20×2 amber bar, 4px under the label (Figma 6:26/6:28).
+   It is a pseudo-element rather than a real node so the label's box does not
+   change between states: a rendered 2px rule would make every active item 6px
+   taller than its neighbours and shunt the row. */
+.navLink[aria-current],
+.on {
+  color: var(--deep);
+  font-weight: 700;
+}
+
+.navLink[aria-current]::after,
+.on::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 20px;
+  height: 2px;
+  /* The Figma says `rounded-[2px]`, which on a 2px-tall box is already the
+     fully-round case — a radius is clamped to half the smaller dimension. So
+     --r-pill renders this identically and keeps the value on the scale. */
+  border-radius: var(--r-pill);
+  /* --loud is a FILL here, which is the only thing it is allowed to be on a
+     light ground. As text it is a banned pair. */
+  background: var(--loud);
+}
+
+/* ---- the "Todas las categorías" overlay ---------------------------------
+   STILL A SIBLING OF THE SCROLLER, NEVER A CHILD. Per the overflow spec,
+   when one axis is `visible` and the other is not, the visible one computes to
+   `auto` — `.tier2 .in` is `overflow-x: auto`, so its overflow-y is auto too,
+   and the row is 52px tall. Rendered inside, this panel had a correct box and
+   aria-expanded="true" and was clipped to 52px: a menu that looks like it does
+   not open. No z-index fixes that. Measured 2026-08-07; the structural fix is
+   carried forward into v8 unchanged. */
+
+.allPanel {
+  position: absolute;
+  top: 100%;
+  /* CENTRED AND CAPPED TO THE SHELL, not pinned to the viewport gutters. It was
+     `left/right: var(--gutter)`, which on a 1970px display stretched the menu to
+     1810px while every other thing on the page stopped at 1280 — so the one
+     element that overflowed the container was the one that opens over it.
+     `min(--shell, 100% - 2*--gutter)` is the same expression `.shell` uses, so
+     the menu's edges land on the page's edges by construction rather than by
+     two numbers that have to agree. */
+  left: 50%;
+  translate: -50% 0;
+  width: min(var(--shell), 100% - 2 * var(--gutter));
+  z-index: 50;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: var(--s3);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r5);
+  box-shadow: var(--shadow-pop);
+}
+
+.allList {
+  display: grid;
+  /* 260, not 220. At 220 a 1280 shell fits FIVE columns and the text cell drops
+     to ~200px, which ellipsed `Congeladores y frigobares` and `Consolas de
+     videojuegos` — the two longest labels in the catalogue and the two a reader
+     is least likely to guess from a prefix. 260 gives four columns of 320 and
+     every label fits whole. A menu that truncates the item you cannot infer is
+     worse than a menu with one fewer column. */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--s1) var(--s3);
+}
+
+.allLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--s2);
+  border-radius: var(--r3);
+  color: var(--ink);
+  font-size: var(--t2);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.allLink:hover {
+  background: var(--tint);
+  color: var(--deep);
+}
+
+/* the icon well in a menu row — the same teal-on-tint disc the category
+   scroller uses, at two thirds the size, so the two surfaces read as one
+   vocabulary rather than as a list and a grid that happen to share labels */
+.allIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r2);
+  background: var(--tint);
+  color: var(--deep);
+}
+
+.allLink span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- the rail nudge buttons · pointer sugar only -------------------------
+   aria-hidden + tabIndex -1 is the ACCESSIBLE choice, not a shortcut: every
+   category is already a real link in the tab order immediately to the left, and
+   focusing one scrolls it into view natively. Making these focusable would add
+   two tab stops that navigate nowhere. */
+
+.railBtn {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  color: var(--deep);
+  cursor: pointer;
+}
+
+.railBtn:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.railPrev {
+  left: calc(var(--gutter) - 40px);
+}
+
+.railNext {
+  right: calc(var(--gutter) - 40px);
+}
+
+/* ---- the freshness strip · Figma 18:41 ----------------------------------
+   NOT sticky, and that is the point: a claim that only needs reading once must
+   not pay for itself on every pixel of scroll. It sits under the chrome rather
+   than inside it. */
+
+.strip {
+  background: var(--tint);
+}
+
+.stripIn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s1);
+  padding: 10px var(--gutter);
+  color: var(--deep);
+  font-size: var(--t-row);
+  font-weight: 600;
+  text-align: center;
+}
+
+.stripIcon {
+  flex: none;
+}
+
+/* ---- recent searches (unchanged in behaviour) ---------------------------- */
+
+.recent {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  color: var(--ink-3);
+  font-size: var(--t-row);
+}
+
+.recentBtn,
+.recentDrop {
+  padding: 6px var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  color: var(--deep);
+  font-family: var(--body);
+  font-size: var(--t-row);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.recentDrop {
+  border-color: transparent;
+  color: var(--ink-3);
+}
+
+/* ==========================================================================
+   MOBILE — DESIGN.md §Layout: single column, 16px side margins.
+   The Figma has no mobile frame, so this is the guide's rule applied rather
+   than a second design reproduced. Two things change and nothing else:
+   the gutter collapses to 16, and the 560px search drops out of the top row
+   onto its own line (a 560px pill and a wordmark do not share 390px).
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  /* the mobile --gutter override lives in app/tokens.css, NOT here: `:root` is
+     not a pure selector and a CSS Module may not carry one. It is also the right
+     home for it — the gutter is a global measure and two other stylesheets read
+     it at this same breakpoint. */
+  .in {
+    padding-inline: 16px;
+  }
+
+  .tier1 .in {
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+
+  .find {
+    order: 3;
+    width: 100%;
+    flex: 1 0 100%;
+  }
+
+  /* The account row keeps only the merchant CTA on a phone. `Favoritos` and
+     `Ingresar` are not rendered on ANY width — see TopBar.tsx for why. */
+  .actions {
+    gap: var(--s2);
+  }
+
+  .railPrev,
+  .railNext {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------- THE SUGGEST PANEL
+   It anchors to `.find`, which is already `position: relative` and already the
+   560px pill — so the panel is the width of the field that opened it and needs
+   no width of its own. That is deliberate: `.allPanel` above spans the shell
+   because it is a MENU OF THE WHOLE SITE, while this one answers the text in one
+   input and should look like it belongs to that input.
+
+   Same surface recipe as `.allPanel` (--card on --line, --r5, --shadow-pop) so
+   the two overlays in this header read as one family rather than two authors. */
+.suggest {
+  position: absolute;
+  top: calc(100% + var(--s1));
+  left: 0;
+  right: 0;
+  z-index: 60; /* above .allPanel: the one you are typing into wins */
+  max-height: 420px;
+  overflow-y: auto;
+  padding: var(--s1);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r5);
+  box-shadow: var(--shadow-pop);
+}
+
+.suggestNote {
+  padding: 10px var(--s2);
+  color: var(--ink-3);
+  font-size: var(--t2);
+}
+
+.suggestRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: 10px var(--s2);
+  border-radius: var(--r3);
+  color: var(--ink);
+  font-size: var(--t2);
+  text-decoration: none;
+}
+
+/* ONE highlight class for hover AND for the arrow keys. They are the same state
+   — "this is what Enter opens" — and giving them two different treatments is how
+   a list ends up showing two highlighted rows at once. `onPointerEnter` sets the
+   same `active` index the keyboard does, so only one row can ever carry it. */
+.suggestOn {
+  background: var(--tint);
+  color: var(--deep);
+}
+
+.suggestName {
+  min-width: 0;
+  /* the model number is the discriminating end of a product name, so this
+     truncates at the START of the line, never the end */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.suggestMeta {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.suggestDim {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.suggestAll {
+  display: block;
+  width: 100%;
+  margin-block-start: var(--s1);
+  padding: 10px var(--s2);
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 var(--r3) var(--r3);
+  background: none;
+  color: var(--deep);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestAll:hover {
+  background: var(--tint);
+}
+
+/* Chromium draws its OWN clear affordance inside a type=search field, so the
+   pill rendered two — the native ✕ and ours — sitting side by side. Pre-existing
+   and easy to miss until the suggestion panel drew the eye to that corner.
+   Ours is the one that is kept, because it is the one that also closes the
+   suggestion panel; the native one only empties the value and would leave an
+   open panel listing results for a query that is no longer in the box. */
+.input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}

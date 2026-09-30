@@ -1,0 +1,27 @@
+/* See Wordmark.tsx for why the accent is per-surface rather than constant. */
+
+.mark {
+  font-family: var(--body);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tr4);
+  white-space: nowrap;
+  /* The lockup is one word optically. Without this the browser is free to break
+     between `vale` and `.cr` in the footer's narrow first column, which splits
+     the brand across two lines. */
+  display: inline-block;
+}
+
+.onLight {
+  color: var(--deep);
+  --wordmark-accent: var(--loud-ink);
+}
+
+.onDark {
+  color: var(--on-deep);
+  --wordmark-accent: var(--loud);
+}
+
+.tld {
+  color: var(--wordmark-accent);
+}

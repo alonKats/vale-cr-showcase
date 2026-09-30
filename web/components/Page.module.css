@@ -1,0 +1,583 @@
+/* ==========================================================================
+   THE SHELL, THE GRID AND THE SECTION RHYTHM (v4 §2.1/§2.2, v4.1 §5)
+
+   v3's version of this file was 374 lines of full-bleed band sections separated
+   by 96px of air. v4.1 is a 1360 shell, a card grid whose COLUMN COUNT IS
+   DECLARED at three boundaries, and sections separated by 24px + a --line
+   hairline. --s6 / --s7 do not exist, so a 96px section gap is not expressible —
+   that is the pivot as a diff, and VERTICAL RHYTHM IS UNCHANGED BY v4.1: the page
+   got bigger in CONTENT, not in gaps. "Bigger" is not a licence to bring 96px of
+   air back.
+
+   Page-level scaffolding only. Nothing in here styles a component: that is what
+   kept a page-level `.foot` from injecting 64px into every retailer row last
+   time, and the leaf names in this file are never reused in a block module.
+   ========================================================================== */
+
+/* `margin-inline`, not margin-left/right — logical properties throughout, so the
+   LTR rebuild is structural rather than a discipline. zap is RTL Hebrew and every
+   horizontal decision here is rebuilt logically, never mirrored. */
+.shell {
+  width: min(var(--shell), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+@media (max-width: 900px) {
+  .shell {
+    width: calc(100% - 32px);
+  }
+}
+
+/* THE CARD GRID — v4.1 §5.2. THE COLUMN COUNT IS DECLARED, NOT DERIVED, and this
+   REVERSES v4's central grid claim.
+
+   v4 said --card-min was "the only knob" and justified `auto-fill` because "the
+   column count is derived from available width, so there is no possibility of the
+   discontinuity where a card gets wider as the viewport shrinks." That claim is
+   false. `auto-fill` removes the discontinuity WITHIN a column count; it cannot
+   remove it ACROSS a transition, and across a transition the card ALWAYS jumps up.
+   The shipped grid did exactly that:
+
+     768 → 767:   3 cols at 232  →  2 cols at 355.5   (53% wider, and wider than the
+                                                       widest card the spec designs)
+     1024 → 992:  4 cols at 234  →  3 cols at ~307
+
+   And 232 sat on a RAZOR EDGE at 768: floor((728+16)/(232+16)) = floor(3.000),
+   exactly 3.0. One sub-pixel of viewport, one scrollbar, one zoom step and 768
+   rendered two 355px cards. 228–232 was the near-unique window that held 4 columns
+   to 1240 AND 3 at 768 — but the correct fix to a razor edge is not a better-tuned
+   razor.
+
+   Above 640 the design intent IS a fixed number of cards. So it is declared, and
+   every transition becomes a boundary the gate tests AS A PAIR:
+
+   | viewport | pad | shell | cols | card   | note                                   |
+   |----------|-----|-------|------|--------|----------------------------------------|
+   | 1440     | 20  | 1360  | 4    | 328.00 | the desktop design width               |
+   | 1400     | 20  | 1360  | 4    | 328.00 | first width at which the cap binds     |
+   | 1399     | 20  | 1359  | 4    | 327.75 | the cap edge, continuous               |
+   | 1240     | 20  | 1200  | 4    | 288.00 | v4's WIDEST card is now our narrowest 4-up |
+   | 1239     | 20  | 1199  | 4    | 287.75 | continuous — the old cap edge is inert  |
+   | 1024     | 20  |  984  | 4    | 234.00 | zap-matched, unchanged from v4          |
+   | 1023     | 20  |  983  | 3    | 317.00 | DECLARED boundary. Jumps up — expected  |
+   |  900     | 20  |  860  | 3    | 276.00 |                                         |
+   |  768     | 20  |  728  | 3    | 232.00 | NO LONGER A RAZOR EDGE: 128px inside a band |
+   |  640     | 20  |  600  | 3    | 189.33 | last width of the declared 3-up         |
+   |  639     | 20  |  599  | 2    | 291.50 | DECLARED boundary                       |
+   |  540     | 20  |  500  | 2    | 242.00 | last width before the pad drop          |
+   |  539     | 12  |  515  | 2    | 253.50 | --pad → 12                              |
+   |  390     | 12  |  366  | 2    | 179.00 | the mobile design width                 |
+   |  320     | 12  |  296  | 2    | 144.00 | the floor. Titles clamp at 2 lines      |
+
+   The card's declared band is 144–328 (v4 said 140–288) and it travels on the node
+   in ProductCard.tsx, so measure.mjs cannot assert a band that has drifted away
+   from the thing it describes.
+
+   LAZY-FIRST, HONESTLY APPLIED: a derived column count that has to be hand-tuned
+   until it lands on the counts you already knew you wanted is MORE code than
+   declaring them. The property worth optimising for is not fewest media queries —
+   it is no column transition at any gated width. */
+/* THE COLUMN COUNT IS STILL DECLARED, NOT DERIVED, and the v4 argument for that
+   is untouched and worth keeping: `auto-fill` removes the width discontinuity
+   WITHIN a column count but not ACROSS a transition, and across one the card
+   always jumps up. 1280 with a 24px gap gives 302px cards at four columns, which
+   is the frame's own card width (18:144). */
+.grid {
+  display: grid;
+  gap: var(--s3) var(--s2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 540px) {
+  .grid {
+    gap: var(--s3);
+  }
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- sections ----------
+   v4's RHYTHM IS REVERSED HERE. It was 24px + a --line hairline between
+   sections, and its header said "Never 96px of air" — --s6/--s7 had been deleted
+   precisely so a big gap could not be typed. The redesign separates category
+   blocks with 48px of padding and NO RULE: the cards are bordered, shadowed
+   objects now, so a hairline between two grids of them is a second separator
+   doing a job the cards already do. DESIGN.md §Layout asks for exactly this —
+   "Generous vertical gaps are used between different product categories to
+   clearly demarcate the start of new data sets". */
+.sec {
+  padding-block: var(--s6);
+}
+
+.secHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  /* NO HAIRLINE UNDER THE HEADING any more (it was v4 §3.2 row 4). The 24px
+     title and the 24px card price below it are still two roles at one size, but
+     they are now separated by WEIGHT (800 vs 700), FACE (body vs display) and
+     COLOUR (--ink vs --deep) — three signals, where v4 needed a rule because it
+     set both in the same face. */
+  /* WRAP IS NOT OPTIONAL. This row pairs a breadcrumb with a pair of nowrap buttons,
+     and at 390 their combined min-content is 402px inside a 366px shell — the document
+     scrolled horizontally and measure.mjs caught it on every product page. A
+     `space-between` flex row containing nowrap children must be allowed to wrap or it
+     is an overflow waiting for a narrow viewport. */
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s2);
+  margin-block-end: var(--s2);
+}
+
+/* 24px (6:117). Still four steps off body text — the display tier that v4 fought
+   for is intact; only the face and the exact size move. */
+.secH {
+  /* THE SECTION TITLE IS THE BODY FACE, NOT THE DISPLAY ONE. v4 set every
+     heading in Space Grotesk; DESIGN.md scopes that face to "numeric data,
+     currency displays, and technical labels" and 6:117 sets this title in Plus
+     Jakarta Sans ExtraBold. So the display face is now reserved for figures —
+     which is what makes a price look like a price on this site. */
+  font-family: var(--body);
+  font-size: var(--t4);
+  font-weight: 800;
+  letter-spacing: var(--tr4);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+@media (min-width: 768px) {
+  .secH {
+    font-size: var(--t5);
+    letter-spacing: var(--tr5);
+  }
+}
+
+/* THE VARYING HALF OF THE STRING IS THE COLOURED HALF (§3.2 row 4). Six --deep
+   chroma anchors down T1, and the heading becomes scannable: the eye lands on
+   `Celulares`, not on the four words it shares with five other headings. --deep on
+   --card is 8.40:1 — already asserted, no new token. */
+.secHCat {
+  color: var(--deep);
+}
+
+.secN {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+}
+
+/* the section action — "Ver todas ›" (6:118), teal and bold rather than the
+   muted caption v4 used, because in this design it is the row's one control */
+.secAct {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--deep);
+  font-size: var(--t2);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.secAct:hover {
+  text-decoration: underline;
+}
+
+.secN a,
+.link {
+  color: var(--act);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.secN a:hover,
+.link:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+}
+
+/* ---------- the T1 / T2 head ----------
+   34px <h1>, alone on its line, exactly as zap's 40px one is. 28 is deleted from
+   the ladder (§1.2) and 34 is no longer reserved for a price — 44 is, and 44 is the
+   best/only price and nothing else, ever. A PAGE IS ALLOWED TO HAVE A NAME; what it
+   is not allowed is to have a larger name than the largest price on it, and no
+   product page carries a 34px anything above its 44px answer.
+
+   26 at <768. That is the same width-dependent construction §1.2 sanctions for the
+   h2 (20/26) and not the mobile shrink §1.3 deletes — §1.3 removes the drops on the
+   card PRICE and the THUMBNAIL, which are the answer and the evidence. A page title
+   is neither. Flagged in the build report rather than assumed. */
+/* ---- the page header band — Figma 18:53 / 18:100 -----------------------
+   A full-bleed --hero band carrying the h1 and one sentence, on the same dot
+   field as the home hero. Full-bleed because the band is the page's own
+   backdrop: constrained to the shell it would read as a card, and the design
+   draws it edge to edge. */
+.band {
+  background: var(--hero);
+  background-image: var(--dots-hero);
+  background-size: var(--dots-hero-size);
+  background-position: 14px 14px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: var(--s5) var(--s6);
+}
+
+/* 32px, and in the BODY face. v4 set every heading in Space Grotesk; DESIGN.md
+   scopes that face to numeric data and technical labels, and 18:101 sets this
+   in Plus Jakarta Sans ExtraBold. Reserving the display face for figures is what
+   makes a price look like a price on this site. */
+.h1 {
+  margin: 0;
+  font-family: var(--body);
+  font-size: var(--t-page);
+  font-weight: 800;
+  letter-spacing: var(--tr4);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+@media (max-width: 767px) {
+  .h1 {
+    /* DESIGN.md §Typography makes headline-lg-mobile mandatory below 768 */
+    font-size: var(--t-mark);
+  }
+}
+
+@media (min-width: 768px) {
+  .h1 {
+    font-size: var(--t6);
+    letter-spacing: var(--tr6);
+  }
+}
+
+/* One quiet line under the <h1> for the facts a category page owes the reader.
+   THE PROSE MEASURE IS 44ch (v5 §1.5), AND IT USED TO BE 68ch, WHICH WAS A DEFECT.
+   `1ch` in Plus Jakarta Sans is the advance of `0` — a tabular figure at 0.732em,
+   against an average es-CR prose character of 0.4705em. THE RATIO IS 1.556, so
+   68ch rendered 105.8 characters per line against DESIGN.md §5's 60–75 band.
+   44ch renders 68.5. Eight shipped declarations moved in one commit; the value
+   was already correct in exactly one place (VerdictPlate's T4 statement), and that
+   is the one this adopts. */
+.lede {
+  margin: 0;
+  /* 800px in the frame; as a measure rather than a pixel width, because the
+     sentence has to stay readable at every viewport and 800px of 15px text is
+     about 88 characters — past the comfortable line length either way. */
+  max-width: 74ch;
+  font-size: var(--t-lede);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.lede b {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+/* ---------- designed empty / offline states ----------
+   None of these is an error screen: two are the app saying something TRUE about the
+   catalogue, and the third is it saying it still works without a network. They are
+   designed states, never a hidden region — §5.3 mitigation 4. */
+.void {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s3);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  margin-block: var(--s3);
+}
+
+.voidNoPic {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* THE SILHOUETTE: one product photo at low opacity, grayscaled, on a --fill square.
+   This is the ONE place in the product where an image does only an atmospheric job,
+   and it is the one place where that is correct — the alternative is a blank
+   rectangle, and the picture is still a product we actually track. */
+.voidPlate {
+  display: grid;
+  place-items: center;
+  height: 160px;
+  background: var(--fill);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.voidPlate img {
+  max-height: 140px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.42;
+  filter: grayscale(1);
+}
+
+.emptyH {
+  font-family: var(--display);
+  font-size: var(--t4);
+  font-weight: 600;
+  letter-spacing: var(--tr4);
+  color: var(--ink);
+}
+
+.emptyP {
+  margin-block-start: var(--s1);
+  max-width: 44ch;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.emptyActs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-block-start: var(--s2);
+}
+
+.offline {
+  display: grid;
+  gap: 2px;
+  padding: 10px var(--s2);
+  margin-block-start: var(--s2);
+  background: var(--fill);
+  border-radius: var(--r2);
+  /* B8 — a sentence explaining that the app is running from cache. Its `.offlineK`
+     eyebrow below keeps 12. */
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.offlineK {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 767px) {
+  .void {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .voidPlate {
+    height: 120px;
+  }
+}
+
+/* ---------- footer ----------
+   Dark --ink, 4 facts on one line at 1440, stacked at 390. NO APP BADGES — zap's
+   footer carries App Store and Play badges because their mobile answer is a
+   native app (their 390 capture came back 950px wide). There is no app here, so
+   there is no badge. */
+.foot {
+  background: var(--ink);
+  color: var(--on-deep-2);
+  margin-block-start: var(--s4);
+  padding-block: var(--s3);
+  /* B8 — the four footer facts are four SENTENCES ("Este sitio no vende productos ni cobra
+     comisión", the fx rate, the assumed location, the freshness stamp). §1.2 listed
+     "footer" among the floor's seven roles; that list is the mechanism B8 diagnosed, and
+     three of those seven were sentences. --on-deep-2 on --ink is 9.61:1. */
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+}
+
+.footIn {
+  width: min(var(--shell), 100% - 2 * var(--pad));
+  margin-inline: auto;
+  display: grid;
+  gap: var(--s2);
+}
+
+.footNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s3);
+  padding-block-end: var(--s2);
+  border-block-end: 1px solid var(--rule-on-deep);
+}
+
+/* v5 §2.6 — `button` joins `a` here. The footer now carries TWO nav rows and the
+   legal one ends in the consent-withdrawal control, which is a button because it
+   changes state rather than navigating. It gets the link's treatment because in
+   this row it is doing a link's job. */
+.footNav a,
+.footNav button {
+  color: var(--act-on-dark);
+  text-decoration: none;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+}
+
+.footNav a:hover,
+.footNav button:hover {
+  text-decoration: underline;
+}
+
+.footFacts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s2);
+  align-items: start;
+}
+
+@media (max-width: 1023px) {
+  .footFacts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 539px) {
+  .footFacts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* THE PAGE'S OWN BOTTOM GAP — see Pagination.module.css. It is here, on the
+   container, rather than on the pager, because the pager does not render on a
+   single-page category and the gap must not depend on it. */
+.pageEnd {
+  padding-block-end: var(--s6);
+}
+
+/* ---- the link grid — /marcas, a brand hub's category list ----------------
+   The same object the chrome's "Todas las categorías" overlay uses: a name and
+   a count in a bordered row. The count IS a reason on these pages in a way it is
+   not in the nav — a reader choosing between `Celulares` and `Tablets` under a
+   brand is choosing where the selection actually is. */
+.linkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkGrid a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: 14px var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r4);
+  color: var(--ink);
+  font-size: var(--t2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.linkGrid a:hover {
+  border-color: var(--deep);
+  color: var(--deep);
+}
+
+.linkGridN {
+  flex: none;
+  color: var(--ink-3);
+  font-family: var(--display);
+  font-size: var(--t-row);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the one link out of a brand slice, back to the unfiltered category */
+.alsoSee {
+  margin: var(--s4) 0 0;
+  text-align: center;
+}
+
+.alsoSee a {
+  color: var(--deep);
+  font-size: var(--t2);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.alsoSee a:hover {
+  text-decoration: underline;
+}
+
+/* ---- the brand strip on a category page ---------------------------------
+   The crawl path to the brand×category pages, and the most useful row on the
+   page for a reader who arrived already knowing the brand. */
+.brandStrip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  padding-block: var(--s3) 0;
+}
+
+.brandStripH {
+  color: var(--ink-3);
+  font-size: var(--t-row);
+  font-weight: 600;
+  margin-inline-end: 4px;
+}
+
+.brandStrip a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--deep);
+  font-size: var(--t-row);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brandStrip a:hover {
+  border-color: var(--deep);
+  background: var(--tint);
+}
+
+.brandStrip a span {
+  color: var(--ink-3);
+  font-family: var(--display);
+  font-size: var(--t-cap);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The pending-search line. It sits where `ResultCount` would, uses the same
+   secondary-body recipe as `.emptyP`, and deliberately carries NO number: the
+   whole reason this state exists is that we do not yet know one. */
+.searching {
+  margin-block-end: var(--s2);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+}

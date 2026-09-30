@@ -1,0 +1,158 @@
+/* THE BRANCH PANEL — v8. The region 17:279 draws as a single summary card
+   ("Monge · 146 sucursales en todo el país" + `Ver sucursales ⌄").
+
+   THIS KEEPS ITS PER-CANTÓN GROUPING RATHER THAN COLLAPSING TO THAT LINE.
+   The mockup shows one chain because it is a mockup of one product; the panel
+   holds every chain that sells this model, grouped by cantón, with a HATCHED
+   swatch where a chain publishes no directory at all. That hatch is the
+   honesty vocabulary's publication grammar and it is the only place on the page
+   that says "Walmart publishes nothing" in a form you can count at a glance.
+   Trading it for a prettier single line would be losing information to match a
+   picture. What DOES change is the chrome: it is the design's white card now. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: 28px;
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r6);
+}
+
+.chain {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  padding: var(--s2);
+}
+
+.chainH {
+  margin: 0 0 var(--s1);
+  color: var(--deep);
+  font-size: var(--t-name);
+  font-weight: 800;
+}
+
+.n {
+  color: var(--ink-3);
+  font-size: var(--t2);
+  font-weight: 400;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--s1) var(--s2);
+}
+
+.group {
+  min-width: 0;
+  padding-block-start: 6px;
+  border-block-start: 1px solid var(--line);
+}
+
+/* ---- B8: 14px, NOT 12. A PLACE NAME IS NOT A CAPTION. ----
+   These are the strings a reader is here to READ — "which cantón, which shop" is the
+   question the panel exists to answer — and they were the largest single population of
+   floor-size text in the product (120 of ~165 twelve-pixel nodes on a product page).
+   The floor keeps three roles only: the ribbon flag, the gap chip, and the
+   eyebrow/caption. A branch directory is none of them. */
+.canton {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* A comma-joined list, deliberately NOT a `·`-separated one: measure.mjs asserts
+   no `·` may start, end, or sit alone on a rendered line, and this list is both
+   long and free to wrap. A comma cannot dangle in a way that reads as debris. */
+.names {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+/* ---- v7 §3 — THE HATCHED SWATCH. ONE MATERIAL, ONE MEANING ----
+   *ninguna cadena lo publica.* It renders in the position the branch COUNT
+   occupies on every other row, so the reader compares like with like: a number
+   where there is a number, a texture where the retailer published nothing.
+
+   THE HATCH LANDS ON --card AND --ink ONLY (§3.2) — that rule is what keeps the
+   token count at two, and it is why this swatch declares --card as its own ground
+   rather than inheriting the panel's. --unknown on --card is 2.79, the highest of
+   the three light readings, and it is a LEGIBILITY target: a texture carries no
+   text and identifies no UI component, so no WCAG minimum applies.
+
+   14px, not 16: it sits on a --t2 line and a swatch taller than its line's
+   x-height would read as a box rather than as a sample. `--r1` (2px), because a
+   square-cornered chip at this size reads as a rendering artefact and a pill
+   would read as a status badge — which is the one thing it is not. */
+.swatch {
+  display: inline-block;
+  inline-size: 14px;
+  block-size: 14px;
+  vertical-align: -2px;
+  background-color: var(--card);
+  background-image: var(--hatch);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r1);
+}
+
+/* THE KEY — once per surface, never per instance (§3.3). --t1 is correct here and
+   it is one of the floor's three sanctioned roles: this is a legend, not a
+   sentence. It is the shortest possible statement of what the material means, and
+   it is why the material is allowed to replace a paragraph at all. */
+.key {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  color: var(--ink-3);
+}
+
+/* `.none` is a sentence and is 14px, not fine print (B8).
+
+   IT IS NO LONGER THE "no directory" SENTENCE — that became the swatch above
+   (v7 §5.2 C2). It now carries the TWO METHOD CLAIMS that moved in from
+   `Cómo comparamos` when C1 turned that block into key/value rows: per-chain
+   stock, and the distance assumption. Both are claims about SHOPS and this is the
+   only object on the page that talks about shops. Neither was withdrawn; see
+   BranchPanel.tsx for why a silent withdrawal under cover of a layout cull is the
+   one thing §5's rule forbids. */
+.none {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-3);
+  max-width: 44ch;
+}
+
+/* ---- the disclosure ----
+   A native <details>. The marker stays (it is the affordance the UA already draws and
+   every reader recognises); only the summary's type is set. */
+.more {
+  margin-block-start: var(--s1);
+}
+
+/* the disclosure now carries the WHOLE list (B8), so its summary is the panel's primary
+   control per chain rather than an afterthought at the bottom. 14px, --act, because it
+   is interactive and links are --act and only --act (N10). */
+.summary {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--act);
+  cursor: pointer;
+  padding-block: 4px;
+}
+
+.summary:hover {
+  color: var(--act-strong);
+}
+
+.more[open] .summary {
+  margin-block-end: var(--s1);
+}

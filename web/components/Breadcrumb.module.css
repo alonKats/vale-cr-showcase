@@ -1,0 +1,54 @@
+/* THE BREADCRUMB — v8. Figma 18:45 / 17:45.
+
+   Plain 13px muted text with a chevron between, and the current page in teal
+   semibold. It is a real <ol> inside a named <nav> because it also feeds the
+   BreadcrumbList structured data on every category and product page — the trail
+   a reader sees and the trail Google reads are the same array. */
+
+.crumb {
+  padding-block: var(--pad) 0;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+.link {
+  color: var(--ink-3);
+  font-size: var(--t-row);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--deep);
+  text-decoration: underline;
+}
+
+.here {
+  color: var(--deep);
+  font-size: var(--t-row);
+  font-weight: 600;
+  /* the last crumb is a product name and can be 40 characters; it truncates
+     rather than wrapping the trail onto a second line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sep {
+  color: var(--line-2);
+  font-size: var(--t-row);
+}

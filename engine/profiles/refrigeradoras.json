@@ -1,0 +1,203 @@
+{
+  "id": "refrigeradoras",
+  "label": "Refrigeradoras",
+  "sources": {
+    "norte": {
+      "category_dir": "refrigeradoras",
+      "trusted_category": true
+    },
+    "sur": {
+      "category_dir": "refrigeradoras"
+    }
+  },
+  "filter": {
+    "include": [
+      "\\bREFRIGERADOR(A|AS|ES|)\\b"
+    ],
+    "exclude": [
+      "\\b(ORGANIZADOR|ENFRIADOR|CONGELADOR|FRIGOBAR|MINIBAR|MINI BAR|VITRINA|CAMARA|BOTELLERO|CAVA|DISPENSADOR|REPUESTO|FILTRO|LIMPIADOR|BASE PARA|SOPORTE|COBERTOR|FORRO|DEODORIZANTE)\\b"
+    ],
+    "price_floor_crc": 100000,
+    "price_ceiling_crc": 6000000
+  },
+  "brands": [
+    "SAMSUNG",
+    "GENERAL ELECTRIC",
+    "WHIRLPOOL",
+    "FRIGIDAIRE",
+    "ELECTROLUX",
+    "INDURAMA",
+    "MABE",
+    "HISENSE",
+    "SANKEY",
+    "CHALLENGER",
+    "TELSTAR",
+    "DURABRAND",
+    "MASTERTECH",
+    "MIDEA",
+    "ACROS",
+    "ATLAS",
+    "OSTER",
+    "HAIER",
+    "DRIJA",
+    "SMEG",
+    "LG",
+    "MAGGIO",
+    "WHITE WESTINGHOUSE",
+    "KITCHENAID",
+    "CAFE APPLIANCES",
+    "CHIQ",
+    "TCL",
+    "DACE",
+    "IMBERA",
+    "COBY"
+  ],
+  "attributes": [
+    {
+      "key": "capacity_ft3",
+      "label": "Capacidad",
+      "unit": "ft³",
+      "facet": "range",
+      "display": "{value} pies³",
+      "extract": {
+        "kind": "number",
+        "round": 1,
+        "rules": [
+          {
+            "pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:PIES CUBICOS|PIES|PIE|P3|PIE3|CU\\.?\\s?FT\\.?|CUFT|CUF\\b|FT3|CP\\b|PCU\\b)"
+          },
+          {
+            "pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:LITROS|LTS?\\b|L\\b)",
+            "scale": 0.0353147,
+            "min_raw": 40
+          }
+        ]
+      }
+    },
+    {
+      "key": "door_config",
+      "label": "Configuración",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "SIDE_BY_SIDE": "Side by side",
+        "FRENCH_DOOR": "French door",
+        "TOP_FREEZER": "Congelador superior",
+        "BOTTOM_FREEZER": "Congelador inferior",
+        "SINGLE_DOOR": "Una puerta",
+        "TWO_DOOR": "Dos puertas"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "SIDE_BY_SIDE",
+            "patterns": [
+              "SIDE BY SIDE",
+              "SIDE-BY-SIDE",
+              "\\bSBS\\b"
+            ]
+          },
+          {
+            "value": "FRENCH_DOOR",
+            "patterns": [
+              "FRENCH DOOR",
+              "FRENCH-DOOR"
+            ]
+          },
+          {
+            "value": "TOP_FREEZER",
+            "patterns": [
+              "TOP FREEZER",
+              "TOP MOUNT",
+              "TOP-FREEZER",
+              "CONGELADOR SUPERIOR",
+              "FREEZER SUPERIOR"
+            ]
+          },
+          {
+            "value": "BOTTOM_FREEZER",
+            "patterns": [
+              "BOTTOM FREEZER",
+              "BOTTOM FRE",
+              "BOTTOM-FREEZER",
+              "CONGELADOR INFERIOR",
+              "FREEZER INFERIOR"
+            ]
+          },
+          {
+            "value": "SINGLE_DOOR",
+            "patterns": [
+              "\\b(1|UNA) PUERTA\\b",
+              "ONE DOOR",
+              "SINGLE DOOR"
+            ]
+          },
+          {
+            "value": "TWO_DOOR",
+            "patterns": [
+              "\\b(2|DOS) PUERTAS\\b",
+              "TWO DOOR"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "finish",
+      "label": "Acabado",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "STAINLESS": "Acero inoxidable",
+        "BLACK": "Negro",
+        "WHITE": "Blanco",
+        "GRAY": "Gris"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "STAINLESS",
+            "patterns": [
+              "\\b(INOXIDABLE|INOX|SILVER|ACERO|STAINLESS|PLATEAD[OA])\\b"
+            ]
+          },
+          {
+            "value": "BLACK",
+            "patterns": [
+              "\\b(NEGR[OA]|BLACK)\\b"
+            ]
+          },
+          {
+            "value": "WHITE",
+            "patterns": [
+              "\\b(BLANC[OA]|WHITE)\\b"
+            ]
+          },
+          {
+            "value": "GRAY",
+            "patterns": [
+              "\\b(GRIS|GRAY|GREY|GRAFITO)\\b"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "fingerprint": [
+    "brand",
+    "capacity_ft3",
+    "door_config",
+    "finish"
+  ],
+  "fingerprint_round": {
+    "capacity_ft3": 0.5
+  },
+  "card_title": "{brand} {door_config} {capacity_ft3}",
+  "brand_aliases": {
+    "CAFE": "CAFE APPLIANCES",
+    "CAFÉ": "CAFE APPLIANCES",
+    "WHITE-WESTINGHOUSE": "WHITE WESTINGHOUSE"
+  }
+}

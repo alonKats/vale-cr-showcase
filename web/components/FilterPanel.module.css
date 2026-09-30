@@ -1,0 +1,436 @@
+/* THE FILTER PANELS — v8. Figma 21:326 (the whole workspace), 21:327 (Marca)
+   and 21:382 (Rango de precio).
+
+   ---- THESE PANELS ARE COOLER THAN THE REST OF THE SITE, ON PURPOSE -------
+   21:326 is drawn in a greyer, bluer family than the three page frames:
+   #1A202C / #4A5568 / #718096 / #E2E8F0 rather than the teal-tinted inks. That
+   is not an inconsistency to normalise away — the panels are OVERLAYS, they
+   float above the page on a 32px shadow, and the temperature shift is part of
+   what separates them from it. tokens.css carries the ramp as --panel-ink*.
+
+   The one correction: the Figma's #718096 measures 4.02 on white and 3.75 on
+   the panel's own ground, both failing AA. --panel-ink-3 is the same hue
+   darkened until it clears (4.88 / 4.56), and #718096 is a BANNED pair. */
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  background: var(--card);
+  border: 1px solid var(--line-3);
+  border-radius: var(--r3);
+  box-shadow: var(--shadow-pop);
+  overflow: hidden;
+}
+
+/* the price panel is 40px wider — it carries two inputs side by side */
+.wide {
+  width: 320px;
+}
+
+/* a panel opened by a chip near the right edge would run off the viewport */
+.right {
+  left: auto;
+  right: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: var(--s2) var(--s2) var(--s1);
+}
+
+.title {
+  margin: 0;
+  /* Space Grotesk here is DESIGN.md-legal: the guide scopes the display face to
+     "numeric data, currency displays, and technical LABELS", and a facet name
+     over a column of counts is a technical label. 21:329 sets it Bold 16. */
+  font-family: var(--display);
+  font-size: var(--t3);
+  font-weight: 700;
+  color: var(--panel-ink);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: 0;
+  background: none;
+  color: var(--panel-ink-3);
+  cursor: pointer;
+}
+
+/* ---- the brand search --------------------------------------------------- */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: 38px;
+  margin: 0 var(--s2) 12px;
+  padding-inline: 12px;
+  background: var(--fill);
+  border: 1px solid var(--line-3);
+  border-radius: var(--r2);
+  color: var(--panel-ink-3);
+}
+
+.search:focus-within {
+  border-color: var(--deep);
+}
+
+.search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--panel-ink);
+  font-family: var(--body);
+  /* 16px on a phone, because anything smaller zooms the viewport on focus in
+     iOS Safari. The Figma's 13 is a desktop measurement. */
+  font-size: var(--t3);
+}
+
+@media (min-width: 768px) {
+  .search input {
+    font-size: var(--t-row);
+  }
+}
+
+.search input:focus {
+  outline: none;
+}
+
+.search input::placeholder {
+  color: var(--panel-ink-3);
+}
+
+/* ---- the option list ---------------------------------------------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* 210px in the frame — about six rows. It scrolls rather than growing,
+     because a brand list is 8 items in one category and 40 in another and a
+     panel that changes height by 500px between chips is not a panel. */
+  max-height: 210px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0 var(--s2) var(--s1);
+  list-style: none;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block: 4px;
+  cursor: pointer;
+}
+
+/* THE CHECKBOX IS A REAL <input type="checkbox">, VISUALLY HIDDEN, with the
+   drawn box as its sibling. Not a div with role="checkbox": the native control
+   brings the space-bar toggle, the form association, the :checked state and the
+   focus ring for free, and every one of those has to be hand-built and
+   hand-tested on a re-implementation. */
+.opt input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--line-3);
+  border-radius: var(--r1);
+  background: var(--card);
+  color: transparent;
+}
+
+.opt input:checked + .box {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--on-deep);
+}
+
+.opt input:focus-visible + .box {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
+}
+
+.optRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.optT {
+  color: var(--panel-ink-2);
+  font-size: var(--t2);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opt input:checked ~ .optRow .optT {
+  color: var(--panel-ink);
+  font-weight: 600;
+}
+
+.optN {
+  flex: none;
+  color: var(--panel-ink-3);
+  font-family: var(--display);
+  font-size: var(--t1);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.none {
+  margin: 0;
+  padding: 0 var(--s2) var(--s2);
+  color: var(--panel-ink-3);
+  font-size: var(--t-row);
+}
+
+/* ---- the price panel ---------------------------------------------------- */
+
+.money {
+  display: flex;
+  gap: 12px;
+  padding: 0 var(--s2) var(--s4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.fieldL {
+  color: var(--panel-ink-3);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 38px;
+  padding-inline: 10px;
+  border: 1px solid var(--line-3);
+  border-radius: var(--r2);
+  background: var(--card);
+  color: var(--panel-ink);
+}
+
+.input:focus-within {
+  border-color: var(--deep);
+  border-width: 1.5px;
+}
+
+.input span {
+  flex: none;
+  font-weight: 600;
+}
+
+.input:focus-within span {
+  color: var(--deep);
+}
+
+.input input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--panel-ink);
+  font-family: var(--body);
+  font-size: var(--t3);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 768px) {
+  .input input {
+    font-size: var(--t2);
+  }
+}
+
+.input input:focus {
+  outline: none;
+}
+
+/* ---- the dual slider ----------------------------------------------------
+   TWO NATIVE <input type="range">, STACKED. Not a div-and-pointermove
+   implementation: each thumb is then a real slider with its own accessible
+   name, arrow-key stepping, Home/End, and a screen-reader announcement of its
+   value — all of which a re-implementation has to build and none of which it
+   usually gets right. The only trick is that the two tracks overlap, so the
+   upper one is transparent to pointer events EXCEPT on its thumb. */
+
+.slider {
+  position: relative;
+  height: 20px;
+  margin: 0 var(--pad) var(--s3);
+}
+
+.track {
+  position: absolute;
+  inset-inline: 0;
+  top: 8px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--line-3);
+}
+
+.fill {
+  position: absolute;
+  top: 8px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--deep);
+}
+
+.range {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: none;
+  appearance: none;
+  pointer-events: none;
+}
+
+.range::-webkit-slider-thumb {
+  appearance: none;
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--deep);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  box-shadow: var(--shadow-tile);
+  cursor: pointer;
+}
+
+.range::-moz-range-thumb {
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--deep);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  cursor: pointer;
+}
+
+.range:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--deep);
+  outline-offset: 2px;
+}
+
+/* ---- the presets --------------------------------------------------------- */
+
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: 0 var(--s2) var(--s4);
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.preset {
+  padding: 6px 12px;
+  border: 1px solid var(--line-3);
+  border-radius: var(--r-pill);
+  background: var(--fill);
+  color: var(--panel-ink-2);
+  font-family: var(--body);
+  font-size: var(--t1);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.preset[aria-pressed='true'] {
+  background: var(--sel-soft);
+  border-color: var(--deep);
+  color: var(--deep);
+  font-weight: 600;
+}
+
+/* ---- the footer ---------------------------------------------------------- */
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: 12px var(--s2);
+  border-top: 1px solid var(--line-3);
+}
+
+.clear {
+  padding: var(--s1) var(--s2);
+  border: 0;
+  border-radius: var(--r2);
+  background: none;
+  color: var(--panel-ink-3);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clear:hover {
+  color: var(--panel-ink);
+}
+
+.apply {
+  padding: var(--s1) var(--s2);
+  border: 0;
+  border-radius: var(--r2);
+  background: var(--deep);
+  color: var(--on-deep);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.apply:active {
+  transform: scale(var(--press));
+}

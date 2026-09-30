@@ -1,0 +1,134 @@
+/* CR Price Compare — L0 reset only.
+   Everything with a look lives in a CSS Module. This file carries the reset, the
+   page surface and the focus ring, and nothing else. If a rule here would need a
+   class name, it belongs in a module instead. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* BASE 14px, and the page ground is --ground. `color: var(--ink)` is declared
+   here on purpose: zap uses pure black 735 times and almost all of it is the UA
+   default rather than a decision, so v4 declares the ink once and nothing
+   inherits #000. */
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+table {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* EVERY form control is 16px, without exception. The "14px is too small on iOS"
+   objection is really about INPUT ZOOM, which applies only to form controls — so
+   it is answered here, once, as a rule rather than a guideline (§2.3). */
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: var(--t3);
+  letter-spacing: var(--tr3);
+}
+
+a {
+  color: inherit;
+}
+
+/* FOCUS — and the second rule is not optional. --act measures 2.38 on --ink and
+   would be an INVISIBLE focus ring across the entire two-tier header. v3 hit the
+   same class of problem when its focus colour moved, which is why the override is
+   declared next to the rule it overrides rather than in the chrome's own
+   stylesheet. `.chrome` is a plain global class on the header element for exactly
+   this reason — a CSS-Modules-hashed name could not be targeted from here. */
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--act);
+  outline-offset: 2px;
+  border-radius: var(--r1);
+}
+
+/* v5 §4.4 — `.consent` JOINS `.chrome`, AND WITHOUT THIS LINE THE GATE'S FOCUS
+   RING IS 2.38:1. The consent bar is the product's second --ink surface and the
+   one surface where a keyboard user has a LEGAL decision to make; the override
+   above was scoped to `.chrome`, and the gate is not `.chrome`.
+   `.consent` is a plain global class for the same reason `.chrome` is — a
+   CSS-Modules hash changes every build, and measure.mjs selects it too. */
+.chrome :where(a, button, input, select, [tabindex]):focus-visible,
+.consent :where(a, button, input, select, [tabindex]):focus-visible {
+  outline-color: var(--act-on-dark);
+}
+
+/* v7 §5.4-2 — THE CONSENT GATE MAY NOT OCCLUDE THE DOCUMENT'S LAST STRIP.
+
+   The gate is `position: fixed`, so it is out of flow and causes zero CLS — which
+   is why it mounts late, and which is also why the bottom ~127px of every document
+   sat permanently behind it at 390 no matter how far you scrolled. Measured on the
+   live site: the bar ran y 717–844 on an 844-tall viewport while T4's first price
+   sat at 675–721, four pixels behind it.
+
+   `--consent-h` is written by `Consent.tsx` from the bar's OWN `offsetHeight`, via
+   a ResizeObserver, so the reservation tracks the real object at every width and
+   through any copy edit. There is deliberately no fallback height here beyond
+   `0px`: if the variable is ever missing the page loses a reservation it does not
+   need (the bar is not mounted), rather than reserving a strip for nothing.
+
+   IT IS SCOPED TO `[data-consent-open]`, so it applies for exactly as long as
+   the bar does. The attribute already exists — CompareTray's dock hides against
+   it — so this adds a consumer, not a mechanism. */
+html[data-consent-open] body {
+  padding-block-end: var(--consent-h, 0px);
+}
+
+/* The list→detail morph. Named elements are paired by view-transition-name; the
+   durations come from the motion tokens, so reduced motion collapses them with
+   everything else (handled once in tokens.css). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--med);
+  animation-timing-function: var(--ease);
+}

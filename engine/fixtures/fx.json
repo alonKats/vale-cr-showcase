@@ -1,0 +1,4 @@
+{
+  "source": "fixture — production reads the BCCR selling rate from api.hacienda.go.cr under the same cache TTL as every other price",
+  "venta": {"valor": 505.0, "fecha": "2026-09-01"}
+}

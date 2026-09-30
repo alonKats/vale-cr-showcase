@@ -1,0 +1,121 @@
+/* THE SLIDER SHELL for T1's category rail — zap's circular button, our tokens.
+
+   The button is a --card circle with a --line boundary, i.e. the same recipe as
+   the tiles it scrolls, sitting half-outside the rail's edge. No shadow: box-shadow
+   exists in exactly two places in this product (the sticky chrome and the Sheet
+   overlay) and this is neither, so the boundary does the work a shadow would. */
+
+.wrap {
+  position: relative;
+}
+
+.rail {
+  display: flex;
+  gap: var(--s2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  /* the item lands flush with the rail's start rather than mid-tile */
+  scroll-snap-type: x proximity;
+
+  /* THE FADE. A hard cut through a photograph reads as a clipped image — a
+     rendering bug — where a fade reads as "there is more", which is the true
+     statement. Applied as a mask so it fades the CONTENT and therefore cannot
+     go out of sync with --ground the way an overlaid colour-stop gradient does.
+     Each side switches off at its end, driven by the same single geometry read
+     that enables the buttons, so fade and control can never disagree. */
+  --rail-fade: 40px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--rail-fade),
+    #000 calc(100% - var(--rail-fade)),
+    transparent 100%
+  );
+}
+
+.rail[data-at-start] {
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--rail-fade)), transparent 100%);
+}
+
+.rail[data-at-end] {
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--rail-fade));
+}
+
+.rail[data-at-start][data-at-end] {
+  mask-image: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- the circular controls ---------- */
+.btn {
+  position: absolute;
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  z-index: 1;
+
+  display: none;                  /* see the fine-pointer query below */
+  align-items: center;
+  justify-content: center;
+  inline-size: 40px;
+  block-size: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--card);
+  transition: border-color var(--fast) var(--ease);
+}
+
+/* A TOUCH DEVICE SWIPES THE RAIL NATIVELY. Rendering a 40px button there costs
+   tile width on the narrowest screen to duplicate a gesture the hardware
+   already provides — the same reasoning that put the phone rail on a scroller
+   in the first place (§6.3: the 3x2 grid spent a third of the first fold on
+   wayfinding). A fine pointer has no horizontal wheel and genuinely needs it. */
+@media (hover: hover) and (pointer: fine) {
+  .btn {
+    display: flex;
+  }
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--edge);
+}
+
+/* opacity 0, never 0.35 and never display:none. `opacity` composites the whole
+   element INCLUDING its opaque --card background, so a "greyed out" button at
+   rest is a pale scrim laid over the first tile's photograph — measured on the
+   chrome rail at 1440, where it visibly dimmed the first label. And removing it
+   from flow would shift the rail 40px the instant you reached an end, which is
+   a control moving the thing it points at. */
+.btn:disabled {
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* FLUSH WITH THE RAIL, NOT HANGING OUTSIDE IT.
+
+   The first version used `calc(-1 * var(--s3))` so the button sat half outside,
+   which looked better at 1440 and PUSHED THE DOCUMENT 12px WIDER AT 390 —
+   `--s3` is 12px, and an absolutely positioned box with a negative inset still
+   contributes to the scroll width of the page. `functional.mjs` caught it as
+   `responsive-overflow, docW 402` in a 390 viewport; nothing in the visual
+   review would have, because the buttons are `pointer: fine` only and the
+   review was at 1440.
+
+   Flush is also the more faithful copy: zap's circular arrow sits INSIDE the
+   content edge overlapping its rail (`zap-reference/zap-home-1440.png`), not
+   outside it. The fade underneath already separates the button from whatever
+   tile it covers. */
+.prev {
+  inset-inline-start: 0;
+}
+
+.next {
+  inset-inline-end: 0;
+}

@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: guard suite (zero network)
+        working-directory: engine
+        run: python3 test_guards.py
+      - name: full run against the fixtures, contract asserted
+        working-directory: engine
+        run: python3 run.py
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      # prebuild runs the contrast + token gates; the build then runs the
+      # title-length gate over the HTML it actually wrote
+      - working-directory: web
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://vale.cr
+      - working-directory: web
+        run: npm test

@@ -1,0 +1,225 @@
+/* PRICE HISTORY — the surface grows with the evidence (spec §5).
+
+   HOW MUCH SCREEN A CLAIM EARNS IS PROPORTIONAL TO THE CLAIM IT CAN ACTUALLY
+   MAKE. Four states, not one component with an empty variant:
+
+     none    → one sentence, no furniture
+     seed    → a sentence under a hairline + the evidence meter. No axes, no box.
+     sparse  → observed points inside a bordered box, with a derived headline.
+     full    → the curve, plus the window-low sentence.
+
+   The thin state must NOT look like a broken chart, which is why `.seed` has a
+   hairline above it and space below it and no border of its own. */
+
+.hist {
+  margin-top: var(--s4);
+}
+
+/* v4.1-FIX N4 — ONE SUB-HEADING TREATMENT, SHARED RATHER THAN COPIED.
+   This was a `<p>` at 12/700/uppercase/.1em while `Reseñas`, its peer sub-section, was an
+   h3 at 14/600 in the body face, both interleaved with four 26px display h2s: the page's
+   section rhythm read 26 → 12 → 14 → 26 → 26 → 26. `composes` is the CSS-Modules feature
+   for exactly this — one declaration site, no drift possible — and it is the same device
+   `.simGrid` uses to share the results grid.
+
+   NO `margin` DECLARED HERE, DELIBERATELY: it takes `.subH`'s. Re-declaring a property
+   the composed class already sets makes the winner depend on bundle order, which is the
+   defect the `.rowFlag { display:none }` note in OfferTable.module.css records. Only
+   properties `.subH` does not touch are set below. */
+.k {
+  composes: subH from './Product.module.css';
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+/* the clock is a glyph, and --ink-3 is a NON-TEXT token — correct for a glyph,
+   banned for the words beside it */
+.glyph {
+  color: var(--ink-3);
+  flex: none;
+}
+
+/* ---- state 0 + 1: no box, no border, no chart furniture ---- */
+.seedWrap {
+  border-top: 1px solid var(--line);
+  padding-top: var(--s2);
+}
+
+.seed {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink);
+  margin: 0;
+  max-width: 44ch;
+  line-height: 1.55;
+}
+
+/* THE EVIDENCE METER. Unfilled --line-2; filled --deep (see `.dotOn`). The label and
+   the dot count come from ONE call to `evidenceMeter()` — `{filled} de {target}` —
+   where `target` is the artifact's observation window and NOT a constant (v7 §10.1). */
+.meter {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-block-start: var(--s2);
+}
+
+/* `flex-wrap` IS NOT TIDINESS — IT IS THE CONSEQUENCE OF v7 §10.1. The dot
+   count used to be the constant 7 (91px) and is now the OBSERVATION WINDOW, which
+   grows by one every day the collector runs. At 9px + 4px each, the row crosses
+   the 366px inner column at 28 days and would start scrolling the document
+   sideways at 390 — a defect with a DATE on it, which is the kind this file has
+   already shipped once. One declaration closes it at every future window size. */
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line-2);
+}
+
+/* v4.1-FIX N1 — THESE DOTS WERE THE LOUDEST TOKEN IN THE PALETTE, AND THEY MEANT
+   "DAYS OF DATA WE HOLD". Measured --loud object count per template at 1440: T1 24,
+   /buscar 24, T2 categoria 6, T3 5, T4 3 — and T4's three were TWO OF THESE DOTS plus one
+   gap chip belonging to a DIFFERENT product in the similares row. So on 88% of pages amber
+   never marked that product's prize (correctly — a single-offer product has no gap, and
+   §7.1 rightly suppresses the chip), which left the loudest colour in the system meaning
+   "2 de 7 días registrados".
+
+   §3.5's own rule: "every one of amber's five places is a semantic claim about money."
+   Freshness is not money. --deep is the supporting/data accent (DESIGN.md §4), 8.40:1 on
+   --card, already asserted — and unlike amber it needs no mandatory boundary token,
+   because it clears the 3:1 non-text minimum by itself. One declaration LESS.
+
+   With the saving keyline deleted too, amber's five declared places are now three, and
+   every one of them is money. */
+.dotOn {
+  width: 9px;
+  height: 9px;
+  background: var(--deep);
+}
+
+/* a sentence about our own coverage, therefore 14 (B8). */
+.meterLb {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- states 2 + 3: the chart, in a box ---- */
+/* THE CHART BOX — v8, Figma 17:178. A white card with a 20px radius rather than
+   v4's 2px: every panel on this page is a rounded card now, and a square-cornered
+   chart between two round ones reads as a different kind of object. */
+.box {
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r6);
+  padding: var(--s3);
+}
+
+/* THE READING ABOVE THE CHART — 17:174 draws it as a filled alert strip rather
+   than v4's bare heading, and that is the right call: the sentence is a FINDING
+   ("hoy está en el precio más bajo de los últimos 24 días"), so it gets the same
+   green box the savings statement gets, and the two readings on this page look
+   like the same kind of claim. */
+.lead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 var(--s2);
+  padding: var(--s2);
+  border-radius: var(--r4);
+  background: var(--fill);
+  color: var(--ink-2);
+  font-size: var(--t2);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* --go when the derived reading is a price DROP, because green already means
+   "good for the buyer" everywhere else in the product */
+/* the DOWN state — a price at its floor is good news and gets the savings
+   grammar. Any other state stays neutral: a chart is not an alarm. */
+.leadDown {
+  background: var(--go-fill);
+  color: var(--go);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sm {
+  display: none;
+}
+
+/* B8 — the note is the paragraph that says a missing day means NO OBSERVATION rather than
+   an unchanged price. It is the chart's honesty clause and it was fine print. */
+.note {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+  margin: var(--s2) 0 0;
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+.note b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.warn {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+  margin: var(--s1) 0 0;
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid var(--line-2);
+  line-height: 1.5;
+}
+
+/* THE `demo` TAG. A projected series that ever renders in production must carry
+   it — a projection without the tag is the one dishonest thing this product would
+   have shipped (spec §5.7). Dashed, so it reads as provisional rather than as a
+   label the design chose. */
+.demo {
+  font-size: var(--t1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border: 1px dashed var(--edge);
+  border-radius: var(--r1);
+  padding: 4px var(--s1);
+  display: inline-block;
+  margin-bottom: var(--s2);
+}
+
+@media (max-width: 767px) {
+  /* the 390 chart is its own SVG with its own tick density — a desktop chart
+     scaled to 0.55 has 6px axis labels, which is not a mobile chart */
+  .lg {
+    display: none;
+  }
+
+  .sm {
+    display: block;
+  }
+
+  .lead {
+    font-size: var(--t3);
+    letter-spacing: var(--tr3);
+  }
+}

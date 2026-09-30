@@ -1,0 +1,161 @@
+/* THE DEAL PANEL — v8. Figma 17:83.
+
+   IT WAS A DARK PLATE AND IT IS A WHITE CARD NOW. v4/v7's plate was an --ink
+   surface carrying an inverted CTA — the one dark object on the page, and most
+   of what made the product page read as an instrument. 17:83 draws a white card
+   with a --line-2 hairline and a soft teal shadow, and the emphasis moves from
+   the SURFACE to the FIGURE: a 48px Space Grotesk price in --deep is the biggest
+   thing on the page by a wide margin, which is the right thing for it to be.
+
+   Everything the plate refuses to say is unchanged and is enforced in
+   VerdictPlate.tsx, not here: no verdict on a near-tie, no "MÁS BARATO" on a
+   single-offer product, no invented winner. */
+
+.plate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pad);
+  padding: 28px;
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r7);
+  box-shadow: var(--shadow-panel);
+}
+
+/* ---- the header row: which chain, and is it in stock ---------------------- */
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.kicker {
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--fill);
+  color: var(--ink-2);
+  font-size: var(--t-cap);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+/* the WINNING state fills teal (17:85). The neutral rest above is what a
+   near-tie and a single-offer product get: a label, not a verdict. */
+.kickerWin {
+  background: var(--deep);
+  color: var(--on-deep);
+}
+
+.stock {
+  flex: none;
+  color: var(--go);
+  font-size: var(--t1);
+  font-weight: 700;
+}
+
+.stockOut {
+  color: var(--ink-3);
+}
+
+/* ---- the figure ---------------------------------------------------------- */
+
+.lede {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t-row);
+}
+
+.price {
+  margin: 0;
+  font-family: var(--display);
+  /* 48px — the largest figure in the product, and the only use of --t-hero */
+  font-size: var(--t-hero);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: var(--tr3);
+  font-variant-numeric: tabular-nums;
+  color: var(--deep);
+}
+
+/* ---- the savings box (17:101) ------------------------------------------- */
+
+.saving {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 12px;
+  border-radius: var(--r4);
+  background: var(--go-fill);
+  color: var(--go);
+  font-size: var(--t-row);
+  font-weight: 700;
+}
+
+/* ---- the words, when there is no verdict to give ------------------------- */
+
+.statement,
+.tie {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: var(--t-row);
+  line-height: 1.5;
+}
+
+/* ---- the outbound CTA ---------------------------------------------------
+   AMBER FILL, AND THE LABEL IS NOT --deep. 17:106 sets the text #02565F on
+   #FEA619, which measures 4.27 — below AA for 16px bold, because 16px bold is
+   under the 18.66px threshold that would let it use the 3.0 large-text
+   allowance. --act-strong (#003D44, DESIGN.md's own `primary`) is the same hue
+   one step deeper and measures 6.10. Visually all but identical; a pass instead
+   of a fail. This is the fifth colour in the redesign that had to move. */
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s2);
+  border: 0;
+  border-radius: var(--r4);
+  background: var(--loud);
+  color: var(--act-strong);
+  font-family: var(--body);
+  font-size: var(--t3);
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.cta:hover {
+  filter: brightness(0.95);
+}
+
+.cta:active {
+  transform: scale(var(--press));
+}
+
+.audit {
+  color: var(--ink-3);
+  font-size: var(--t1);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.audit:hover {
+  color: var(--deep);
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .plate {
+    padding: var(--pad);
+  }
+
+  .price {
+    font-size: var(--t7);
+  }
+}

@@ -1,0 +1,270 @@
+/* THE SPREAD BAR — v8 REPAINT FOR A LIGHT SURFACE.
+
+   EVERY COLOUR IN THIS FILE WAS CHOSEN FOR A DARK PLATE AND ALL OF THEM WERE
+   WRONG THE MOMENT THE PLATE TURNED WHITE (17:83). Measured on the rendered
+   page, not reasoned about:
+
+     · the chain labels and the printed axis were --on-deep-2 (#EEF8F9) — on a
+       white card that is 1.06:1, i.e. INVISIBLE. The bar rendered with ghost
+       text where "SIMAN" and "GOLLO" should be.
+     · the track was --rule-on-deep, white at 16% — also invisible.
+     · the gap figure was --loud (#FEA619) as TEXT on white: 1.97, and a BANNED
+       pair in design/pairs-v8.json.
+
+   NONE OF IT FAILED A GATE. The contrast gate validates a declared LIST OF
+   PAIRS; it cannot know which token a module paints on which surface, so a
+   component moved from a dark parent to a light one keeps passing while
+   rendering nothing. That is the gap between a static assertion and a render,
+   and the only thing that closed it here was looking at the page.
+
+   WHAT THE REPAINT KEEPS: the object itself, unchanged in meaning. The track is
+   still the CATALOGUE-WIDE axis, the span is still drawn against `axisMax`, the
+   near-tie still gets one mark and no span, and a single-offer product still
+   gets the hatch end to end. Only the palette moves.
+
+   WHAT IT DROPS: `.gap`, the "₡200.000 · 31% de diferencia" line. 17:101 states
+   that fact in the green savings box eight pixels below, so the plate was saying
+   one thing twice in two colours. The box wins — it is the design's own object
+   and it is in the savings grammar the rest of the page uses. */
+
+/* THE SPREAD BAR (v7 §2) — scale 2, the verdict plate. See SpreadBar.tsx for the
+   axis argument, which is the design; this file is only its geometry.
+
+   EVERY VALUE HERE IS AN EXISTING TOKEN. §8's whole finding is that the "too AI"
+   defect is at the COMPOSITION level and not the palette level, so the bold move
+   costs no new colour: the track is --rule-on-deep, the span is --loud, the low
+   mark is --card, the high mark is --on-deep-2, the gap figure is --t4/--tr4, the
+   labels are --t1 and --t2. The only v7 token this file touches is --hatch-deep,
+   and it is a texture rather than a colour. */
+
+.bar {
+  display: grid;
+  gap: 6px;
+  margin-block-start: 2px;
+}
+
+/* ==========================================================================
+   THE TWO REAL PRICES, EACH ABOVE ITS OWN MARK (§2.5, §2.4's diagram —
+   critique-v7-wave1 §3.2 struck §2.1's frame-aligned diagram).
+
+   The low figure needs nothing: `markLo` is at 0% at every gap size, so
+   left-aligned at the frame IS mark-aligned, always.
+
+   THE HIGH FIGURE'S END EDGE IS PINNED TO ITS MARK, WITH TWO CLAMPS, IN CSS,
+   WITHOUT MEASURING ANYTHING. The row is `[ low ][ high ][ ::after spacer ]`:
+
+     · the spacer's flex-basis is `100% − --hi` — the distance from the mark to
+       the track's end — and a percentage basis on a flex item resolves against
+       the flex container, which is a grid item of the same width as the track.
+       Its negative start margin cancels the row gap, so the spacer measures
+       exactly mark→end and the high figure's end edge lands exactly on --hi.
+     · the high figure GROWS into whatever is left, so it ends AT the mark;
+     · `min-inline-size: max-content` makes it the one item that cannot shrink,
+       so when the mark is too close to the low figure to fit — the median
+       product's mark sits ~18% along the track — the SPACER absorbs the whole
+       deficit and the label comes to rest exactly `--s2` clear of the low label
+       instead of overlapping it. That is the clamp, and it is the reason this
+       component built frame-aligned in the first place;
+     · the same freeze bounds the other end: the label can never end past the
+       track, because the spacer's basis is what it grew into.
+
+   WHY NOT CENTRED ON THE MARK (the critique's `translateX(-50%)`): a transform
+   does not participate in layout, so a centred label needs its own width in a
+   `clamp()` to stay off the low label and inside the track — i.e. a client-side
+   measurement pass, which is the de-collision pass this codebase already wrote
+   once. End-pinning gets both clamps out of the flex algorithm for free. The
+   difference from the ruling is at most half a label; the label is on its mark
+   at every gap size, which is the whole of B1.
+   ========================================================================== */
+.figs {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s2);
+}
+
+.figs::after {
+  content: '';
+  flex: 0 1 calc(100% - var(--hi));
+  margin-inline-start: calc(-1 * var(--s2));
+  min-inline-size: 0;
+}
+
+/* BAND 0 — one mark, so one column of figures at the track's left, not two
+   figures at the two ends. Two identical prices 328px apart was the defect. */
+.figsTie {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--s1);
+}
+
+.figsTie::after {
+  content: none;
+}
+
+.fig {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.figHi {
+  flex: 1 1 auto;
+  min-inline-size: max-content;
+  text-align: end;
+}
+
+/* --t2/700 tabular. NOT --t4 and NEVER --t7: 44px is the verdict price and
+   nothing else, ever, and the dearest chain's price is reference data sitting
+   beside it. --card on --ink is 15.56. */
+.price {
+  display: block;
+  color: var(--deep);
+  font-family: var(--display);
+  font-size: var(--t-row);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the chain label — the eyebrow role at the floor, one of --t1's three. 9.61 on
+   --ink. It is what stops the object reading as a progress bar (§13-1), so it is
+   not optional decoration on a narrow viewport. */
+.chain {
+  display: block;
+  color: var(--ink-3);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+/* ---- THE TRACK ----
+   8px, and ZERO RADIUS: square reads as measurement, pill reads as decoration
+   (v3 §3). It is also the axis — there is no second axis rule and no graduation,
+   so the track's right-hand end IS the catalogue maximum and `.axis` prints it. */
+.track {
+  position: relative;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--tint);
+  overflow: hidden;
+}
+
+/* NOTHING TO COMPARE — the track renders HATCHED end to end, with no span, no
+   marks and no gap figure (§2.5). The absence gets a MATERIAL instead of the
+   five sections of prose it used to get: this is the one object on T4 that says
+   "there is one price and nothing to measure it against" without an apology. */
+/* the single-offer state: hatched end to end, no span, no marks — "there is one
+   price and nothing to measure it against", said in the material. --hatch, not
+   --hatch-deep: the plate is a light surface now. */
+.trackHatch {
+  background-image: var(--hatch);
+}
+
+/* THE SPAN — the ONE --loud object on this surface. It replaces the chip, it is
+   never added to it. Amber on --ink is 8.67:1, the most headroom any surface in
+   this palette gives it, and it needs no --loud-edge here (that token exists for
+   LIGHT grounds, where bare amber is 1.79).
+
+   IT GROWS FROM 0 ON FIRST PAINT, ONCE. No loop, no shimmer, no gradient, no
+   rounded ends. `transform-origin` is the inline edge so it grows FROM the axis
+   zero rather than from its own centre — growing from the middle would animate a
+   quantity that has a fixed left end. Reduced motion is handled ONCE, globally,
+   by collapsing --med in tokens.css; there is no local media query here and
+   there must never be one. */
+.span {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--hi);
+  background: var(--loud);
+  transform-origin: left center;
+  animation: grow var(--med) var(--ease) both;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* THE LOW MARK — 10px, and it is --card, NOT --go (§8's ruling). --go means "the
+   chain to buy from" and earns it on every light surface at 6.69/5.93/5.44; on
+   --ink it measures 2.33 and is a mark nobody can see. Inside the plate the thing
+   that already means "this one" is --card at 15.56. `#0B6A3C on #002832` is a
+   BANNED PAIR in design/pairs-v4.json so this cannot be typed back. */
+.markLo,
+.markHi {
+  position: absolute;
+  inline-size: 10px;
+  block-size: 10px;
+  inset-block-start: -1px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  box-shadow: 0 0 0 2px var(--card);
+}
+
+/* THE TWO MARKS — repainted with the rest of the file. --card was a white dot
+   on a dark track and --on-deep-2 was a pale one; on a --tint track both are
+   invisible, and --on-deep-2 (#EEF8F9) is now byte-identical to the track. The
+   low mark is --deep (the winning end) and the high mark is --ink-3 (the end
+   you are being asked not to pay), each ringed in --card so it stays legible
+   where it overlaps the amber span. */
+.markLo {
+  inset-inline-start: 0;
+  border-radius: 50%;
+  background: var(--deep);
+  box-shadow: 0 0 0 2px var(--card);
+}
+
+/* the high mark is a TICK, not a dot: it is the end of a measurement, and a
+   second dot would read as a second answer. 2px of it, --on-deep-2 at 9.61, and
+   it is translated back onto its own coordinate so the mark sits ON the value
+   rather than one tick-width past it.
+
+   IT RENDERS ONLY WHERE THERE IS A SPAN. Below the parejo floor both marks land
+   on the same point and the tick's own −1px put it outside the track (critique
+   A7-1); the near-tie now draws one mark, which is what it has. */
+.markHi {
+  inline-size: 2px;
+  inset-inline-start: var(--hi);
+  background: var(--on-deep-2);
+  transform: translateX(-1px);
+}
+
+/* THE GAP FIGURE — --t4 (20) / 700 tabular in --loud, UNDER the span. v6 §4.3 P3
+   asked for 14 → 20 and it never shipped; this is where it lands. It is amber
+   TEXT on --ink (8.67), which is the one surface amber may ever be text on. */
+
+/* THE NEAR-TIE — words, never a mark. A sub-5% spread is not a brecha, so there
+   is no span and no amber anywhere in this state: an editorial refusal to call a
+   winner is grammar 3 (§3.1) and it is written out, because a mark would make our
+   decision look like the retailers' omission. */
+.tie {
+  margin: 6px 0 0;
+  color: var(--ink-2);
+  font-size: var(--t-row);
+  font-weight: 600;
+}
+
+/* THE PRINTED AXIS MAXIMUM. This is the object's defence against being read as a
+   progress bar, and the designer named it in advance as the tell she will hunt: "if it
+   reads as 80% complete rather than 8% of the biggest disagreement in the
+   country, the bold move failed — and the fix is the printed axis maximum and
+   the two chain labels, not a different colour." So it is part of the object.
+
+   THE `·` IS NBSP-GLUED ON BOTH SIDES IN THE TSX. measure.mjs assertion 5
+   fails a separator that starts, ends or sits alone on a RENDERED LINE, and this
+   caption is the narrowest two-part string in the plate — at 320 the column is
+   264px. Gluing makes the failure unreachable instead of untested. */
+.axis {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s1);
+  margin: 6px 0 0;
+  color: var(--ink-3);
+  font-size: var(--t-cap);
+  letter-spacing: var(--tr1);
+  text-transform: uppercase;
+}

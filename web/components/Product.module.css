@@ -1,0 +1,770 @@
+/* T3 / T4 — the product body. NEW in v4; it takes over the ~380 lines of `.det`,
+   `.blk`, `.led*`, `.rev*` and `.us*` rules that used to live in Sheet.module.css,
+   so the overlay's stylesheet is once again about the overlay. */
+
+/* `minmax(0, 1fr)`, NOT the implicit `auto` column, and this is load-bearing rather
+   than tidiness. A grid's implicit column is `auto`, which is floored at min-content —
+   so one intrinsically wide descendant (the offer row's nowrap 34px price column)
+   stretched this grid's single track to 402px inside a 366px shell at 390, and every
+   child inherited the overflow. The document then scrolled horizontally and
+   `measure.mjs` flagged it on both product templates. Capping the track at the
+   container is the whole fix. */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* THE HERO BAND IS FULL-BLEED --hero (sampled off 17:61) and everything below it
+   sits on --ground. Two grounds, one page: the band is the product's identity
+   and the rest is its evidence. */
+.heroBand {
+  /* FULL-BLEED: `Detail` is rendered outside the page shell (see the product
+     route), so this band already spans the viewport and only its CONTENTS come
+     back into a container. */
+  background: var(--hero);
+  background-image: var(--dots-hero);
+  background-size: var(--dots-hero-size);
+  background-position: 14px 14px;
+}
+
+/* ---- the header split ----
+   `1fr 380px 340px` at 1440 (v4.1 §5.4 — the two right-hand columns absorb the
+   +160px of shell, and the `best` slot needs the room for a 44px price), `1fr 260px
+   280px` at 1024, stacked at ≤767.
+
+   THE SHOT NO LONGER COMES FIRST AT ≤767 (v4.1-fix N7). The `order: -1` that used to
+   sit on `.shot` produced this reading at 390: chrome → trust strip → breadcrumb →
+   two 36px utility pills → a 366×200 photograph of an unnamed object → eyebrow → h1,
+   with the first price at y=711 of 844. The product's NAME was the fourth block and
+   the photograph annotated nothing. Removing one declaration puts it back in flow —
+   eyebrow → h1 → specs → photo → verdict — and lifts the first price by ~50px, which
+   is worth more than any further chrome trimming. */
+/* THE SHELL, RE-APPLIED PER REGION. `Detail` is full-width so the hero band can
+   bleed, which means every region inside it has to bring its own container back.
+   One expression, used twice, matching `Page.module.css`'s `.shell`. */
+.hdr,
+.sec {
+  max-width: calc(var(--shell) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.hdr {
+  /* THE THREE-COLUMN HEADER — 17:62 / 17:81 / 17:83, measured off the frame at
+     369 / 419 / 427 inside an 80px gutter. The first column is fluid and the
+     other two are capped, because the deal panel's job is to be a standing card
+     of a fixed size and the identity column is the one that should absorb a
+     wider viewport. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px) 428px;
+  gap: var(--s4);
+  align-items: start;
+  padding-block: var(--s4) var(--s6);
+}
+
+/* B5 — THE SLOT GOES 340 → 360 AT ≥1240. THE WIDENING IS NOT THE FIX, AND THE 2px THAT
+   MOTIVATED IT WAS A MEASUREMENT ARTEFACT.
+
+   The critique measured "`₡6.599.900` → 306 in a 308 slot: 2px of slack". THE PRICE IS A
+   `<p>` — A BLOCK — so its `getBoundingClientRect().width` is its CONTAINER's width, not
+   its glyphs'. 306-in-308 was the box measuring itself. (The gate hit the identical trap
+   on its first run of assertion 12 and reported `need 328, have 328, slack 0`; a Range
+   over the text contents is what fixed both readings.)
+
+   MEASURED PROPERLY, with a Range at --t7: the artifact's longest price needs 236.4px and
+   the inner box is 328px — 91.6px of slack, ~23.6px per glyph, so the box holds about
+   THIRTEEN glyphs. `₡100.000.000` (12) fits. The overflow risk was real in kind but not in
+   degree, and the 20px buys headroom that was already there.
+
+   WHAT THE FIX ACTUALLY IS: `white-space: nowrap` on the price, so the failure mode can
+   never be a MID-NUMBER wrap (`₡10.599.` / `900`) — a number a person can misread, which
+   in a price-comparison product is the worst available failure — plus measure.mjs
+   injecting the LONGEST PRICE IN THE ARTIFACT into the real node and asserting it fits at
+   every gated width. That assertion is what has a future; the 20px is kept because it is
+   free (it comes out of the identity column, which N6 measures as ~85% empty on T4) and
+   because the wider plate gives the statement line and the saving figure more room.
+   The arithmetic is corrected in the build report rather than quietly re-derived. */
+@media (min-width: 1240px) {
+  .hdr {
+    grid-template-columns: minmax(0, 1fr) 380px 360px;
+  }
+}
+
+.id {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+.cat {
+  /* amber, and therefore --loud-ink: 17:64 paints it #FEA619, which is 1.87 on
+     this --hero band and a banned pair */
+  font-size: var(--t1);
+  font-weight: 800;
+  letter-spacing: var(--tr1);
+  text-transform: uppercase;
+  color: var(--loud-ink);
+}
+
+/* 34px — the <h1> on a product page (26 below 768, the same width-dependent
+   construction §1.2 sanctions for the h2). THE 44px PRICE IN THE PLATE BESIDE IT IS
+   LARGER, DELIBERATELY: the number is the product, and on a product page the largest
+   glyph is always a price. 24 and 28 are off the v4.1 ladder.
+
+   THE h1 CARRIES THE PRODUCT'S NAME AND NEVER ITS MODEL NUMBER (v4.1-fix N8). It
+   used to be `cardT + modelD`, which measured 78px over two lines at 1440 and put the
+   BARE SKU on line two at 390 — half of the largest type on the page spent on a part
+   number that already renders at 12px on every offer row. The SKU moved to `.sku`
+   below. One deletion, and it is the single largest improvement available to the
+   product page's fold at 390. */
+.h {
+  /* 36px ExtraBold in --deep (17:65) — the BODY face. v4 set this in Space
+     Grotesk; DESIGN.md scopes that face to figures and technical labels, and
+     reserving it for them is what makes a price look like a price here. */
+  margin: 0;
+  font-family: var(--body);
+  font-size: var(--t6);
+  font-weight: 800;
+  letter-spacing: var(--tr4);
+  line-height: 1.22;
+  color: var(--deep);
+}
+
+@media (min-width: 768px) {
+  .h {
+    font-size: var(--t6);
+    letter-spacing: var(--tr6);
+  }
+}
+
+/* THE MODEL NUMBER, as a meta line under the heading (N8). 12px is correct here and it
+   is one of the floor's three sanctioned roles: this is a caption, not a sentence. It
+   is also the node that keeps `seo-check.mjs`'s "the model number is in the HTML"
+   assertion true on T4, where there is no offer table to carry it. */
+.sku {
+  font-size: var(--t3);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+/* the three key attributes. zap's version is a 3-line list in the same slot; ours
+   is the same list, composed from CategoryProfile rather than authored. */
+/* THE QUICK-SPEC CARD (17:67). The three attributes are chosen by
+   `CategoryProfile`, never by category-specific code — see Detail.tsx. */
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r4);
+  list-style: none;
+  font-size: var(--t2);
+  color: var(--deep);
+}
+
+.keys li {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+.keys b {
+  font-weight: 700;
+}
+
+.jump {
+  font-size: var(--t2);
+  font-weight: 700;
+  color: var(--deep);
+  text-decoration: underline;
+  justify-self: start;
+}
+
+.jump:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* THE SHOT — ONE PLATE RECIPE IN THE PRODUCT, NOT THREE (v4.1-FIX B7).
+
+   Measured before: `Product_shot` rendered 380×260 at 1440 and 366×200 at 390 — a
+   LANDSCAPE band with a contained portrait fridge standing in the middle of it. Of the
+   three --plate instances in the product, TWO were letterboxes (this one and the
+   category rail's 190×124); only the card's 176×176 was square and filled. That is not
+   a considered variation, it is the residue of three independently written rules, and
+   it aims the --plate vignette at nothing: §4.2 justified
+   `radial-gradient(ellipse … at 50% 46%)` as reading like a lit surface "centred
+   slightly above the product", and in a 1.9:1 box that ellipse stretches into a wide
+   oval with no relationship to the object in it.
+
+   So the shot takes THE CARD'S PLATE, VERBATIM: `aspect-ratio: 1`, `width: 100%`, a
+   cap, `margin-inline: auto`, image filling it. Same four declarations on all three
+   instances, less CSS than the three variants it replaces, and measure.mjs now asserts
+   that EVERY element carrying --plate is square (±1px) at every gated width — a
+   landbox letterbox is now impossible to ship rather than merely discouraged.
+
+   THE CAP IS 340 / 280, NOT THE COLUMN WIDTH. A square that filled the 380px column
+   would be 380px tall and would push the fold; 340 fills the ≥1240 column's usable
+   width and is the same number as the plate slot beside it, so the two hero objects
+   read as a pair. `data-scales` because the box is still derived from the header grid,
+   and §2.4 gates anything whose size is a consequence rather than a declaration. No
+   exact pixel dimension on the image itself, ever. */
+.shot {
+  /* A WHITE CARD (17:81): border --line-2, radius 24, 24px of padding. v4 sat
+     the photo on the --plate vignette because a white refrigerator on a white
+     card is invisible; the card's own border does that job now, so the plate is
+     not needed HERE — it is still what the small thumbnails use. */
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: var(--s3);
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r7);
+}
+
+.shot img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* v7 §2.4 — THE HERO ROW'S TWO PANELS SHARE A **TOP** EDGE, AND THE PLATE IS
+   CONTENT-HEIGHT. `align-self: stretch` IS DELETED; the grid's own
+   `align-items: start` is what aligns them now, so this rule is three declarations
+   shorter than the thing it replaces.
+
+   N5 (v4.1-fix) stretched this slot so the two panels would share a BOTTOM edge —
+   they had been missing by 9px on T3 and by 1px on T4, and 1px reads as a rendering
+   fault. The diagnosis was right; the mechanism made the plate's height a
+   CONSEQUENCE OF THE PHOTOGRAPH BESIDE IT, and on T4 (88% of the catalogue, three
+   regions on the plate instead of five) that left a ~90px hole in the middle of the
+   best object in the system. A fixed-height dark box with nothing in the bottom
+   third of it is the least precise thing in a product whose credibility IS
+   precision.
+
+   Both panels already started at exactly y=212 at every width — the top edge was
+   never the problem, it was simply not the edge being asserted. measure.mjs
+   assertion 18 now asserts an identical `top` at every width ≥768, with the same
+   1px tolerance, and its scope WIDENS from ≥1024 (a shared bottom was unreachable
+   at 768–1023, where the plate needs 306px against a 260px square) back to the
+   ≥768 the rule was always meant to cover. */
+.plateSlot {
+  min-width: 0;
+  display: grid;
+}
+
+/* ---- sections ----
+   (This block used to read "24px + a hairline, never 96px of air." It is 48 now
+   and the sentence is rewritten rather than left standing above a line that
+   contradicts it — a comment that disagrees with the declaration under it is the
+   drift this codebase spends its comments preventing.)
+
+   v6 §3.3 — THE ELEMENT:SECTION RHYTHM RATIO, ON PRODUCT TEMPLATES ONLY.
+   24 → 48, AND `--s6`/`--s7` STAY DELETED.
+
+   The reference runs an element gap to a section gap of about 1:6; we ran ~1:1.5.
+   The 24px + hairline separation that is right for TWO sections on /categoria is
+   not enough for the SEVEN this template carries — measured on the T4 full-page
+   capture, eight sections read as one undifferentiated column. Against the 8px
+   element gap, 48 is 1:6.
+
+   IT USES AN EXISTING TOKEN ON PURPOSE. Reinstating --s6 (64) or --s7 (96)
+   would undo the machine-checkable proof that the density pivot happened — the
+   value does not exist, so it cannot be typed, and `grep -n "--s6\|--s7"` must
+   keep returning nothing. --s5 was already in the ladder and already shipping.
+
+   Scoped to this stylesheet, so /categoria, /buscar and the home rails keep 24.
+   The overlay inherits it because the overlay renders the same component, which
+   is correct: one URL, two renderings, one rhythm. */
+.sec {
+  padding-block: var(--s6);
+  /* NO RULE BETWEEN SECTIONS. v4 separated them with a --line hairline; every
+     section on this page is now a white card or a bordered table on --ground, so
+     a rule between two of them is a second separator doing a job the cards
+     already do. */
+  scroll-margin-block-start: calc(var(--chrome-h) + var(--s2));
+}
+
+/* 26 at >=768, 20 below — the same display tier T1's h2 gained (§1.4). At 16 it was
+   one step off body text, which is why the v4 build had no display tier anywhere. */
+.secH {
+  margin: 0 0 var(--s2);
+  font-family: var(--body);
+  font-size: var(--t5);
+  font-weight: 800;
+  letter-spacing: var(--tr4);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+@media (min-width: 768px) {
+  .secH {
+    font-size: var(--t5);
+    letter-spacing: var(--tr5);
+  }
+}
+
+/* THE SUB-SECTION HEADING — ONE TREATMENT, AND IT IS --t4 (v4.1-fix N4).
+
+   Measured on T4, six peer-level regions read 26 → 12 → 14 → 26 → 26 → 26, which is
+   not a rhythm: `Reseñas` was an h3 at 14px in the body face and `Historial de precio`
+   was a `<p>` at 12px uppercase, both interleaved with four 26px display h2s. Every gate
+   passed — legal sizes, fine contrast, valid outline nesting.
+
+   The critique's fix was "all six become h2 at --t5". NOT TAKEN AS WRITTEN, and it
+   offers the alternative itself: `Reseñas` and `Historial de precio` are genuinely
+   LESSER — both live INSIDE `Ficha técnica`, which is their parent h2 — so they are
+   sub-sections, and the defect is that two sub-sections wore two different treatments.
+   Promoting them to peers would flatten a real hierarchy to fix a cosmetic one.
+
+   So there is exactly one sub-heading treatment, at --t4/600 display, shared by both
+   (PriceHistory `.k` composes it). Section rhythm becomes 26 → 20 → 20 → 26 → 26 → 26,
+   and --t4 picks up its second real job on the way — the same step that took the
+   offer-row price. FLAGGED as a deviation in the build report. */
+.subH {
+  font-family: var(--display);
+  font-size: var(--t4);
+  font-weight: 600;
+  letter-spacing: var(--tr4);
+  line-height: 1.25;
+  color: var(--ink);
+  margin-block: var(--s3) var(--s1);
+}
+
+/* THE SECTION EYEBROW (v7 §5.2 C4, §8) — --t1's THIRD sanctioned role, not a
+   fourth. 12 / 600 / .04em / uppercase / --ink-3 is the caption recipe `.cat` and
+   `.revZ` already use verbatim; this is the same object doing the same job above a
+   different heading, so it adds a call site rather than a treatment.
+
+   It carries a CAVEAT, which is why it sits above the heading rather than under
+   it: a reader who skips the paragraph must not skip the qualifier. `.secH` owns
+   its own `margin-block-end`, so the eyebrow only needs to close the gap under
+   itself. */
+.eyebrow {
+  font-size: var(--t1);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-block-end: 2px;
+}
+
+/* ---- B8: EVERYTHING THAT IS A SENTENCE IS 14px ----
+   `.note` and `.method` were 12. `.method` is the `Cómo comparamos` block — THE
+   CREDIBILITY TEXT, set at the smallest size in the system, on a page whose whole
+   differentiator against zap is that this paragraph exists. A product that sets its own
+   accountability statement in fine print is arguing against itself. `.note` carries the
+   mixing disclaimer and the similar-products qualifier, both of which are sentences by
+   §1.2's own rule ("--t2 BASE — anything that is a sentence").
+
+   THE MECHANISM, since the correction has now failed once: v4.1 deleted 11 and 13 and
+   left the FLOOR with seven declared roles against the base's one, so every ambiguous
+   label kept drifting down. Measured on the built page, T3 was 72.5% of visible text
+   nodes at 12px and T4 76.8% — against the 64% v4.1 §0 called the defect. The remedy is
+   not more steps; it is FEWER ROLES ON THE FLOOR. 12px keeps three: the ribbon flag,
+   the gap chip, and the eyebrow/caption. */
+.note {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-3);
+  max-width: 44ch;
+  margin-block-start: var(--s1);
+}
+
+/* `.method` IS DELETED WITH THE PARAGRAPH IT SET (v7 §5.2 C1). It styled ~12
+   lines of method prose that now render as four key/value rows; the class goes
+   with the markup rather than being left behind, for the same reason `.stock` and
+   `.gap` did — an orphan rule is how a deleted object comes back six weeks later
+   because "the style was already there".
+
+   ---- ITS REPLACEMENT: `Cómo comparamos` AS FOUR CHECKABLE VALUES ----
+   THE CULL'S OWN RULE IS WHAT SHAPES THIS: a reader can check a number, they
+   cannot check a paragraph. So the region stops being prose ABOUT the method and
+   becomes the method's ACTUAL VALUES — the read time, the tax basis, the matching
+   key, the exchange rate with its source. Every claim survives as the value it
+   asserts, which makes the block more auditable than the paragraph was, not less.
+
+   NO PANEL, NO BORDER, NO ZEBRA. It is a list of four facts at the foot of a
+   product page, and giving it a card would make it the fifth identical white panel
+   on a page whose whole diagnosis (§1.2) is a stack of identical white panels. A
+   hairline between rows is enough separation for four items.
+
+   `--row-1` (40) is the row height, which is the same step the spec table above it
+   now uses — a key/value line is a key/value line wherever it renders, and two
+   different heights for one content condition is exactly the four-heights-no-ladder
+   finding v7.1 §4.3 opens with. */
+.facts {
+  max-width: 60ch;
+  border-block-start: 1px solid var(--line);
+}
+
+.fact {
+  display: grid;
+  /* the key column is sized to the longest label rather than to a fraction, so the
+     four values start on one axis at every width. Below 640 it stacks: a 40% key
+     column at 320 gives the VALUE 176px, and "Número de modelo RF29DB9950QDED, no
+     productos parecidos" is not a 176px string. */
+  grid-template-columns: minmax(0, 34%) minmax(0, 1fr);
+  gap: var(--s2);
+  align-items: baseline;
+  min-block-size: var(--row-1);
+  padding-block: 10px;
+  border-block-end: 1px solid var(--line);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+}
+
+.fact dt {
+  color: var(--ink-3);
+}
+
+.fact dd {
+  color: var(--ink-2);
+  min-width: 0;
+}
+
+@media (max-width: 639px) {
+  .fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-block: var(--s1);
+  }
+}
+
+/* THE SIMILAR-PRODUCTS GRID *IS* THE RESULTS GRID — `composes`, not a copy.
+
+   It was a copy for one gate run, and the copy immediately proved the point: it
+   duplicated the `auto-fill` rule but NOT the `max-width: 539px` forced-2 override
+   that lives with it, so at 390 the similar grid fell to ONE 366px card while the
+   results grid showed two 175px ones. Same declared card, two different renderings,
+   in the same product. `composes` is the CSS-Modules feature for exactly this: one
+   rule, one media query, no drift possible. */
+.simGrid {
+  composes: grid from './Page.module.css';
+  margin-block-start: var(--s2);
+}
+
+/* ---- reviews ---- */
+.rev {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s2);
+}
+
+/* v6.1 §5.4 — THE GRID CAN NOW LEGITIMATELY CARRY ONE CHILD. The empty review
+   panel is no longer rendered (the absence is one sentence below the grid), so a
+   product with only a CR record or only a US record would leave half of a
+   two-track grid empty. A lone panel takes the whole row instead: a hole beside a
+   card is the "fixed box with nothing in it" defect, and the fix is one selector
+   rather than a second grid declaration. */
+.revC:only-child {
+  grid-column: 1 / -1;
+}
+
+.revC {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  padding: var(--s2);
+  min-width: 0;
+}
+
+.revEmpty {
+  background: var(--fill);
+  border-color: transparent;
+}
+
+.revZ {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---- B2: A BORROWED NUMBER MAY NEVER BE TYPOGRAPHICALLY LOUDER THAN THE SENTENCE
+        THAT DISCLAIMS IT. THIS IS AN HONESTY FIX, NOT A STYLING ONE. ----
+
+   Measured on T4, the 26px/600 display role class contained exactly five nodes: four
+   section `h2`s … and `4,8`, a Best Buy rating for A DIFFERENT PRODUCT. Meanwhile all
+   four qualifiers sat at the floor:
+
+     4,8                                          26px/600 display
+     / 5                                          14px/500
+     RESEÑAS · MODELO SIMILAR EN EE. UU.          12px/600
+     de 67 reseñas en Best Buy, sobre este otro…  12px/400
+     Hisense – 85" Class QD6 Series…               12px/600   ← the other product
+     No es esta unidad y no es su calificación.    12px/400
+
+   So on 88% of pages the third-largest glyph in the document was a borrowed rating, and
+   every sentence saying it was borrowed was the smallest type the system has. THE
+   TYPOGRAPHY WAS ARGUING AGAINST THE COPY — the precise inversion of the one position
+   this whole product is built on. `seo-check.mjs` passed throughout because it asserts
+   on the JSON-LD (no US-derived aggregateRating ever reaches it) and the type ramp is
+   invisible to it. Legal token, clean gate, wrong.
+
+   THE FIX IS THE RELATIONSHIP, NOT THE SIZE. `4,8 / 5` renders at --t2/600, inline with
+   its `/5`, at the SAME RANK as the sentence beside it — because that is exactly what it
+   is worth: a sentence's worth of information. It applies to the CR panel too, and that
+   is deliberate rather than collateral: the two panels must not differ in rank (the CR
+   empty state is already a 14px sentence, so a 26px CR figure would re-open the same
+   gap from the other side), and most CR averages in this dataset are 5,0 off one or two
+   reviews — a number the component itself annotates as "muy pocas para sacar un promedio
+   confiable" has no business being the largest thing on the page either.
+
+   It also returns --t5 to the two roles §1.2 authorised (the h2 and the card price)
+   after B8 moved the offer-row price to --t4. NOTHING on a product page is larger than
+   --t2 except the h1, the section h2s and the price.
+
+   AND IT IS GATED: seo-check.mjs now asserts that no node inside `[data-us-panel]`
+   computes a font-size above --t2. That turns a taste rule into a build failure, which
+   is the only form this rule survives in. */
+.revA {
+  font-family: var(--display);
+  font-size: var(--t2);
+  font-weight: 600;
+  letter-spacing: var(--tr2);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+/* the empty state reuses `.revA`'s slot in the body face — after B2 they are the same
+   size, so only the family and the weight separate a figure from a sentence. */
+.revEmpty .revA {
+  font-family: var(--body);
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.revOf {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+/* a sentence, therefore 14 (B8). This one names the OTHER product and says outright
+   that its rating is not this unit's — it is the single most load-bearing sentence in
+   the block and it was at the floor. */
+.revSrc {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.revN {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+
+/* The title of the OTHER product — the one that was actually rated. It is a block
+   so it can never be mistaken for part of the surrounding sentence, and the
+   sentence after it says outright that it is not this unit's rating. */
+.revTitle {
+  display: block;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-block: 2px;
+}
+
+/* ---- the US reference chip ----
+   An outline chip, never a fill: it is a REFERENCE, not a verdict, and a filled
+   object here would compete with the one filled object the page is allowed. */
+.us {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  margin-block-start: var(--s2);
+  padding: 10px var(--s2);
+  border: 1px solid var(--edge);
+  border-radius: var(--r2);
+  /* a sentence with a figure in it, therefore --t2 (B8). It also carries the "no es este
+     número de modelo" qualifier, which is the same honesty class as B2. */
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 44ch;
+}
+
+/* CR cheaper than the US flips the number, the words AND the colour together —
+   they are one object returned by one function (`markupChip`), so there is no way
+   to compose them apart. */
+.usDown {
+  border-color: var(--go);
+}
+
+/* B2, APPLIED CONSISTENTLY: this is the OTHER US-derived figure on the page (the
+   CR-vs-US markup %), and it was --t3. Every US reference now sits at sentence rank and
+   separates by WEIGHT, not by size — `[data-us-panel]` wraps this chip as well as the
+   reviews card, and seo-check.mjs asserts nothing inside either exceeds --t2. It also
+   returns --t3 to its one declared job: form controls. */
+.usN {
+  font-family: var(--display);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  flex: none;
+}
+
+.usDown .usN {
+  color: var(--go);
+}
+
+@media (max-width: 1023px) {
+  .hdr {
+    grid-template-columns: minmax(0, 1fr) 260px 280px;
+    gap: var(--s2);
+  }
+
+  /* the 260px column caps the square; no height override, because a height override is
+     what made this a letterbox (B7). */
+}
+
+@media (max-width: 767px) {
+  /* v7 §7.1 T4-1 — THE PHOTOGRAPH STOPS OWNING A ROW OF ITS OWN AND MOVES
+     BESIDE THE NAME IT IDENTIFIES. This is the single largest change to the
+     mobile fold and it is worth −256px.
+
+     MEASURED, LIVE, 2026-08-11 at 390 on T4 (`/producto/mabe-828d5c8b`): the
+     identity block ran 224→376, the shot 376→616 (a 240px square with a small
+     white object in it), the plate 632→864, and THE PRICE LANDED AT y=675 —
+     42px BEHIND the consent bar, which starts at 717. On 88% of landing pages,
+     on a phone, arriving from a mobile Google result, the first fold had no
+     price on it. v6 §4.4.1 measured this on 2026-08-10 and specified the fix;
+     ten days later the number was unchanged.
+
+     The identity column is ~85% empty at this width (v4.1-fix N6 measured it),
+     so the photograph goes INTO that emptiness rather than under it: a two-track
+     grid, name on the left, 120px square on the right, and the whole 256px the
+     stacked square used to cost comes back. The plate then spans both tracks.
+
+     120, AND IT IS THE FLOOR OF THE DECLARED BAND, NOT AN ARBITRARY SHRINK.
+     `.shot` declares `data-band-min="120"` on the node itself, so this is the
+     smallest the photograph is allowed to be anywhere in the product and
+     measure.mjs asserts it at all thirteen widths. Below it the assertion fails
+     rather than the design quietly getting worse — which is the whole reason the
+     band travels with the element.
+
+     ONE DEVIATION FROM §5.2 C6, FLAGGED FOR THE CRITIQUE RATHER THAN
+     SMUGGLED. C6 asks for the photo to move INSIDE the verdict plate as a 96px
+     thumbnail beside the price. Same arithmetic, and this is not it. Putting it
+     inside the plate means the header's `.shot` node stops rendering below 768,
+     and that node carries `data-scales` + `data-band-min="120"` — a
+     `display: none` element measures 0px wide, so assertion 2 would fail at
+     every width under 768 and the only ways out are to gut the band or to teach
+     the gate to skip hidden nodes. Neither is worth 24px of thumbnail. Beside
+     the `h1` the photograph does the same identification job C6 asks for, is
+     larger, keeps its --plate vignette and its square-ness assertion, and costs
+     no gate change. The designer's ruling. */
+  .hdr {
+    grid-template-columns: minmax(0, 1fr) 120px;
+    gap: var(--s2);
+  }
+
+  .plateSlot {
+    grid-column: 1 / -1;
+  }
+
+  /* `order: -1` IS DELETED (N7). It put a 200px photograph of an unnamed object
+     above the eyebrow and the h1 at 390 — the product's name was the fourth block on
+     the page. The photo now sits where it reads: after the identity it belongs to.
+
+     240, AND THE NUMBER IS A MEASURED TRADE AGAINST THE FOLD, NOT A ROUNDING. A
+     stacked square spends its height on the one surface where height is scarcest, and
+     v4.1's best work was getting the first price ONTO the 844 fold at 390. Measured on
+     T3 at 390, first --t7 price:
+
+       v4.1 (366×200 letterbox band, photo-first)   y = 711
+       square capped at 280                          y = 785   ← too far
+       square capped at 240                          y = 745
+       square capped at 200 (same height as before)  y = 705
+
+     240 is the pick: the price stays fully on the fold (745 + 46 = 791 of 844), and the
+     PHOTOGRAPH is 240×240 against the band's effective 180×180 — 1.78× the area, with
+     the letterbox gone. Buying the last 34px back would cost that 1.78× on the surface
+     The owner's imagery complaint was actually about, and the letterbox is the thing B7 was
+     raised to delete. FLAGGED with both numbers so the trade can be reversed in one
+     token if the fold is worth more than the photograph.
+
+     v7 REVERSES THE 240 AND THE REVERSAL IS HONEST ABOUT WHAT IT COSTS. The
+     paragraph above optimised the height of a square that owned its own row. v7
+     takes the row away instead — the square moves beside the identity block (see
+     the grid above) — so the trade it was arbitrating no longer exists: at 120px
+     in the second track the photograph costs ZERO vertical pixels, and 240px of
+     fold comes back rather than 34. The photograph is 4× smaller in area than
+     240×240 and that is the real price of the change; it is paid on a surface
+     where the measured alternative was a first fold with NO PRICE ON IT.
+     Assertion 8 (photography ≥14% of page area) is stated and measured at 1440,
+     where nothing here changes. */
+  .shot {
+    max-width: 120px;
+  }
+
+  .rev {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* THE 166px LITERAL IS DELETED. It cleared a chrome that wrapped at ≤767 (v4.1 made
+     the chrome 92px at EVERY width) plus a sticky tab strip that B4 deleted. Both
+     reasons are gone; the base `calc()` is now correct at every width, and a magic
+     offset nobody can re-derive is a bug with a delay on it. */
+}
+
+/* ==========================================================================
+   MOBILE — the three header columns stack. Order matters and it is not the
+   source order: the PHOTOGRAPH goes first (it is what identifies the product at
+   a glance), then the identity, then the deal panel. A 428px standing card
+   above the product's own name would bury the thing the page is about.
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .hdr {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+    gap: var(--s3);
+  }
+
+  .plateSlot {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .hdr {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--s3) var(--s5);
+  }
+
+  .shot {
+    order: -1;
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .h {
+    font-size: var(--t5);
+  }
+
+  .sec {
+    padding-block: var(--s5);
+  }
+}

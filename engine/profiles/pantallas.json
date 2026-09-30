@@ -1,0 +1,250 @@
+{
+  "id": "pantallas",
+  "label": "Pantallas y TV",
+  "sources": {
+    "norte": {
+      "category_dir": "pantallas",
+      "trusted_category": true
+    },
+    "sur": {
+      "category_dir": "pantallas"
+    }
+  },
+  "filter": {
+    "include": [
+      "\\b(PANTALLA|TELEVISOR|TELEVISION|SMART TV|\\bTV\\b)\\b"
+    ],
+    "exclude": [
+      "\\b(SOPORTE|RACK|MUEBLE|CONTROL|ANTENA|CABLE|ADAPTADOR|PROTECTOR|BASE PARA|REPRODUCTOR|STREAMING|STICK|BARRA DE SONIDO|SPLITTER|SWITCH|LIMPIADOR)\\b"
+    ],
+    "price_floor_crc": 60000,
+    "price_ceiling_crc": 9000000
+  },
+  "brands": [
+    "SAMSUNG",
+    "SONY",
+    "HISENSE",
+    "PHILIPS",
+    "PANASONIC",
+    "WESTINGHOUSE",
+    "SANKEY",
+    "MASTERTECH",
+    "DURABRAND",
+    "XIAOMI",
+    "HYUNDAI",
+    "CAIXUN",
+    "AIWA",
+    "SKYWORTH",
+    "CHALLENGER",
+    "TCL",
+    "RCA",
+    "JVC",
+    "LG",
+    "KODAK",
+    "SYLVOX",
+    "KENWOOD",
+    "HOTLINE",
+    "CHIQ",
+    "AITV",
+    "JTC",
+    "COBY"
+  ],
+  "attributes": [
+    {
+      "key": "screen_in",
+      "label": "Pulgadas",
+      "unit": "\"",
+      "facet": "range",
+      "display": "{value} pulgadas",
+      "extract": {
+        "kind": "number",
+        "round": 0,
+        "rules": [
+          {
+            "pattern": "(\\d{2,3})\\s*(?:PULGADAS|PULG\\.?|\\bIN\\b|\")",
+            "min_raw": 19,
+            "max_raw": 120
+          },
+          {
+            "pattern": "\\b(\\d{2,3})\\s*(?:UHD|QLED|OLED|LED|FHD|HD)\\b",
+            "min_raw": 19,
+            "max_raw": 120
+          }
+        ]
+      }
+    },
+    {
+      "key": "panel",
+      "label": "Panel",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "OLED": "OLED",
+        "QNED": "QNED",
+        "NANOCELL": "NanoCell",
+        "QLED": "QLED",
+        "LED": "LED",
+        "LCD": "LCD"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "OLED",
+            "patterns": [
+              "\\bOLED\\b"
+            ]
+          },
+          {
+            "value": "QNED",
+            "patterns": [
+              "\\bQNED\\b"
+            ]
+          },
+          {
+            "value": "NANOCELL",
+            "patterns": [
+              "NANOCELL",
+              "NANO CELL"
+            ]
+          },
+          {
+            "value": "QLED",
+            "patterns": [
+              "\\bQLED\\b"
+            ]
+          },
+          {
+            "value": "LED",
+            "patterns": [
+              "\\bLED\\b"
+            ]
+          },
+          {
+            "value": "LCD",
+            "patterns": [
+              "\\bLCD\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "resolution",
+      "label": "Resolución",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "8K": "8K",
+        "4K": "4K",
+        "FHD": "Full HD",
+        "HD": "HD"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "8K",
+            "patterns": [
+              "\\b8K\\b"
+            ]
+          },
+          {
+            "value": "4K",
+            "patterns": [
+              "\\b4K\\b",
+              "\\bUHD\\b",
+              "ULTRA HD"
+            ]
+          },
+          {
+            "value": "FHD",
+            "patterns": [
+              "\\bFHD\\b",
+              "FULL HD",
+              "1080P"
+            ]
+          },
+          {
+            "value": "HD",
+            "patterns": [
+              "\\bHD\\b",
+              "720P"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "smart_os",
+      "label": "Sistema",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "ROKU": "Roku",
+        "GOOGLE_TV": "Google TV",
+        "ANDROID_TV": "Android TV",
+        "WEBOS": "webOS",
+        "TIZEN": "Tizen",
+        "VIDAA": "VIDAA",
+        "FIRE_TV": "Fire TV"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "ROKU",
+            "patterns": [
+              "\\bROKU\\b"
+            ]
+          },
+          {
+            "value": "GOOGLE_TV",
+            "patterns": [
+              "GOOGLE TV"
+            ]
+          },
+          {
+            "value": "ANDROID_TV",
+            "patterns": [
+              "ANDROID TV",
+              "\\bANDROID\\b"
+            ]
+          },
+          {
+            "value": "WEBOS",
+            "patterns": [
+              "\\bWEBOS\\b",
+              "WEB OS"
+            ]
+          },
+          {
+            "value": "TIZEN",
+            "patterns": [
+              "\\bTIZEN\\b"
+            ]
+          },
+          {
+            "value": "VIDAA",
+            "patterns": [
+              "\\bVIDAA\\b"
+            ]
+          },
+          {
+            "value": "FIRE_TV",
+            "patterns": [
+              "FIRE TV"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "fingerprint": [
+    "brand",
+    "screen_in",
+    "panel",
+    "resolution"
+  ],
+  "card_title": "{brand} {panel} {screen_in}"
+}

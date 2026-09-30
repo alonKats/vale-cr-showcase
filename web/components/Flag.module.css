@@ -1,0 +1,59 @@
+/* THE `MÁS BARATO EN` RIBBON — v4.1 §10. IT LOST ITS FILL AND KEPT ITS FACT.
+
+   This is the one card change in the correction that makes the page QUIETER than the
+   first pass, and it came out of the aesthetic read rather than the measurements.
+
+   The ribbon fires on 100% of the cards that qualify, in the same position, at the
+   same size. At browse scale four identical mint plates across a row stop reading as
+   a claim and start reading as a decorative header stripe — the "three identical
+   cards" tell, and it is true even though every individual badge states a fact. A
+   SIGNAL THAT FIRES EVERY TIME CARRIES NO INFORMATION AT THE LEVEL YOU ARE SCANNING.
+   zap has exactly this problem and solves it by not having the badge at all; their
+   ranking IS the signal.
+
+   Deleting it is wrong — the chain name is the most actionable string on the card, it
+   says where to go. So: NO FILL, --go as ink (6.69 on --card, 5.93 on --ground, both
+   already asserted), plus a 4px --go caret. One filled object per card instead of
+   two, and the one that survives is the amber gap chip — the number that explains
+   why the card is on the page. That makes the fill the hierarchy.
+
+   The mint fill is NOT deleted. --go-fill / --go-ink moved to their honest home: the
+   T3 `best` slot's ribbon (VerdictPlate.module.css), where there is exactly one on
+   the page and a visible field of N offers it has won. "Cheapest" as a FILL means
+   "cheapest among the alternatives you can see" — on T3 you can see them, on a
+   browse tile you cannot, so a fill there overstates what the tile supports.
+
+   `#B9EBD2 on #E1E9EE` (1.08) is a NEW BANNED PAIR: the mint must never be laid over
+   the photo plate's --fill edge instead of on the card. */
+.flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--go);
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  max-width: 100%;
+  /* IT WRAPS, IT DOES NOT TRUNCATE. `nowrap` + ellipsis rendered
+     "MÁS BARATO EN UNIM…" on a 175px card at 390 — an ellipsis eating the one piece of
+     information the ribbon exists to carry. Without the fill and its 6px/8px padding
+     the string now has 16px more room at 179px of card, so the two-line case is rare
+     rather than routine (§6.4) — but the wrap stays allowed, because the fix to a
+     tight string is never a truncated chain name. */
+  text-wrap: balance;
+}
+
+/* THE CARET. A pure CSS triangle: three border declarations, no SVG, no asset, no
+   component. It carries the "hangs off the cheapest thing" gesture the mint plate
+   used to carry — zap hangs their ribbon off the leading edge of the cheapest offer
+   row — so the ribbon still reads as pointing AT something rather than as a stray
+   green line. aria-hidden at the call site: the sentence beside it already says it. */
+.caret {
+  flex: none;
+  width: 0;
+  height: 0;
+  border-inline: 3px solid transparent;
+  border-block-start: 4px solid var(--go);
+}

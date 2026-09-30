@@ -1,0 +1,348 @@
+/* THE PRIMITIVES — the few things that genuinely appear inside more than one
+   block, declared once, outside every block. Everything else is block-local. A
+   leaf name is never shared across two modules: a `.store` that silently
+   restyled a caliper and a page-level `.foot` that injected 64px into every
+   retailer row are the two bugs this file exists to make impossible.
+
+   v4 rewrites this file. What went: `.btnOnMonte*` (the dark family is the
+   chrome now, not a rare object), the 15px button size (not on the v4 scale),
+   the 17px saving figure (ditto). What arrived: the pill radius, `--edge` on
+   every control, and the `data-scales` / `data-pct` gate hooks on the keyline. */
+
+/* ---------- buttons: EXACTLY TWO RECIPES, AND THE TALLEST FILLED ONE COSTS MONEY ----
+   v4.1-FIX B6. Measured before the fix, T3 + T4 at 1440 — ONE action, THREE
+   treatments, and the hierarchy inverted twice over:
+
+     Ver en Monge › (T3 best plate)   leave for the store   308×36  white fill
+     Ver en Monge  ×3 (T3 offer rows) leave for the store   176×36  OUTLINE
+     Ver en Monge › (T4 only plate)   leave for the store   306×36  solid --ink
+     Ver detalle   ×4 (cards)         navigate in-app       294×40  SOLID --ink
+     Comparar / Compartir             utility               102×36  outline
+
+   THE WEAKEST ACTION WAS THE LOUDEST AND TALLEST: `Ver detalle`, an internal
+   navigation with no consequence on a card that is already entirely a link, was 40px
+   and solid dark, while every outbound click — the only action with a real-world
+   consequence — was 36px. And on the page whose whole job is "which chain", the three
+   chain buttons in the offer table were OUTLINE, the quietest control class in the
+   system, under four solid dark `Ver detalle` cards. Outline meant both "compare these
+   products" and "go buy at Monge": same shape, same border token, same height,
+   opposite consequences.
+
+   SO THERE ARE TWO RECIPES AND THERE IS NO THIRD:
+
+     PRIMARY / OUTBOUND   40px, FILLED, --r-pill, 14/600.  --ink on a light surface,
+                          inverted to --card on an --ink plate — the SURFACE decides
+                          the polarity, which is not a third recipe. Used by every
+                          `Ver en <cadena> ›` without exception, and by an in-app
+                          primary that owns its region (the tray, an empty state).
+     SECONDARY            36px, OUTLINE, 1px --edge, --card fill.  `Ver detalle`,
+                          `Comparar`, `Compartir`.
+
+   `.btnQuiet` and `.btnText` ARE DELETED — both were unreferenced in the whole app,
+   which is how a "three variants and nothing else" rule quietly became five. Anything
+   clickable still uses --edge for its boundary (3.75 card / 3.33 ground — SC 1.4.11
+   asks 3:1 of "the visual information required to identify a UI component"); --line /
+   --line-2 are decorative only and may not bound a control, which is a banned pair in
+   pairs-v4.json rather than a convention.
+
+   `.chip` below is NOT a button and is deliberately outside this rule — see its own
+   header. measure.mjs enumerates the allowed control recipes and fails on any
+   combination of (height × background × border) that is not one of them. */
+.btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 var(--s2);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background-color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.btn:hover {
+  background: var(--fill);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* THE PRIMARY RECIPE — 40px AND FILLED (B6). The height is the load-bearing part:
+   40 vs 36 is what makes the outbound click the tallest control on any surface, and
+   it is why `Ver detalle` gave the 40px slot back.
+
+   v4's "exactly one --ink-filled object per page" budget is superseded and it is worth
+   naming rather than quietly breaking: that budget was written when the dark family
+   was rare. In v4 the dark family IS the chrome, so the fill is no longer a verdict —
+   it is a control class. The VERDICT budget still holds where a verdict exists: one
+   plate per product page, and the plate's own CTA inverts to --card rather than adding
+   a second dark object inside a dark box. */
+.btnSolid {
+  height: 40px;
+  background: var(--ink);
+  color: var(--card);
+  border-color: var(--ink);
+}
+
+.btnSolid:hover {
+  background: var(--ink-hi);
+  border-color: var(--ink-hi);
+}
+
+/* ---------- chips: A THIRD CONTROL CLASS, DELIBERATELY, AND NOT A THIRD BUTTON ----
+   Pill radius, rest on --fill, hover --card + --edge, pressed an --ink fill.
+   12px with the count in tabular numerals beside it — that is zap's facet chip,
+   minus their `?` icon, which FacetBar owns as a real popover rather than a title
+   attribute.
+
+   B6's critique listed facet chips under the 36px outline class. THIS ONE IS NOT
+   TAKEN, and the reason is that a chip is not doing a button's job: a facet chip is a
+   TOGGLE whose rest state must read as "off" (a --fill rest with no boundary) and
+   whose pressed state is an --ink fill. Give it a 36px --edge outline and the rest
+   state becomes indistinguishable from `Comparar`, which is the exact confusion B6
+   exists to remove. Its 32px height, its --fill rest and its `[aria-pressed]` fill are
+   declared here as the chip recipe, and measure.mjs enumerates it as such rather than
+   pretending it is a button. Flagged in the build report, not decided silently.
+
+   THE TRANSPARENT BORDER BELOW IS A RESERVED SLOT THAT REAL STATES FILL — hover
+   sets --edge and `[aria-pressed='true']` / `[data-on='true']` set --ink. That is the
+   difference between this and B4's tab keyline, which reserved 2px of rgba(0,0,0,0)
+   that no state on any product page ever filled. measure.mjs now asserts exactly
+   that: a reserved keyline on an interactive element must be filled by at least one
+   NON-HOVER state, because hover is not a state a touch device or a page at rest can
+   be in. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: var(--fill);
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+  flex: none;
+  text-decoration: none;
+  transition: background-color var(--fast) var(--ease), color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.chip:hover {
+  background: var(--card);
+  border-color: var(--edge);
+  color: var(--ink);
+}
+
+.chip[aria-pressed='true'],
+.chip[data-on='true'] {
+  background: var(--ink);
+  color: var(--card);
+  border-color: var(--ink);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.chipN {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  /* DE-EMPHASISED BY WEIGHT, NOT BY OPACITY. `opacity: 0.68` was here and it
+     was a WCAG AA failure axe reported as `color-contrast, serious` on the live
+     site: --ink-2 at 0.68 over --fill composites to #808f91, which is 3.14:1
+     against the 4.5:1 the count needs. Measured, not estimated.
+
+     Opacity is the trap. It looks like a styling choice and it is arithmetic on
+     the rendered pixel, so a token that PASSES its contrast test on its own can
+     still ship failing — which is exactly why verify:contrast, which reads token
+     PAIRS, never caught this. 0.85 is the first step that passes and it lands on
+     4.51:1, close enough to the line that any future token nudge reopens the bug.
+
+     `color: inherit` is load-bearing and stays: a pressed chip is --ink ground
+     with --card text, and hardcoding a grey here would break that state. Weight
+     does the same de-emphasis job at full contrast, in BOTH states. */
+  font-weight: 400;
+}
+
+/* ---------- THE SAVING, TYPOGRAPHIC — AND THE KEYLINE IS DELETED (v4.1-FIX N1) ----
+   No fill, no box, no badge. In v2 a filtered results view turned into 19
+   identical red badges and the badge's whole scarcity argument collapsed the
+   moment a user did the obvious thing.
+
+   `.savingTrack` / `.savingBar` — THE PROPORTIONAL AMBER KEYLINE — ARE GONE, and
+   this is a deliberate reversal of a v4.1 decision rather than a tidy-up. The keyline
+   restated in a bar the percentage already printed as text 8px above it, and the
+   redundancy that "earned it the space" is exactly what made it the object with no
+   job. Measured on the T3 390 fold, the verdict plate carried FIVE distinct treatments
+   in 245px: mint plate, white 44px price, grey kicker, amber figure, amber bar, white
+   pill. Five objects → four. Amber's five declared places → three.
+
+   That also deletes amber's only non-money use here, which is the other half of N1:
+   AMBER NOW MEANS ONE THING PRODUCT-WIDE — money you keep. The freshness dots
+   (PriceHistory) moved to --deep for the same reason; "days of data we hold" is not
+   money, and on 88% of pages the freshness dots were the ONLY amber on the page.
+
+   `display: block` is LOAD-BEARING on the two survivors, not tidiness. They are
+   <span>s, and an inline box ignores `height`. */
+.saving {
+  display: block;
+  min-width: 0;
+}
+
+.savingK {
+  display: block;
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.3;
+}
+
+.savingN {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t4);
+  font-weight: 600;
+  letter-spacing: var(--tr4);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.savingPct {
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 500;
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+}
+
+/* THE DARK SURFACE — the T3 `best` slot, and the ONE PLACE AMBER IS TEXT.
+   --loud on --ink is 8.67:1, which makes the loudest object in the product also
+   the most legible one. Amber on --deep measures 4.68 and is BANNED by grep
+   rather than by the contrast gate, because 0.18 of margin on this object is not
+   a margin; there is no rule below that puts amber on --deep.
+
+   One component, two tones, and after N1 no bar at all — the figure IS the object. */
+.savingDark .savingK {
+  color: var(--on-deep-2);
+}
+
+.savingDark .savingN {
+  color: var(--loud);
+}
+
+.savingDark .savingPct {
+  color: var(--on-deep-2);
+}
+
+@media (max-width: 767px) {
+  .savingN {
+    font-size: var(--t3);
+    letter-spacing: var(--tr3);
+  }
+}
+
+/* ---------- the multiply guard, as two classes ----------
+   `mix-blend-mode` used to be declared on `.pic img` in eight separate
+   stylesheets, which meant the guard would have had to be added in eight places
+   and forgotten in one. It lives here instead and `Thumb` picks one of the two.
+   No block declares mix-blend-mode any more. */
+.blend {
+  mix-blend-mode: multiply;
+}
+
+/* The photo's own background is not near-white, so multiplying it onto the tint
+   would produce mud. Render it flat on --card instead: a white pad inside the
+   plate, which is a designed answer rather than a defect. */
+.flat {
+  mix-blend-mode: normal;
+  background: var(--card);
+}
+
+/* The brand-initial tile: a designed state for a product whose chain publishes
+   no photograph, never an empty box. Image coverage is 2.170/2.170 today, so
+   nothing renders this right now — it stays because a new retailer or a failed
+   asset fetch lands here. */
+.mono {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--t4);
+  letter-spacing: var(--tr4);
+  color: var(--ink-3);
+  background: var(--fill);
+}
+
+.num {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* "desde" on a folded colour-variant price. Quiet, but never absent: the whole
+   point is that the figure beside it is a floor, not the price. */
+.desde {
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: var(--t1);
+  color: var(--ink-3);
+  letter-spacing: var(--tr1);
+}
+
+/* "EE. UU." carries a non-breaking space inside and this class outside, so the
+   abbreviation cannot split across lines at any width. */
+.nb {
+  white-space: nowrap;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Skeleton: same geometry as the real thing so nothing reflows when data lands,
+   and a slow opacity breath rather than a shimmer sweep — a gradient travelling
+   across the screen is decoration doing no job. Collapses with the motion tokens
+   under prefers-reduced-motion, handled once in tokens.css. */
+.skel {
+  background: var(--line);
+  border-radius: var(--r1);
+  animation: breathe var(--breath) var(--ease) infinite alternate;
+}
+
+.skelLine {
+  height: 12px;
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.45;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

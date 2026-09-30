@@ -1,0 +1,11 @@
+# The engine is stdlib: sqlite3, urllib, re, json and hashlib do the work.
+# Python 3.10+ (PEP-604 unions).
+#
+# certifi is optional. python.org macOS builds ship without a wired CA bundle
+# and at least one retailer host needs a root the system bundle lacks;
+# fetcher.py prefers certifi and falls back to the system store. Verification
+# is never relaxed to work around a missing root.
+#
+#   python3 -m pip install -r requirements.txt
+
+certifi>=2024.2.2

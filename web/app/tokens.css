@@ -1,0 +1,412 @@
+/* ==========================================================================
+   VALE.CR — TOKENS v8  ("Transparencia Pura")
+
+   REPLACES v4.1/v7 ("Petróleo · Tinta · Azul · Ámbar") WHOLESALE, from the owner's
+   2026-08-31 redesign: DESIGN.md (the style guide) plus five Figma nodes in
+   file sZBPkeh3unsaLeSqsCDmzN —
+
+     6:4     the home page          17:4    the product page
+     18:4    the category page      21:326  the two filter panels
+     16:940  the hero product-cluster photograph (a raster asset, not a screen)
+
+   ---- WHAT v8 REVERSES, DELIBERATELY -------------------------------------
+   v4/v7 argued at length for things this design overrules. Those arguments are
+   deleted rather than left standing next to code that contradicts them:
+
+     · THE CHROME IS LIGHT. v4's two-tier dark bar (--deep over --ink, 92px at
+       every width) is gone. The new chrome is white: a 74px bar (wordmark ·
+       pill search · account actions) over a 52px white category strip whose
+       active item carries a 20×2 amber underline.
+     · THE HOME PAGE HAS A HERO. v4's HomeScreen header says "WHAT T1 MUST NEVER
+       GROW: a headline, a subhead, two buttons, three feature cards." The new
+       home page opens on exactly that — a 42/52px headline, a body paragraph,
+       three trust badges and a photograph. That posture call is reversed by the
+       person who made it.
+     · DENSITY IS NOT THE PIVOT ANY MORE. v4.1's base was 14px on a 1360 shell
+       and its proof-of-pivot was that --s6/--s7 had been DELETED so a 64px
+       section gap could not be expressed. v8 restores them: the design's own
+       section rhythm is 48px padding with 64px between category blocks, and the
+       container is 1280 with an 80px page gutter.
+
+   ---- THE COLOUR CONTRACT --------------------------------------------------
+   Every other stylesheet is a CSS Module and may consume ONLY these variables:
+   no raw hex and no raw rgba() outside this file. That constraint is the only
+   thing that makes the contrast gate (scripts/contrast.mjs, wired as `prebuild`)
+   enforceable rather than a habit. Every ratio in a comment below is produced by
+   that gate against design/pairs-v8.json.
+
+   ---- THE FOUR COLOURS THE FIGMA COULD NOT SHIP AS DRAWN ----------------
+   The mockup is a picture; it is not required to pass a contrast gate, and four
+   of its text colours do not. Measured, not assumed:
+
+     #6B7C7E muted text      4.37 on white, 4.04 on --tint   → FAILS AA 4.5
+     #FEA619 amber text      1.97 on white, 1.87 on --hero   → FAILS even AA
+                                                                LARGE (3.0)
+     #10B981 green text      2.54 on white, 2.29 on --go-fill → FAILS AA
+     #00875A on #E3FCEF      4.21                             → FAILS AA
+
+   THREE OF THE FOUR ARE FIXED BY DARKENING ALONG THE SAME HUE — the smallest
+   change that clears 4.5 against the worst ground each colour actually sits on.
+   The hue is untouched, so the design reads identically; only the luminance
+   moves, and it moves by four to six percent.
+
+   THE FOURTH — AMBER — IS NOT A BUG IN THE FIGMA, IT IS A TOKEN MIX-UP, AND
+   DESIGN.md ALREADY SOLVES IT. The style guide ships TWO ambers and names them
+   in Material 3 terms:
+
+       secondary:           #855300   ← amber as TEXT
+       secondary-container: #FEA619   ← amber as FILL
+
+   The mockup used the FILL colour for text in five places (the hero headline,
+   the product-page eyebrow, "Limpiar filtros", the footer column headings, the
+   wordmark's `.cr`). Following the guide as written fixes all five and needs no
+   exception. The reading was confirmed in review, choosing #855300 for
+   the 52px hero headline over both a lighter compromise and a gate exemption.
+
+   SO AMBER IS TWO TOKENS HERE AND THEY ARE NOT INTERCHANGEABLE:
+     --loud       #FEA619  a FILL. Never text on a light ground. It is the CTA
+                           background, the nav underline, the swoosh, the
+                           max-price bar segment — and it IS text on the dark
+                           footer, where it measures 6.36.
+     --loud-ink   #855300  amber as TEXT on any light ground. 6.49 on --card.
+   The gate BANS #FEA619 as text on --card and on --hero, so the mix-up cannot
+   silently come back.
+   ========================================================================== */
+
+:root {
+  /* ---- surfaces ---------------------------------------------------------
+     Four grounds, one temperature. The design is a white-card system on an
+     almost-white page, with a cooler tint doing the work v4 gave to a dark bar:
+     it is the search field, the resting button, the freshness strip and every
+     icon chip, so "quiet interactive surface" has ONE colour across the site. */
+  --ground: #FAFCFC;  /* the page between sections */
+  --card: #FFFFFF;    /* every card, row, panel and table */
+  --hero: #F6FAFE;    /* the hero band only — cooler and bluer than --ground */
+  --tint: #EEF8F9;    /* search field · resting button · freshness bar · icon chip */
+  --fill: #F4F8F8;    /* utility: filter-panel grounds, zebra rows */
+  --well: #FCFDFD;    /* the grid card's photo well (18:145) — one step off
+                         --card, so the well reads as a well without a border */
+
+  /* ---- teal · the whole identity ----------------------------------------
+     --deep is the ONE colour that survived the v4 → v8 rewrite unchanged. It
+     was the header's tier-1 bar; it is now the price figure, every heading on
+     the product page, the filled CTA and the active state of every control. */
+  --deep: #02565F;    /* 8.40 on --card · 7.78 on --tint */
+  --deep-2: #013A40;  /* the footer, and only the footer */
+
+  /* ---- ink --------------------------------------------------------------- */
+  --ink: #111A1B;     /* 17.69 on --card — product titles, headings, prices in rows */
+  --ink-2: #4A5E60;   /* 6.86 on --card — the hero paragraph, secondary body */
+  --ink-3: #647375;   /* 4.94 on --card · 4.57 on --tint
+                         THE FIGMA SAYS #6B7C7E AND #6B7C7E FAILS (4.37/4.04).
+                         Darkened 6% along its own hue. This is the single
+                         most-used text colour in the design — brand eyebrows,
+                         "Mejor Precio", model codes, resting nav links, every
+                         caption — so shipping it at 4.37 would have put the
+                         failure on every template at once. */
+  --ink-hi: #0A1112;  /* pressed/hover ink */
+
+  /* ---- amber · TWO TOKENS, SEE THE HEADER -------------------------------- */
+  --loud: #FEA619;      /* FILL ONLY on light. 6.36 as text on --deep-2 */
+  --loud-ink: #855300;  /* 6.49 on --card · 6.19 on --hero — amber as TEXT */
+  --loud-soft: #FFD166; /* the swoosh gradient's midpoint. Decorative, never text */
+
+  /* ---- green · the savings grammar --------------------------------------
+     Two greens because they sit on two grounds, and both were darkened for the
+     same reason as --ink-3. #10B981 is DESIGN.md's `price-green` and measures
+     2.54 on white — it is a chart/fill colour that the mockup used as 11-13px
+     text in five places. */
+  --go: #0B7E58;      /* 5.07 on --card · 4.57 on --go-fill  (Figma #10B981, 2.54) */
+  --go-2: #008056;    /* 4.97 on --card · 4.60 on --go-fill-2 (Figma #00875A, 4.21) */
+  --go-fill: #E6F7F0; /* "Ahorrás …" panel · "EL MÁS BAJO" chip */
+  --go-fill-2: #E3FCEF; /* the home card's "MÁS BARATO EN …" badge */
+  --go-wash: #EAF8F2; /* the category card's "Ahorrá 15%" badge — the Figma's
+                         rgba(16,185,129,0.08) flattened onto --card, because a
+                         translucent fill cannot be gated (§the contrast gate
+                         reads hex, and an alpha fill has no single value) */
+
+  /* ---- lines ------------------------------------------------------------
+     Hairlines only. NONE of these is the boundary of a control on its own —
+     every bordered thing in this design also carries a text label or an icon,
+     so SC 1.4.11 is satisfied by the label and these stay decorative. --edge is
+     the one that IS load-bearing: it is the resting outline of the filter chip
+     and the pagination button, and it is asserted at 3.0. */
+  --line: #E8F2F3;    /* card and chip hairlines */
+  --line-2: #E1ECEF;  /* the product page's slightly warmer panel hairline */
+  --line-3: #E2E8F0;  /* the filter panels' own hairline (a cooler slate) */
+  --edge: #6E7F81;    /* 3.29 on --card — NON-TEXT, control boundaries */
+  --rule-on-deep: rgba(255, 255, 255, 0.16);  /* the footer's divider */
+
+  /* ---- SELECTED · the current category, the applied preset ---------------
+     Three values that only ever appear together, on the one object that says
+     "this is where you are": the scroller's active tile (6:100) and the price
+     panel's chosen preset (21:409). They are tokens rather than literals for
+     the reason the header states — a CSS Module may not carry raw rgba(), and
+     that constraint is what keeps the contrast gate enforceable. --sel-edge is
+     a 1px outline on a filled tile, not the sole boundary of a control (the
+     tile also carries a label and an icon), so 1.4.11 is met by the label. */
+  --sel: #EDF7FA;                      /* the tile's fill */
+  --sel-edge: rgba(2, 86, 95, 0.3);    /* its outline */
+  --sel-well: rgba(2, 86, 95, 0.12);   /* its icon well */
+  --sel-soft: rgba(2, 86, 95, 0.08);   /* the chosen price preset (21:409) */
+  /* the scroller's arrow floats ON the fade, so it is deliberately translucent:
+     opaque, it would read as a tile rather than as a control over one */
+  --glass: rgba(255, 255, 255, 0.8);
+
+  /* ---- text on dark ------------------------------------------------------ */
+  --on-deep: #FFFFFF;    /* 8.40 on --deep · 12.50 on --deep-2 */
+  --on-deep-2: #EEF8F9;  /* 11.56 on --deep-2 — the footer's body copy */
+
+  /* ---- the filter panels' own slate ramp --------------------------------
+     21:326 is drawn in a COOLER, greyer family than the rest of the site
+     (#1A202C / #4A5568 / #718096 / #E2E8F0) rather than the teal-tinted inks
+     above. That is a real difference and it is kept: the panels are overlays,
+     they float above the page on a 32px shadow, and the temperature shift is
+     part of what separates them from it. Only the muted step is corrected. */
+  --panel-ink: #1A202C;   /* 16.32 on --card */
+  --panel-ink-2: #4A5568; /* 7.53 on --card */
+  --panel-ink-3: #657286; /* 4.88 on --card · 4.56 on --fill
+                             Figma #718096 = 4.02/3.75. FAILS. */
+
+  /* ---- the ONE decorative gradient, and the two masks -------------------
+     v4 policed a hard count of four `gradient` declarations. That rule survives
+     v8 with a new census, because the reason for it survives: a decorative
+     gradient is the first thing that creeps.
+
+     #1 THE DOT FIELD. The hero and the footer each carry a fixed grid of dots
+     that Figma emitted as ~900 and ~960 individual <ellipse> nodes. They are
+     ONE background-image each. A 28px grid of 2px dots at 12% teal behind the
+     hero; a 24px grid of 2.5px dots at ~6% white behind the footer.
+     #2 THE SWOOSH under the hero headline — amber → transparent, 200×6.
+     #3 THE SCROLL MASK — mask-image only, never a background.
+     #4 THE RAIL FADE — the category scroller's right-hand 120px white fade,
+        which is what the arrow button sits on.
+     Nothing else. No shimmer, no glow, no mesh, no section fade. */
+  --dots-hero: radial-gradient(circle at 1px 1px,
+      rgba(2, 86, 95, 0.12) 1px, transparent 0);
+  --dots-hero-size: 28px 28px;
+  --dots-foot: radial-gradient(circle at 1.25px 1.25px,
+      rgba(255, 255, 255, 0.06) 1.25px, transparent 0);
+  --dots-foot-size: 24px 24px;
+  --swoosh: linear-gradient(to right,
+      var(--loud) 0%, var(--loud-soft) 50%, rgba(254, 166, 25, 0) 100%);
+  /* The `#000` below is NOT a colour and never paints: this value is consumed
+     only as `mask-image`, where the channel read is ALPHA and black means
+     "fully opaque". Swapping it for a palette token would change nothing
+     visually and would misdescribe what it is. */
+  --scroll-mask: linear-gradient(to right, #000 0, #000 calc(100% - 32px), transparent 100%);
+  --rail-fade: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
+
+  /* ---- type -------------------------------------------------------------
+     Unchanged from v4 in FAMILY and unchanged in role: Plus Jakarta Sans for
+     everything with words in it, Space Grotesk for everything with digits in
+     it. DESIGN.md restates that split and the design obeys it exactly — every
+     ₡ figure on all three screens is Space Grotesk Bold, and nothing else is. */
+  --display: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --body: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* ---- THE SCALE ---------------------------------------------------------
+     --t1..--t8 KEEP THE MEANINGS THEY HAD IN v4, AND THAT IS NOT NOSTALGIA.
+     They are consumed 180 times across roughly forty CSS Modules, and eleven of
+     the templates that read them — /brechas, /acerca, /metodologia, /buscar,
+     /categorias, /comercios, /contacto, /cookies, /privacidad, /terminos and the
+     doc pages — are NOT part of this redesign. Renumbering the ladder under them
+     would have shrunk the site's base text from 14px to 12 (79 declarations),
+     collapsed every 20px heading to 14 (26 declarations) and dropped two 26/34px
+     headings to 15/16 — silently, with tsc green and the contrast gate green,
+     because a font-size is not a colour and nothing measures it.
+
+     So the ladder is preserved and only its top four values move, each toward
+     the redesign and each by one step:
+
+       --t1  12  unchanged      --t5  26 → 24   the section title (6:117)
+       --t2  14  unchanged      --t6  34 → 36   the product title (17:65)
+       --t3  16  unchanged      --t7  44 → 42   hero line 1 (14:6)
+       --t4  20  unchanged      --t8  56 → 52   hero line 2 (14:8)
+
+     THE SIZES THE REDESIGN ADDS GET ROLE NAMES, NOT LADDER NUMBERS. Seven new
+     steps between the rungs would either renumber the ladder or leave it with
+     half-steps like --t2b, and both are how a scale stops being readable. A role
+     name also says WHERE it is allowed to appear, which a number cannot. */
+  --t1: 12px;
+  --t2: 14px;  /* THE BASE */
+  --t3: 16px;
+  --t4: 20px;
+  --t5: 24px;
+  --t6: 36px;
+  --t7: 42px;
+  --t8: 52px;
+
+  --t-cap: 11px;   /* badge caps · model codes · "MEJOR PRECIO" */
+  --t-row: 13px;   /* store rows · chips · buttons · breadcrumbs */
+  --t-lede: 15px;  /* the hero paragraph · the rail card's title */
+  --t-name: 18px;  /* a chain's name on the product page */
+  --t-fig: 22px;   /* the grid card's price */
+  --t-mark: 28px;  /* the wordmark */
+  --t-page: 32px;  /* a category page's h1 (18:101) */
+  --t-hero: 48px;  /* the deal panel's price — the largest figure in the product */
+
+  --tr1: 0.05em;    /* label-caps tracking, per DESIGN.md */
+  --tr2: 0;
+  --tr3: -0.01em;   /* data-display */
+  --tr4: -0.02em;   /* headline-lg */
+  /* --tr5..--tr7 are read 12 times by templates outside this redesign. They keep
+     their v4 values for the same reason the ladder does. */
+  --tr5: -0.02em;
+  --tr6: -0.025em;
+  --tr7: -0.03em;
+
+  /* ---- geometry ---------------------------------------------------------
+     1280 content inside an 80px gutter = the 1440 frame the three screens are
+     drawn at. v4's --shell was 1360 with a 20px pad; both move. */
+  --shell: 1280px;
+  --gutter: 80px;
+  --pad: 20px;
+
+  /* THE CHROME IS 126px: a 74px bar over a 52px category strip. v4's --chrome-h
+     was 92 and three magic offsets were collapsed into it; the same discipline
+     applies, so anything clearing the chrome reads this token. */
+  --chrome-h: 126px;
+
+  /* 8px baseline (DESIGN.md §Layout & Spacing). --s6/--s7 are BACK — see the
+     header: the design's section rhythm genuinely is 48 and 64, and v4.1's
+     deletion of them was a proof for a pivot this design reverses. */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s5: 40px;
+  --s6: 48px;
+  --s7: 64px;
+
+  /* Radii. The design is markedly rounder than v4 (whose --r2 was 8px and
+     whose cards were square-ish): the home product card is 24, the category
+     card 16, the deal panel 24, and every pill is fully round. */
+  --r1: 4px;
+  --r2: 6px;   /* filter-panel controls */
+  --r3: 8px;   /* buttons, pagination, small chips */
+  --r4: 12px;  /* image wells, the savings panel, the CTA */
+  --r5: 16px;  /* the category product card, store rows */
+  --r6: 20px;  /* the category scroller's tiles, the local card */
+  --r7: 24px;  /* the home product card, the deal panel */
+  --r-pill: 100px;
+
+  /* ---- elevation --------------------------------------------------------
+     DESIGN.md §Elevation: tonal layers and AMBIENT shadow, never a heavy one.
+     Every shadow in this design is teal-tinted rgba(2,86,95,…) and none exceeds
+     11% alpha. v4 allowed a box-shadow in exactly two places; v8 cannot hold
+     that line — the card system itself is shadowed — so the rule becomes a
+     PALETTE instead of a count: a shadow must be one of these five. */
+  --shadow-card: 0 6px 8px rgba(2, 86, 95, 0.05);   /* the home product card */
+  --shadow-tile: 0 4px 6px rgba(2, 86, 95, 0.05);   /* scroller + browsing tiles */
+  --shadow-flat: 0 4px 16px rgba(2, 86, 95, 0.03);  /* the category product card */
+  --shadow-panel: 0 12px 12px rgba(2, 86, 95, 0.05); /* the deal panel */
+  --shadow-pop: 0 16px 32px rgba(2, 86, 95, 0.11),
+                0 4px 6px rgba(0, 0, 0, 0.03);       /* the filter overlays */
+  --shadow-rail: 0 8px 18px rgba(2, 86, 95, 0.12);   /* the scroller's arrow */
+  --shadow-row: 0 4px 4px rgba(2, 86, 95, 0.02);     /* the cheapest chain row (17:113) */
+  --shadow-chip: 0 2px 3px rgba(2, 86, 95, 0.02);    /* a resting filter chip (18:111) */
+  --scrim: rgba(1, 58, 64, 0.42);
+
+  /* ---- motion ------------------------------------------------------------
+     DESIGN.md §Buttons: "All buttons feature a subtle scale-down effect (98%)
+     on click." That is the only motion the guide specifies, so --press is the
+     only new motion token. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 120ms;
+  --med: 200ms;
+  --slow: 260ms;
+  --press: 0.98;
+
+  /* ==========================================================================
+     CONTINUITY — the tokens the ELEVEN UNREDESIGNED TEMPLATES still read.
+
+     This redesign covers three screens. It does not cover /brechas, /acerca,
+     /metodologia, /buscar, /categorias, /comercios, /contacto, /cookies,
+     /privacidad, /terminos or the doc pages, and those pages consume tokens the
+     v4 palette declared. A `var(--act)` whose token no longer exists is INVALID
+     AT COMPUTED-VALUE TIME: the declaration is dropped and the property falls
+     back to inherited or initial. For `color` that means every link on eleven
+     templates silently renders as body ink — no error, no warning, tsc green,
+     contrast gate green, because the gate reads pairs and a missing token is
+     not a pair.
+
+     So each one is REPOINTED into the v8 palette rather than deleted. These are
+     not shims: they are the v8 answer to the question the old name asked, and
+     the eleven pages read them correctly today. They should be migrated to their
+     v8 names when those templates are redesigned — at which point this block
+     shrinks. It is a to-do with a deadline, not a compatibility layer.
+     ========================================================================== */
+
+  /* THE ACTION COLOUR. v4's was #0B57C8, a blue chosen to replace Bootstrap's
+     #0D6EFD after that measured 3.99 on the v4 ground and failed AA. v8 HAS NO
+     BLUE — the redesign's action colour is the teal, on every control in all
+     five frames — so the blue is not re-picked, it is retired into --deep. */
+  --act: var(--deep);              /* 8.40 on --card */
+  --act-strong: #003D44;           /* 11.99 on --card — DESIGN.md's own `primary` */
+  /* links on a dark surface. DESIGN.md's `inverse-primary`, and it is the value
+     the guide already nominates for exactly this job. */
+  --act-on-dark: #90D1DB;          /* 4.93 on --deep · 7.34 on --deep-2 */
+
+  /* amber's edge and ink under the v4 names */
+  --loud-edge: var(--loud-ink);
+  --on-loud: var(--ink);
+  --go-ink: var(--go);
+
+  /* THE PLATE — a radial vignette behind a product photograph. Still earning its
+     place: ~90% of the catalogue's shots are white goods photographed on white,
+     and a white refrigerator on a white card is invisible. Retuned to the v8
+     surfaces (--card → --well rather than v4's --card → --fill), so the travel
+     is gentler because the v8 card system already separates with a border. */
+  --plate: radial-gradient(ellipse 120% 100% at 50% 46%,
+      var(--card) 0%, var(--card) 44%, var(--well) 100%);
+
+  /* THE HATCH — one texture, one meaning: *ninguna cadena lo publica.* It is the
+     honesty vocabulary's second grammar and /metodologia and /brechas still
+     speak it. Repointed onto the v8 line colour. */
+  --unknown: #8A9EA7;
+  --unknown-on-deep: #3E6B75;
+  --hatch: repeating-linear-gradient(45deg, var(--unknown) 0 1px, var(--card) 1px 4px);
+  --hatch-deep: repeating-linear-gradient(45deg, var(--unknown-on-deep) 0 1px, var(--deep-2) 1px 4px);
+
+  /* the gap-band ramp. v4 encoded gap size in four ambers; the redesign encodes
+     it in one green chip, so the ramp collapses to a single neutral band that
+     the two remaining consumers render without claiming a magnitude. */
+  --band-fill: var(--fill);
+  --band-edge: var(--edge);
+  --band-ink: var(--ink);
+
+  --shadow-sheet: var(--shadow-pop);
+  --row-h-sm: 176px;
+  --row-1: 40px;
+  --breath: 1200ms;
+
+  /* ---- fixed metrics off the frames -------------------------------------- */
+  --card-media: 160px;  /* the product photo well, both card variants */
+  --row-h: 82px;        /* a store row on the product page */
+  --mark: 24px;
+}
+
+/* ==========================================================================
+   MOBILE — DESIGN.md §Layout & Spacing: "On mobile, the layout shifts to a
+   single-column fluid model with 16px side margins."
+
+   THE GUTTER IS OVERRIDDEN HERE AND NOWHERE ELSE. It is read by the chrome, the
+   hero, the scroller, the browsing grid, the footer and the page shell, so a
+   per-module override is six places to forget one. It also cannot live in a
+   module: `:root` is not a pure selector and CSS Modules reject it.
+   ========================================================================== */
+@media (max-width: 900px) {
+  :root {
+    --gutter: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fast: 0.01ms;
+    --med: 0.01ms;
+    --slow: 0.01ms;
+    --press: 1;
+  }
+}

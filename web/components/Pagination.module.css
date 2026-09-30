@@ -1,0 +1,113 @@
+/* PAGINATION — v8. Figma 18:365.
+
+   REAL `<a href>` PER PAGE, and that is architecture rather than styling: the
+   3.874-URL indexable build depends on every product being reachable from a
+   category page with JavaScript disabled. It is why this is not infinite
+   scroll and never will be. */
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  /* TOP ONLY. This used to carry the page's whole bottom gap, so a category with
+     a single page — where `Pagination` renders nothing at all — put its last row
+     of cards flush against the footer. Spacing that lives on an OPTIONAL element
+     is spacing the page loses whenever that element is absent, which is exactly
+     the case nobody looks at. The bottom gap belongs to the page and is on
+     `.pageEnd` in Page.module.css. */
+  padding-block: var(--s6) 0;
+}
+
+.numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* a page cell — 36px square, so the row is a rhythm rather than a set of
+   differently-sized boxes as the page numbers gain digits */
+.pg {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 36px;
+  padding-inline: 6px;
+  border: 0;
+  border-radius: var(--r3);
+  background: none;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pg:hover {
+  background: var(--tint);
+  color: var(--deep);
+}
+
+.here {
+  background: var(--deep);
+  color: var(--on-deep);
+  font-weight: 700;
+  cursor: default;
+}
+
+.here:hover {
+  background: var(--deep);
+  color: var(--on-deep);
+}
+
+.gap {
+  padding-inline: 4px;
+  color: var(--ink-3);
+  font-size: var(--t2);
+}
+
+/* the two arrows. `Anterior` rests as an outline and `Siguiente` as a filled
+   tint (18:367 / 18:379) — the asymmetry is the design's, and it is right:
+   forward is the direction a reader paging through a category is going. */
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r3);
+  color: var(--ink-3);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  background: none;
+  cursor: pointer;
+}
+
+.arrow:hover {
+  border-color: var(--deep);
+  color: var(--deep);
+}
+
+.next {
+  background: var(--tint);
+  border-color: var(--deep);
+  color: var(--deep);
+  font-weight: 700;
+}
+
+.arrow:active {
+  transform: scale(var(--press));
+}
+
+@media (max-width: 700px) {
+  .pager {
+    padding-block: var(--s5);
+    gap: var(--s1);
+  }
+}

@@ -1,0 +1,285 @@
+[
+  {
+    "fg": "#111A1B",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--ink on --card — product titles, section headings, prices in card rows"
+  },
+  {
+    "fg": "#4A5E60",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--ink-2 on --card — secondary body"
+  },
+  {
+    "fg": "#647375",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--ink-3 on --card — THE FIGMA'S #6B7C7E MEASURES 4.37 HERE AND FAILS. This is the most-used text colour in the design (brand eyebrows, 'Mejor Precio', model codes, captions), so the failure would have landed on every template at once."
+  },
+  {
+    "fg": "#02565F",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--deep on --card — every price figure and every product-page heading"
+  },
+  {
+    "fg": "#855300",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--loud-ink on --card — amber AS TEXT, per DESIGN.md's `secondary`"
+  },
+  {
+    "fg": "#0B7E58",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--go on --card — DESIGN.md's price-green #10B981 measures 2.54 here"
+  },
+  {
+    "fg": "#008056",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--go-2 on --card"
+  },
+  {
+    "fg": "#1A202C",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--panel-ink on --card — the filter panels' heading"
+  },
+  {
+    "fg": "#4A5568",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--panel-ink-2 on --card — the filter panels' body"
+  },
+  {
+    "fg": "#657286",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "what": "--panel-ink-3 on --card — the Figma's #718096 measures 4.02 and fails"
+  },
+  {
+    "fg": "#6E7F81",
+    "bg": "#FFFFFF",
+    "min": 3.0,
+    "what": "--edge on --card — NON-TEXT, SC 1.4.11: the resting outline of a filter chip and a pagination button"
+  },
+  {
+    "fg": "#111A1B",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--ink on --ground"
+  },
+  {
+    "fg": "#4A5E60",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--ink-2 on --ground"
+  },
+  {
+    "fg": "#647375",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--ink-3 on --ground"
+  },
+  {
+    "fg": "#02565F",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--deep on --ground"
+  },
+  {
+    "fg": "#855300",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--loud-ink on --ground"
+  },
+  {
+    "fg": "#0B7E58",
+    "bg": "#FAFCFC",
+    "min": 4.5,
+    "what": "--go on --ground"
+  },
+  {
+    "fg": "#6E7F81",
+    "bg": "#FAFCFC",
+    "min": 3.0,
+    "what": "--edge on --ground — NON-TEXT"
+  },
+  {
+    "fg": "#111A1B",
+    "bg": "#F6FAFE",
+    "min": 4.5,
+    "what": "--ink on --hero — the hero headline's first line"
+  },
+  {
+    "fg": "#4A5E60",
+    "bg": "#F6FAFE",
+    "min": 4.5,
+    "what": "--ink-2 on --hero — the hero paragraph"
+  },
+  {
+    "fg": "#855300",
+    "bg": "#F6FAFE",
+    "min": 4.5,
+    "what": "--loud-ink on --hero — THE 52px HERO HEADLINE. The owner's 2026-08-31 call: the Figma drew this in #FEA619 (1.87, failing even the 3.0 large-text allowance) and DESIGN.md's own `secondary` is the fix, not an exemption."
+  },
+  {
+    "fg": "#02565F",
+    "bg": "#F6FAFE",
+    "min": 4.5,
+    "what": "--deep on --hero"
+  },
+  {
+    "fg": "#111A1B",
+    "bg": "#F6FAFE",
+    "min": 4.5,
+    "what": "--ink on --hero — the trust-badge labels"
+  },
+  {
+    "fg": "#02565F",
+    "bg": "#EEF8F9",
+    "min": 4.5,
+    "what": "--deep on --tint — the freshness strip, the resting 'Ver detalle' button, the pagination 'Siguiente'"
+  },
+  {
+    "fg": "#111A1B",
+    "bg": "#EEF8F9",
+    "min": 4.5,
+    "what": "--ink on --tint"
+  },
+  {
+    "fg": "#647375",
+    "bg": "#EEF8F9",
+    "min": 4.5,
+    "what": "--ink-3 on --tint — the search field's placeholder. THE BINDING CONSTRAINT on --ink-3: 4.57, the tightest pass in the file."
+  },
+  {
+    "fg": "#855300",
+    "bg": "#EEF8F9",
+    "min": 4.5,
+    "what": "--loud-ink on --tint"
+  },
+  {
+    "fg": "#1A202C",
+    "bg": "#F4F8F8",
+    "min": 4.5,
+    "what": "--panel-ink on --fill"
+  },
+  {
+    "fg": "#4A5568",
+    "bg": "#F4F8F8",
+    "min": 4.5,
+    "what": "--panel-ink-2 on --fill — the price-preset pills"
+  },
+  {
+    "fg": "#657286",
+    "bg": "#F4F8F8",
+    "min": 4.5,
+    "what": "--panel-ink-3 on --fill — the brand-search placeholder"
+  },
+  {
+    "fg": "#0B7E58",
+    "bg": "#E6F7F0",
+    "min": 4.5,
+    "what": "--go on --go-fill — 'Ahorrás ₡115.200 · 45%' and the 'EL MÁS BAJO' chip"
+  },
+  {
+    "fg": "#008056",
+    "bg": "#E3FCEF",
+    "min": 4.5,
+    "what": "--go-2 on --go-fill-2 — the home card's 'MÁS BARATO EN …' badge. The Figma pair (#00875A on #E3FCEF) measures 4.21 and fails by a quarter-point."
+  },
+  {
+    "fg": "#0B7E58",
+    "bg": "#EAF8F2",
+    "min": 4.5,
+    "what": "--go on --go-wash — the category card's 'Ahorrá 15%'. The Figma fill is rgba(16,185,129,0.08); it is flattened onto --card here because the gate reads hex and an alpha fill has no single value to read."
+  },
+  {
+    "fg": "#FFFFFF",
+    "bg": "#02565F",
+    "min": 4.5,
+    "what": "--on-deep on --deep — the filled CTA, the active pagination page, the applied filter chip"
+  },
+  {
+    "fg": "#FFFFFF",
+    "bg": "#013A40",
+    "min": 4.5,
+    "what": "--on-deep on --deep-2 — the footer's links"
+  },
+  {
+    "fg": "#EEF8F9",
+    "bg": "#013A40",
+    "min": 4.5,
+    "what": "--on-deep-2 on --deep-2 — the footer's body copy and copyright"
+  },
+  {
+    "fg": "#FEA619",
+    "bg": "#013A40",
+    "min": 4.5,
+    "what": "--loud on --deep-2 — THE ONE PLACE #FEA619 IS LEGAL AS TEXT (6.36): the footer's column headings and the footer wordmark's `.cr`"
+  },
+  {
+    "fg": "#FFFFFF",
+    "bg": "#0B7E58",
+    "min": 4.5,
+    "what": "--on-deep on --go"
+  },
+  {
+    "fg": "#003D44",
+    "bg": "#FEA619",
+    "min": 4.5,
+    "what": "--act-strong on --loud — the product page's amber CTA (17:105). THE FIGMA PAINTS THIS LABEL --deep AND --deep MEASURES 4.27 HERE, which fails AA: the text is 16px bold, under the 18.66px threshold that would let it use the 3.0 large-text allowance. DESIGN.md's own `primary` is the same hue one step deeper and measures 6.10."
+  },
+  {
+    "fg": "#FEA619",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "banned": true,
+    "what": "🚫 BANNED — amber as text on a light card (1.97). This is the mix-up the Figma shipped in five places: --loud is a FILL token and --loud-ink (#855300) is the text one. Asserted inverted so it cannot quietly return."
+  },
+  {
+    "fg": "#FEA619",
+    "bg": "#F6FAFE",
+    "min": 3.0,
+    "banned": true,
+    "what": "🚫 BANNED — amber as text on the hero ground (1.87). Banned at the LARGE-text threshold on purpose: the only candidate for this pair was a 52px headline, and it fails even the allowance large text gets."
+  },
+  {
+    "fg": "#10B981",
+    "bg": "#FFFFFF",
+    "min": 4.5,
+    "banned": true,
+    "what": "🚫 BANNED — DESIGN.md's `price-green` as text on white (2.54). It is a chart and fill colour; --go is the text one."
+  },
+  {
+    "fg": "#6B7C7E",
+    "bg": "#EEF8F9",
+    "min": 4.5,
+    "banned": true,
+    "what": "🚫 BANNED — the Figma's muted grey on --tint (4.04). --ink-3 replaces it."
+  },
+  {
+    "fg": "#718096",
+    "bg": "#F4F8F8",
+    "min": 4.5,
+    "banned": true,
+    "what": "🚫 BANNED — the Figma's panel grey on the panel ground (3.75). --panel-ink-3 replaces it."
+  },
+  {
+    "fg": "#E8F2F3",
+    "bg": "#FFFFFF",
+    "min": 3.0,
+    "banned": true,
+    "what": "🚫 BANNED — --line is a 1.14 hairline and must NEVER be pressed into service as a control boundary. --edge exists for that. Recorded so a future 'just use the card border' does not silently drop a control below 1.4.11."
+  },
+  {
+    "fg": "#02565F",
+    "bg": "#FEA619",
+    "min": 4.5,
+    "banned": true,
+    "what": "🚫 BANNED — --deep as a label on the amber CTA (4.27). The pair the Figma drew; recorded inverted so 'just use --deep, it is the brand colour' cannot quietly reintroduce it."
+  }
+]

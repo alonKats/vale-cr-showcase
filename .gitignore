@@ -1,0 +1,27 @@
+# Engine — regenerable
+engine/cache/
+engine/__pycache__/
+engine/data.db
+engine/*.csv
+engine/metrics.json
+engine/review-queue.json
+engine/featured-audit.json
+# The pre-publish staging area. export.publish() renames it over the published
+# files only after assert_contract passes, so a staging dir left on disk is by
+# definition the residue of a run that FAILED.
+web/public/data/.staging-*/
+
+# Node
+node_modules/
+.next/
+out/
+.vercel/
+next-env.d.ts
+*.tsbuildinfo
+
+# Environment. The *.example templates are tracked.
+.env
+.env.*
+!.env.example
+
+.DS_Store

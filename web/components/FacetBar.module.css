@@ -1,0 +1,126 @@
+/* zap's facet region is one row of 7 dropdown chips plus a `filtro` toggle, with
+   `más filtros` on a second row. Ours is the same shape, pill radius, on --card
+   with a hairline under it — so the bar reads as chrome for the grid rather than as
+   a panel floating above it. */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding-block: var(--s1);
+  border-block-end: 1px solid var(--line);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* a hairline between the state chips and the category chips. Decorative --line is
+   correct: it separates, it is not a control, and it carries no meaning a screen
+   reader needs (hence aria-hidden on the node). */
+.div {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+  margin-inline: 2px;
+}
+
+.mk {
+  flex: none;
+}
+
+/* ---- the `más filtros` panel ---- */
+.panel {
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s2);
+  margin-block-start: var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+}
+
+.group {
+  display: grid;
+  gap: 6px;
+}
+
+.groupH {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* the `?` affordance. A real button with an accessible name, --edge boundary
+   because it is clickable, and 20px square so it clears the 24px touch slop
+   without stealing height from the 12px label beside it. */
+.help {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--edge);
+  border-radius: var(--r-pill);
+  color: var(--ink-2);
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: var(--tr1);
+  flex: none;
+}
+
+.help:hover {
+  background: var(--fill);
+}
+
+/* THE NATIVE POPOVER. `popover="auto"` puts it in the top layer, closes it on
+   Escape and on click-outside, and makes it keyboard-reachable — all without a line
+   of JavaScript. The only styling it needs is a box: the UA gives it position,
+   stacking and dismissal for free. */
+.pop {
+  max-width: 40ch;
+  padding: 10px 12px;
+  border: 1px solid var(--edge);
+  border-radius: var(--r2);
+  background: var(--card);
+  color: var(--ink-2);
+  /* B8 — a popover exists to explain something in a sentence. 14. */
+  font-size: var(--t2);
+  font-weight: 400;
+  letter-spacing: var(--tr2);
+  text-transform: none;
+  line-height: 1.5;
+}
+
+.groupChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* B8 — both carry sentences ("Ningún filtro deja resultados…", the applied-count line). */
+.hint,
+.panelFoot {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+.panelFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-block-start: var(--s2);
+  border-block-start: 1px solid var(--line);
+  flex-wrap: wrap;
+}

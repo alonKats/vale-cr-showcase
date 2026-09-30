@@ -1,0 +1,194 @@
+{
+  "id": "microondas",
+  "label": "Microondas",
+  "sources": {
+    "norte": {
+      "category_dir": "microondas",
+      "trusted_category": true
+    },
+    "sur": {
+      "category_dir": "microondas"
+    }
+  },
+  "filter": {
+    "include": [
+      "\\bMICROONDAS\\b"
+    ],
+    "exclude": [
+      "\\b(TOSTADOR|TOSTADORA|SANDWICHERA|FREIDORA|AIR ?FRYER|PARRILLA|CAFETERA|LICUADORA|BATIDORA|ARROCERA|OLLA|HERVIDOR)\\b",
+      "\\b(BASE PARA|SOPORTE|REPUESTO|LIMPIADOR|MOLDE|BANDEJA|PLATO GIRATORIO|CUBIERTA|COBERTOR|FORRO|CAMPANA|EXTRACTOR|KIT DE INSTALACION|ACCESORIO)\\b",
+      "\\b(PALOMITAS|POPCORN|ROSETAS)\\b"
+    ],
+    "price_floor_crc": 30000,
+    "price_ceiling_crc": 1500000
+  },
+  "brands": [
+    "SAMSUNG",
+    "WHIRLPOOL",
+    "FRIGIDAIRE",
+    "PANASONIC",
+    "MIDEA",
+    "MABE",
+    "GENERAL ELECTRIC",
+    "OSTER",
+    "MASTERTECH",
+    "DURABRAND",
+    "HAMILTON BEACH",
+    "BLACK AND DECKER",
+    "ATLAS",
+    "SANKEY",
+    "INDURAMA",
+    "ELECTROLUX",
+    "HAIER",
+    "SHARP",
+    "TELSTAR",
+    "LG",
+    "CAFE APPLIANCES",
+    "AIWA",
+    "DECAKILA",
+    "BREVILLE",
+    "RCA",
+    "COBY",
+    "KALLEY"
+  ],
+  "attributes": [
+    {
+      "key": "capacity_ft3",
+      "label": "Capacidad",
+      "unit": "ft3",
+      "facet": "range",
+      "display": "{value} pies3",
+      "extract": {
+        "kind": "number",
+        "round": 1,
+        "rules": [
+          {
+            "pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:PIES CUBICOS|PIES CUBICO|PIES|PIE|P3|PCU|CU\\.?\\s?FT\\.?|FT3|FT\\b)",
+            "min_raw": 0.4,
+            "max_raw": 3
+          },
+          {
+            "pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:LITROS|LTS?\\b|L\\b)",
+            "scale": 0.0353147,
+            "min_raw": 10,
+            "max_raw": 80
+          }
+        ]
+      }
+    },
+    {
+      "key": "watts",
+      "label": "Potencia",
+      "unit": "W",
+      "facet": "range",
+      "display": "{value} W",
+      "extract": {
+        "kind": "number",
+        "round": 0,
+        "rules": [
+          {
+            "pattern": "(\\d{3,4})\\s*(?:WATTS|WATT|\\bW\\b)",
+            "min_raw": 500,
+            "max_raw": 2000
+          }
+        ]
+      }
+    },
+    {
+      "key": "install_type",
+      "label": "Instalacion",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "EMPOTRABLE": "Empotrable",
+        "EXTRACTOR": "Con extractor",
+        "MOSTRADOR": "De mostrador"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "EXTRACTOR",
+            "patterns": [
+              "CON EXTRACTOR",
+              "OVER THE RANGE",
+              "SOBRE LA COCINA"
+            ]
+          },
+          {
+            "value": "EMPOTRABLE",
+            "patterns": [
+              "EMPOTRABLE",
+              "EMPOTRADO",
+              "BUILT[- ]IN"
+            ]
+          },
+          {
+            "value": "MOSTRADOR",
+            "patterns": [
+              "DE MOSTRADOR",
+              "COUNTERTOP",
+              "PORTATIL"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "finish",
+      "label": "Acabado",
+      "facet": "enum",
+      "display": "{value}",
+      "collapsible": true,
+      "value_labels": {
+        "STAINLESS": "Acero inoxidable",
+        "BLACK": "Negro",
+        "WHITE": "Blanco",
+        "SILVER": "Plateado"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "STAINLESS",
+            "patterns": [
+              "\\b(INOXIDABLE|INOX|STAINLESS|ACERO)\\b"
+            ]
+          },
+          {
+            "value": "BLACK",
+            "patterns": [
+              "\\b(NEGR[OA]|BLACK)\\b"
+            ]
+          },
+          {
+            "value": "WHITE",
+            "patterns": [
+              "\\b(BLANC[OA]|WHITE)\\b"
+            ]
+          },
+          {
+            "value": "SILVER",
+            "patterns": [
+              "\\b(PLATEAD[OA]|SILVER|GRIS|GREY)\\b"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "fingerprint": [
+    "brand",
+    "capacity_ft3",
+    "install_type"
+  ],
+  "fingerprint_round": {
+    "capacity_ft3": 0.1
+  },
+  "card_title": "{brand} {capacity_ft3}",
+  "brand_aliases": {
+    "CAFE": "CAFE APPLIANCES",
+    "CAFÉ": "CAFE APPLIANCES",
+    "CAFE APPLIANCE": "CAFE APPLIANCES"
+  }
+}

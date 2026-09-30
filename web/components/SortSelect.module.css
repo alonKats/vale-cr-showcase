@@ -1,0 +1,78 @@
+/* THE SORT CONTROL — v8. Figma 18:106.
+
+   Drawn as a filled pill reading `Ordenar por: Precio menor ⌄`, and it stays a
+   NATIVE <select>: keyboard-accessible, screen-reader-correct and touch-native
+   for free. A custom listbox here would be ~120 lines to be worse, and it is the
+   one control on this bar whose options are a closed list.
+
+   THE LABEL IS INSIDE THE PILL, not beside it. 18:107 sets the whole string —
+   prefix and value — as one 13px bold teal run, so `Ordenar por:` is rendered by
+   the select's own options rather than by a separate <span>. That is why every
+   option below carries the prefix.
+
+   `flex: 0 1 auto` AND `min-width: 0` ARE LOad-BEARING, inherited from v4.1.
+   A <select>'s intrinsic width is set by its WIDEST option; with `flex: none`
+   the control measured 335.7px inside a 296px shell at 320 and the whole
+   document scrolled horizontally. The pair `flex: none` + an intrinsically-sized
+   child is an overflow waiting for a narrow viewport. */
+
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* the visible label is the option text, so the <label>'s own text is for
+   assistive tech only — the pill would otherwise read "Ordenar por" twice */
+.lb {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sel {
+  min-width: 0;
+  max-width: 100%;
+  height: 34px;
+  padding-inline: var(--s2) 32px;
+  border: 1px solid var(--deep);
+  border-radius: var(--r-pill);
+  /* the ONE filled control in the chip row: sorting is always set to something,
+     so unlike a facet chip it has no "off" state to rest in */
+  background: var(--tint);
+  color: var(--deep);
+  font-family: var(--body);
+  /* 16px on a phone — form controls below 16 zoom the viewport in iOS Safari.
+     A gate line, not a guideline. */
+  font-size: var(--t3);
+  font-weight: 700;
+  cursor: pointer;
+  appearance: none;
+  /* the caret, as a background rather than a sibling node: a <select> cannot
+     contain an element, so an overlaid <svg> would need pointer-events juggling
+     to stay clickable. Encoded currentColor is not possible in a data URI, hence
+     the one literal — it is the caret's own geometry, not a palette colour. */
+  background-image: linear-gradient(45deg, transparent 50%, var(--deep) 50%),
+    linear-gradient(135deg, var(--deep) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 15px, calc(100% - 13px) 15px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+  .sel {
+    font-size: var(--t-row);
+  }
+}
+
+.sel:hover {
+  background-color: var(--sel);
+}

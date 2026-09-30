@@ -1,0 +1,29 @@
+{
+  "name": "vale-cr-web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/contrast.mjs && node scripts/tokens.mjs",
+    "build": "next build && node scripts/titles.mjs",
+    "start": "next start",
+    "verify:contrast": "node scripts/contrast.mjs",
+    "verify:tokens": "node scripts/tokens.mjs",
+    "verify:titles": "node scripts/titles.mjs",
+    "test": "node scripts/contrast.mjs && node scripts/tokens.mjs && node scripts/titles.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/plus-jakarta-sans": "^5.2.5",
+    "@fontsource-variable/space-grotesk": "^5.2.5",
+    "next": "^15.4.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "playwright": "^1.49.0",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "_comment": "Shared defaults merged UNDER every CategoryProfile. Data, not code: a new category may extend these from its own file without touching the engine.",
+  "brand_aliases": {
+    "GE": "GENERAL ELECTRIC",
+    "GENERAL-ELECTRIC": "GENERAL ELECTRIC",
+    "G.E.": "GENERAL ELECTRIC",
+    "IPHONE": "APPLE",
+    "MACBOOK": "APPLE",
+    "GALAXY": "SAMSUNG",
+    "BLACK+DECKER": "BLACK AND DECKER",
+    "BLACK & DECKER": "BLACK AND DECKER"
+  },
+  "model_blocklist": [
+    "^[0-9]+(GB|TB|MB|KB)$",
+    "^[0-9]+(KG|LB|LBS|ML|LT|LTS|CM|MM|MTS)$",
+    "^[0-9]+(W|V|HZ|MAH|BTU|RPM|PPM|DPI|NITS)$",
+    "^[0-9]+(K|P)$",
+    "^[0-9]+(PIES|PULG|PULGADAS|CUOTAS|MESES)$",
+    "^(WIFI|USB|HDMI|BLUETOOTH|ANDROID|WINDOWS|SMART|INOX)[0-9]*$",
+    "^(HDR|SDR|UHD|FHD|QHD|QLED|OLED|NEOQLED|NANOCELL|MINILED|LED|LCD|IPS|VA|DOLBY|ATMOS|VISION|WEBOS|TIZEN|VIDAA|ROKU|GOOGLETV|ANDROIDTV)[0-9+]*$",
+    "^[0-9]+X[0-9]+$",
+    "^(DDR[0-9]|LPDDR[0-9]|SSD[0-9]*|NVME[0-9]*|EMMC[0-9]*)$",
+    "^(I[3579]|CORE|RYZEN|CELERON|ATHLON|PENTIUM)[0-9]*$",
+    "^[0-9]{4}$"
+  ],
+  "model_stop_tokens": [
+    "REFRIGERADORA", "REFRIGERADOR", "LAVADORA", "SECADORA", "LAVASECADORA",
+    "COCINA", "PANTALLA", "LAPTOP", "CELULAR", "PUERTAS", "LITROS", "PIES",
+    "CUBICOS", "INOXIDABLE", "PULGADAS", "AUTOMATICA", "ELECTRICA"
+  ],
+  "_price_sentinels_note": "Placeholder prices a retailer publishes for an item it will not actually sell. One chain shipped 10000000 on 7 offers in the first production run; it produced a 2037% 'gap' against a real price, which is exactly the kind of number the featured slot would have amplified into a wrong headline.",
+  "price_sentinels": [999999, 9999999, 10000000],
+  "match_keys": ["brand", "model"]
+}

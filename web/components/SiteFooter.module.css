@@ -1,0 +1,166 @@
+/* THE FOOTER — v8. Figma 6:403 (home) · 17:292 (product) · 18:381 (category).
+
+   The three frames draw the same footer at three column counts, so the grid is
+   `auto-fit` rather than a fixed five: the column count follows the content the
+   catalogue actually has, which is what the three frames are doing by hand. */
+
+.foot {
+  position: relative;
+  background: var(--deep-2);
+  color: var(--on-deep);
+  /* THE DOT FIELD — Figma emitted 960 individual <ellipse> nodes on a 24px grid.
+     It is one background-image. `background-position` is offset by half a step
+     so the first dot lands at 12,12 the way the Figma's does, and the layer is
+     on the section itself rather than an absolutely-positioned child, which is
+     what 11:1504 was. */
+  background-image: var(--dots-foot);
+  background-size: var(--dots-foot-size);
+  background-position: 12px 12px;
+}
+
+.in {
+  max-width: calc(var(--shell) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding: var(--s7) var(--gutter) var(--s5);
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s6) var(--s6);
+}
+
+/* the brand column is wider than a link column and leads the row */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.blurb {
+  margin: 0;
+  color: var(--on-deep-2);
+  font-size: var(--t2);
+  line-height: 1.5;
+  max-width: 34ch;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* the heading and its links are one list; min-width 0 stops a long category
+     label ("Congeladores y frigobares") forcing the whole grid wider */
+  min-width: 0;
+}
+
+.head {
+  margin: 0;
+  /* --loud AS TEXT, and this is the one surface in the product where that is
+     legal: 6.36 on --deep-2. On any light ground it is a banned pair. */
+  color: var(--loud);
+  font-size: var(--t2);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+.col a {
+  color: var(--on-deep);
+  font-size: var(--t2);
+  font-weight: 400;
+  text-decoration: none;
+  /* the links wrap rather than truncate: a footer is the one place a long
+     category name may take two lines, and an ellipsis there hides a destination */
+  overflow-wrap: anywhere;
+}
+
+.col a:hover {
+  color: var(--loud);
+  text-decoration: underline;
+}
+
+/* ---- the legal + facts band ---------------------------------------------
+   The Figma's footer stops at four link columns and a copyright line. This
+   product cannot: Ley 8968 requires the consent decision to stay withdrawable,
+   and the four standing disclosures (freshness, FX basis, assumed location, and
+   that the site sells nothing) are the honesty surface the whole build exists
+   for. They go BELOW the divider rather than into a column, so the design's
+   column structure is preserved and the obligations are not squeezed into it. */
+
+.rule {
+  margin: var(--s6) 0 var(--s3);
+  border: 0;
+  border-top: 1px solid var(--rule-on-deep);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.legal a,
+.legal button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--on-deep-2);
+  font-family: var(--body);
+  font-size: var(--t-row);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.legal a:hover,
+.legal button:hover {
+  color: var(--loud);
+  text-decoration: underline;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px var(--s3);
+  margin-bottom: var(--s3);
+  color: var(--on-deep-2);
+  font-size: var(--t1);
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  color: var(--on-deep-2);
+  font-size: var(--t-row);
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.social a {
+  display: grid;
+  place-items: center;
+  color: var(--on-deep-2);
+}
+
+.social a:hover {
+  color: var(--loud);
+}
+
+@media (max-width: 900px) {
+  .in {
+    padding: var(--s6) 16px var(--s4);
+  }
+
+  .cols {
+    gap: var(--s4) var(--s3);
+  }
+}

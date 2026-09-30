@@ -1,0 +1,290 @@
+/* COMPARE TRAY — spec-v2 §8.2 screen 4. NOTE FOR THE CRITIQUE GATE: the locked
+   design has no direction for this screen (design-final.md covers home, results,
+   detail, detail-parejo and loading). It is therefore built strictly out of
+   existing primitives and tokens — chips, the .btn, the row's hairline grid and
+   the sheet's surfaces — and invents no new visual language. The designer should treat
+   it as a placeholder shape, not as a proposal. */
+
+.spacer {
+  height: 68px;
+}
+
+.dock {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 45;
+  background: var(--ground);
+  border-block-start: 1px solid var(--line-2);
+}
+
+/* v5 §4.4 — WHILE THE CONSENT GATE IS OPEN, THE DOCK DOES NOT RENDER. Two fixed
+   bars stacked at the bottom of a 390 viewport is 198px of furniture, and a
+   first-time visitor who has not answered a legal question does not need a
+   compare tray.
+
+   AN ATTRIBUTE SELECTOR, NOT A CONTEXT. The gate sets `data-consent-open` on
+   <html> in one effect; a provider for one boolean that crosses no render
+   boundary would be strictly more code, and would drag layout.tsx into a client
+   tree. The spacer goes with it — leaving 68px of reserved height for a bar that
+   is not on screen is the same defect from the other side. */
+:global(html[data-consent-open]) .dock,
+:global(html[data-consent-open]) .spacer {
+  display: none;
+}
+
+.dockIn {
+  width: min(var(--shell), 100% - 2 * var(--pad));
+  margin-inline: auto;
+  padding-block: var(--s2);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.label {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.pins {
+  display: flex;
+  gap: var(--s1);
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pins::-webkit-scrollbar {
+  display: none;
+}
+
+.pin {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  border: 1px solid var(--edge);
+  border-radius: var(--r2);
+  padding: 4px 8px 4px 4px;
+  background: var(--ground);
+  white-space: nowrap;
+}
+
+.pinPic {
+  width: 28px;
+  height: 28px;
+  background: var(--fill);
+  border-radius: var(--r1);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: none;
+}
+
+.pinPic img {
+  max-height: 24px;
+  max-width: 24px;
+  width: auto;
+}
+
+.pinName {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--t1);
+  letter-spacing: 0.03em;
+  max-width: 15ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pinX {
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.acts {
+  display: flex;
+  gap: var(--s1);
+  flex: none;
+}
+
+/* the open comparison, on the same surface language as the detail sheet */
+.panel {
+  position: fixed;
+  inset: var(--s5) 0 0;
+  z-index: 60;
+  width: min(var(--shell), 100% - 2 * var(--pad));
+  margin-inline: auto;
+  background: var(--ground);
+  border: 1px solid var(--line-2);
+  border-block-end: 0;
+  /* LOGICAL corners, and written as two longhands rather than a shorthand ON PURPOSE.
+     An unresolved var() inside a shorthand makes the browser drop the WHOLE
+     declaration silently — v3 lost time to exactly that when --r3 was deleted and this
+     line still named it, squaring the panel with no error anywhere.
+     v4 reinstates 8px here, matching every other panel. */
+  border-start-start-radius: var(--r2);
+  border-start-end-radius: var(--r2);
+  overflow: auto;
+}
+
+.head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--ground);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-block: var(--s2);
+  border-bottom: 1px solid var(--line);
+}
+
+.h {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--t4);
+  letter-spacing: var(--tr4);
+  margin: 0;
+}
+
+.x {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--edge);
+  border-radius: var(--r2);
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  background: var(--ground);
+}
+
+.grid {
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s2);
+  align-items: start;
+}
+
+.col {
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r1);
+  padding: var(--s3);
+  min-width: 0;
+}
+
+.pic {
+  background: var(--fill);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r2);
+  height: 140px;
+  display: grid;
+  place-items: center;
+  padding: var(--s1);
+  margin-bottom: var(--s2);
+}
+
+/* mix-blend-mode is NOT declared here any more: it lives on the two primitive
+   classes `.blend` / `.flat` that `Thumb` picks between, so the multiply guard
+   exists in one place instead of eight (spec §3.4). */
+.pic img {
+  max-height: 124px;
+  width: auto;
+}
+
+.brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+}
+
+.spec {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+}
+
+.model {
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  display: block;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.k {
+  font-weight: 700;
+  font-size: var(--t1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  display: block;
+  margin-top: var(--s2);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--line);
+}
+
+.v {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-2);
+  display: block;
+  margin-top: 4px;
+}
+
+.money {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: var(--t4);
+  letter-spacing: var(--tr4);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  display: block;
+  margin-top: 4px;
+}
+
+/* --near (teal) is deleted. The branch string is --ink-2 and the pin glyph
+   beside it is --ink-3, which is a NON-TEXT token and therefore correct for a
+   glyph and banned for the words. */
+.near {
+  color: var(--ink-2);
+}
+
+@media (max-width: 767px) {
+  .dockIn {
+    padding: var(--s1) var(--s2);
+  }
+
+  .label {
+    display: none;
+  }
+
+  .panel {
+    inset: var(--s3) 0 0;
+  }
+
+  .head {
+    padding: var(--s2);
+  }
+
+  .grid {
+    padding: var(--s2);
+    grid-template-columns: 1fr !important;
+  }
+
+  .pic {
+    height: 120px;
+  }
+}

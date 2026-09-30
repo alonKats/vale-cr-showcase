@@ -1,0 +1,178 @@
+/* ==========================================================================
+   THE CONSENT GATE (design-v5 §4)
+
+   IT IS THE SECOND HALF OF THE CHROME, NOT AN OBJECT STUCK ONTO THE PAGE. --ink,
+   anchored to the bottom, so at rest the page reads as bracketed by the same dark
+   material top and bottom — chrome above, gate below, prices between. When it
+   leaves, the page is exactly what it always was.
+
+   NO SCRIM, NO `overflow: hidden` ON BODY, NO FOCUS TRAP, NO role="dialog". It is
+   a bar, not a cookie wall: the document stays scrollable underneath it and
+   measure.mjs assertion 24 fails the build if body ever computes `hidden`.
+
+   NO box-shadow. The product ships exactly two (the Sheet and the chrome) and the
+   gate adds none — a dark bar on a light ground already separates by colour.
+
+   NO ENTRANCE ANIMATION. A slide-up draws the eye to an object we want dismissed
+   in one tap, and it reads as an ad. It appears, in place, once.
+
+   NO AMBER ANYWHERE IN HERE (assertion 23). Amber means money you keep,
+   product-wide; a consent choice is not money, and a louder `Aceptar` is exactly
+   the temptation this rule costs a build for.
+   ========================================================================== */
+
+.consent {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  /* > chrome 40, > CompareTray dock 45, < Sheet 60. A sheet is user-initiated
+     foreground, and while it covers the gate nothing has fired anyway. */
+  z-index: 55;
+  background: var(--ink);
+  color: var(--card);
+}
+
+.in {
+  width: min(var(--shell), 100% - 2 * var(--pad));
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* ROW GAP 16, COLUMN GAP 8 — the same two-value idiom `Page.module.css .grid`
+     already uses, and here it is worth 21px of bar across the whole 539–639 band.
+     The column gap only bites where the row is tight: at 1440 a one-line sentence
+     ends ~330px before the buttons anyway. NOT the gap BETWEEN the two buttons,
+     which is --s2 and stays there — that one is design-v5 §7's named lever if the
+     bar ever reads as an ad, and it is not spent here. */
+  gap: var(--s2) var(--s1);
+  padding-block: var(--s2);
+}
+
+/* BELOW 540 THE FURNITURE PAYS, NOT THE COPY (assertion 24, and it was FAILING
+   ON THE LIVE SITE — 172px at 320 against a 136 budget, 19,11% of the viewport
+   against a 17% ceiling; 151 at 390).
+
+   AT 320 THE ARITHMETIC IS FORCED AND WORTH WRITING DOWN. In the wrapped layout
+   the bar is padding + sentence + row gap + action row. The action row is 40 and
+   MAY NOT SHRINK — it is the reject affordance, and Ley 8968 requires that
+   refusing be no harder than accepting, so 40px stays whatever the budget says.
+   The sentence is three lines of 21 = 63 (see `hyphens` on `.say`). That leaves
+   136 − 63 − 40 = 33 for two paddings and a gap, and `--s2` alone spends 32 of it.
+   `--s1` on both — 8 + 8 + 8 = 24 — lands the bar at 127, which is 9px of slack
+   and 14,1% of a 900-tall viewport.
+
+   ≤539 ONLY. From 540 up the sentence and the actions share a row, the bar is 95
+   at worst, and the roomier `--s2` is affordable. */
+@media (max-width: 539px) {
+  .in {
+    row-gap: var(--s1);
+    padding-block: var(--s1);
+  }
+}
+
+/* THE SENTENCE. --card on --ink is 15.56:1. NOT --ink-3, which measures 1.76 here
+   and is the muted-grey-on-dark trap this version added a banned pair for. */
+.say {
+  /* 280, AND THE NUMBER IS MEASURED. The action row's intrinsic width is 200.3
+     (two 40px pills plus one --s2 gap), so one shared row needs
+     280 + 16 + 200.3 = 496.3 of shell — which 539 (shell 515) is the first gated
+     width to provide. Above it the bar is 74px; below it the sentence takes its own
+     row and the bar is 151. A larger basis pushes that boundary up to ~700 and
+     costs 34px across the whole 539–690 band. */
+  flex: 1 1 280px;
+  min-width: 0;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--card);
+  /* THE ONE DECLARATION THAT TOOK A WHOLE LINE OFF THE BAR, AND IT IS A NATIVE
+     BROWSER FEATURE, NOT A LAYOUT TRICK. The sentence is 739.52px of advance and
+     the column at 320 is 296 — 2.5 lines of type. It rendered in FOUR, because
+     Spanish words are long and the ragged breaks after `y` and `la` were throwing
+     away 69.58 and 65.27px of line: `Usamos analítica para ver qué productos y /
+     categorías se consultan más. No la / activamos hasta que usted decide. / Más
+     detalles`. `hyphens: auto` reclaims that, and it works because <html> already
+     declares `lang="es-CR"` — the hyphenation dictionary is picked by language and
+     an unlabelled document gets none.
+
+     MEASURED, PER WIDTH, BEFORE AND AFTER: 320 172 → 151 (4 lines → 3), 540 116 →
+     95 (4 → 3), 390 unchanged at 3 lines, 767+ unchanged at 2 or 1. Not one
+     character of consent copy was cut and neither button moved — which is the only
+     acceptable shape for a fix to a Ley 8968 surface. THE ALTERNATIVE WAS DROPPING
+     THE SENTENCE TO --t1, i.e. setting a legal notice as fine print to win 6px of
+     bar, and that is the trade this declaration exists to avoid.
+
+     `-webkit-` first: Safari only dropped the prefix in 17, and CR traffic is
+     iPhone-heavy. */
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.acts {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* TWO VISUALLY IDENTICAL BUTTONS, AND THAT IS THE POINT (§4.3). The law requires
+   that rejecting be no harder than accepting, and the only way to prove that in
+   pixels is to make them the same object with different labels. DESIGN.md §3's
+   "three identical cards" tell is about repetition standing in for hierarchy;
+   here equality IS the hierarchy. Stated so the critique gate does not "fix" it.
+
+   This is the EXISTING primary recipe inverted, not a third control class:
+   primitives.module.css already declares that on an --ink plate the filled
+   primary flips to a --card fill with an --ink label (15.56). Both buttons carry
+   `.btn .btnSolid .onDark`, so measure.mjs assertion 25 compares two elements
+   that are identical by construction rather than by discipline. */
+.onDark {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--card);
+}
+
+.onDark:hover {
+  background: var(--fill);
+  border-color: var(--fill);
+}
+
+/* "Más detalles" → /cookies. --act-on-dark on --ink is 10.07, and it is underlined
+   at rest for the same reason every prose link is: hue alone fails SC 1.4.1. */
+.more {
+  color: var(--act-on-dark);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.more:hover {
+  color: var(--card);
+}
+
+/* THE HEIGHT BUDGET IS THE DESIGN (§4.2). THE LAYOUT IS BOUGHT BY `flex-wrap`;
+   ONE MEDIA QUERY BUYS THE LAST 24px. `.say`'s 280px flex-basis is what decides
+   the layout: while the sentence and the action row both fit, they share one row
+   (72px at 1440); below that the actions wrap under the sentence.
+
+   THIS COMMENT USED TO SAY "NOT BY A MEDIA QUERY" AND THAT IS NO LONGER TRUE.
+   The wrapped layout below 540 was 172px against a 136 budget on the LIVE site —
+   the flex construction alone could not pay for it, because at 320 the three
+   irreducible parts (three lines of sentence + a 40px action row) already spend
+   103 of 136 and `--s2` padding spends 32 of the remaining 33. `.in` therefore
+   drops to `--s1` padding and `--s1` row gap at ≤539 (see the block beside it).
+   The construction is unchanged at every width where it could pay its own way.
+
+   `flex-direction: column` WAS THE FIRST ATTEMPT AND IT WAS WRONG, in a way worth
+   recording: in a column flex container `flex-basis` sizes the MAIN axis, which is
+   now HEIGHT — so `flex: 1 1 320px` on the sentence made the paragraph 320px TALL
+   and the bar measured 408px at 390, 45.3% of the viewport. The gate caught it at
+   the first run. One axis, two meanings, no error anywhere.
+
+   The `Más detalles` link sits INLINE IN THE SENTENCE, not as a third item in the
+   action row — Consent.tsx carries the measurement (200.3 of action row inline
+   against 300.5 beside it, worth 34px of bar across the whole 539–690 band). This
+   comment said the opposite for two versions and it was simply wrong about its own
+   markup; corrected here rather than left standing. */

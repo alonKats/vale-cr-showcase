@@ -1,0 +1,152 @@
+{
+ "fx_rate_crc_usd": 505.0,
+ "fx_rate_date": "2026-09-01",
+ "fx_source": "fixture — production reads the BCCR selling rate from api.hacienda.go.cr under the same cache TTL as every other price",
+ "generated_at": "2026-09-30T15:30:07Z",
+ "retailers": [
+  {
+   "name": "Tienda Norte",
+   "parent_company": "Grupo Norte (ejemplo)",
+   "products": 19
+  },
+  {
+   "name": "Tienda Sur",
+   "parent_company": "Comercial Sur (ejemplo)",
+   "products": 19
+  }
+ ],
+ "independent_groups": 2,
+ "product_count": 24,
+ "category_counts": {
+  "celulares": 5,
+  "microondas": 6,
+  "pantallas": 6,
+  "refrigeradoras": 7
+ },
+ "price_freshness": {
+  "offers": 38,
+  "newest_age_h": 0.2,
+  "median_age_h": 0.2,
+  "oldest_age_h": 0.2,
+  "over_24h": 0,
+  "over_48h": 0,
+  "basis": "hours between an offer's real retrieval time (scraped_at) and meta.generated_at; scraped_at is when the bytes were fetched, never when the export ran"
+ },
+ "gap_distribution": {
+  "comparable": 14,
+  "max_gap_pct": 33.3889816360601,
+  "median_gap_pct": 11.254064141347992,
+  "edges": [
+   0,
+   5,
+   10,
+   20,
+   50
+  ],
+  "bins": [
+   {
+    "from": 0,
+    "to": 5,
+    "count": 3
+   },
+   {
+    "from": 5,
+    "to": 10,
+    "count": 3
+   },
+   {
+    "from": 10,
+    "to": 20,
+    "count": 4
+   },
+   {
+    "from": 20,
+    "to": 50,
+    "count": 4
+   },
+   {
+    "from": 50,
+    "to": null,
+    "count": 0
+   }
+  ],
+  "basis": "gap = (dearest - cheapest) / cheapest * 100 over every product two or more chains publish, which is web/lib/catalog.ts enrich() verbatim. max_gap_pct is the domain EVERY spread bar in the product is drawn on. FIVE bins, edges [0,5,10,20,50,inf]: bins[0] is the sub-5% near-tie floor (`parejo`), never a brecha and never amber; bins[1..4] are the four amber-ramp bands. Each product carries its own `gap_band` index so nothing rebins in the browser."
+ },
+ "featured": [
+  {
+   "id": "lg-65ut8050psb",
+   "category": "pantallas",
+   "cheapest_retailer": "Tienda Norte",
+   "price_crc": 549900,
+   "dearest_retailer": "Tienda Sur",
+   "price_max_crc": 699900,
+   "gap_crc": 150000,
+   "gap_pct": 21.4,
+   "verified_at": "2026-09-30T15:18:02Z"
+  },
+  {
+   "id": "samsung-01dc4046",
+   "category": "celulares",
+   "cheapest_retailer": "Tienda Norte",
+   "price_crc": 99900,
+   "dearest_retailer": "Tienda Sur",
+   "price_max_crc": 129900,
+   "gap_crc": 30000,
+   "gap_pct": 23.1,
+   "verified_at": "2026-09-30T15:18:02Z"
+  },
+  {
+   "id": "lg-098f9553",
+   "category": "microondas",
+   "cheapest_retailer": "Tienda Sur",
+   "price_crc": 109900,
+   "dearest_retailer": "Tienda Norte",
+   "price_max_crc": 129900,
+   "gap_crc": 20000,
+   "gap_pct": 15.4,
+   "verified_at": "2026-09-30T15:18:02Z"
+  }
+ ],
+ "featured_policy": {
+  "candidates_considered": 4,
+  "slots": 3,
+  "min_gap_pct": 15.0,
+  "min_gap_crc": 20000,
+  "reverify_window_s": 3600,
+  "products_with_price_change": 0,
+  "dropped_count": 0,
+  "drop_rate_pct": 0.0,
+  "drop_reasons": [],
+  "note": "every offer of every candidate is re-fetched live at export time; a candidate whose verdict flips, whose gap falls under the floor, or whose price cannot be read is dropped from the slot rather than shown"
+ },
+ "featured_dropped": [],
+ "branch_coverage": {},
+ "image_coverage": {
+  "self_hosted": 0,
+  "of_products": 24,
+  "widths": [
+   160,
+   320,
+   640
+  ]
+ },
+ "honesty_note": "Missing data is null, never fabricated or defaulted. Branch stock is not published by any retailer; availability is retailer-level only.",
+ "price_history": {
+  "artifact": "/data/history.json",
+  "observation_window": {
+   "first_day": "2026-09-30",
+   "last_day": "2026-09-30",
+   "distinct_days": 1
+  },
+  "products_with_history": 24,
+  "note": "history is a separate lazily-loaded artifact: it is the only one that grows without bound, and index.json has a hard search-path budget"
+ },
+ "artifact_gzip_bytes": {
+  "history.json": 816,
+  "index.json": 1388,
+  "products.json": 2870,
+  "categories.json": 1151,
+  "branches.json": 22
+ },
+ "product_chunks": null
+}

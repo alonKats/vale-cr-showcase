@@ -1,0 +1,66 @@
+/* The category hub's tile grid. Tokens only — no new colour, no new radius, no
+   new step on the type scale. */
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--s5);
+  display: grid;
+  /* One floor, no per-breakpoint column counts: 4-up at 1360, 3-up at tablet,
+     2-up at 390. The same `auto-fill` policy the product grid uses. */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--s2);
+}
+
+.cell {
+  min-width: 0;
+}
+
+/* THE WHOLE TILE IS THE LINK, not a label with a link inside it. A 220px target
+   that only responds on its text is the most common tap-target defect on a
+   category index, and it is invisible in a screenshot. */
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 76px;
+  justify-content: center;
+  padding: var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  text-decoration: none;
+}
+
+.tile:hover {
+  border-color: var(--line-2);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--act);
+  outline-offset: 2px;
+}
+
+/* --act, because the tile IS a link and a link gets the action colour. The count
+   below it is --ink-3: it describes the destination, it is not part of the
+   label. */
+.label {
+  font-family: var(--display);
+  font-size: var(--t3);
+  font-weight: 600;
+  letter-spacing: var(--tr3);
+  line-height: 1.25;
+  color: var(--act);
+}
+
+.tile:hover .label {
+  color: var(--act-strong);
+  text-decoration: underline;
+}
+
+.count {
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

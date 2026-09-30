@@ -1,0 +1,343 @@
+/* THE DISTRIBUTION STRIP (v7 §2.3 / v7.1 §3.4) — see GapStrip.tsx for the
+   argument; this file is only its geometry.
+
+   THE CONTAINER IS THE ONE IT REPLACES. `.stand`'s plate — --card on --line at
+   --r2, --s2 of padding — is kept verbatim, so §3.4's "2px of --card between
+   bins" is literally true: the separators are the plate showing through, not a
+   fifth colour. Reusing the shape also means the page's rhythm does not move
+   when three boxes become one object. */
+
+.strip {
+  margin: 0;
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+}
+
+/* ---- v7.2 §3.5 S2 — THE WHOLE STRIP IS ONE LINK, ON THE HOMEPAGE ONLY ----
+   It IS /brechas' hero, so clicking it going there is the most legible link on
+   the page, and it replaces the `ver todas las brechas ›` text link §6.1 cuts.
+
+   THE BOUNDARY BECOMES --edge WHEN THE CARD IS CLICKABLE, and that is a token
+   rule rather than a preference: tokens.css says --line / --line-2 "may NEVER
+   bound a control" (1.28 on --card, a banned pair) because SC 1.4.11 asks 3:1 of
+   anything required to identify a UI component. --edge is 3.75 and its own
+   comment reads "ANYTHING CLICKABLE". The strip on /brechas is not a control and
+   keeps --line. One declaration, and the affordance is the correct one. */
+.link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.link .strip {
+  border-color: var(--edge);
+  /* F5 — AND THE PADDING MIRRORS THE PLATE'S, because on the homepage this
+     object is the second half of the W1 group and the two are stacked 16px
+     apart. Measured on the built page: the plate's content edge sat at x=72
+     (40 shell + 32 --s4) and the strip's at x=57 (40 + 16 --s2 + 1px border) —
+     a 15px stagger between the two objects the page most needs to look
+     deliberate about, and 15 is not on the 8px ladder at all.
+
+     It mirrors the PLATE's own two values rather than taking one: the plate
+     pads --s3 below 768 and --s4 above it, so a single --s4 here would fix 1440
+     and make 390 worse than it is today (36 vs 45, against 36 vs 29 now). The
+     rule is "the strip's inner edge is the plate's inner edge", and that is two
+     declarations because the plate is two.
+
+     THE INLINE AXIS ONLY, AND THE BLOCK AXIS STAYS AT --s2. F5 is a defect
+     about a LEFT EDGE; padding the block axis too would have cost 32px of fold
+     height at 1440, and the designer's §5 item 1 explicitly refuses to re-budget this
+     object — "247px is what those jobs cost" — while her H4 arithmetic spends
+     the height it frees on getting the first `ProductCard` back above the
+     consent bar. Measured both ways: all-round --s4 puts the first card thumb at
+     825,3 against a consent bar at 828, i.e. 2,7px of clearance; inline-only
+     puts it at 793 with 35. Same left edge, none of the cost.
+
+     A 1px residual survives at both widths and it is the strip's own border,
+     which the plate does not have. 1px on the ladder is the border; 15 was a
+     mistake. `/brechas` has no `.link` wrapper and keeps --s2 — that page's
+     strip is not stacked under a plate and its geometry does not move. */
+  padding-inline: var(--s3);
+}
+
+@media (min-width: 768px) {
+  .link .strip {
+    padding-inline: var(--s4);
+  }
+}
+
+.link:hover .strip {
+  border-color: var(--ink-3);
+}
+
+/* the affordance sits on the denominator line, where §3.1's sketch puts it. */
+.more {
+  color: var(--act);
+  font-weight: 600;
+}
+
+.link:hover .more {
+  color: var(--act-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* THE DENOMINATOR, AS THE HEADLINE. --t2 sentence, one big tabular figure.
+   §3.4 asks for --t8 (56/500) and this stays at --t6 (34), which is now a
+   RESERVATION rather than a missing token: --t8 exists since H2 and it is the
+   answer plate's figure. A32, as the designer reworded it (her §6.7), is "--t8 appears
+   at most once per PAGE, and only inside that page's `data-w=1` object" — so
+   `/` has spent its one on the plate and this object may not take a second,
+   while `/brechas` keeps the right to take it the day /brechas gets its own W1.
+   That is the version measure.mjs asserts; the original wording ("exactly once
+   on `/` and nowhere else in the product") would have frozen this component out
+   of its own intended type forever. */
+.head {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+
+/* 500, NOT 600 (§11-2). At 500 with the display face's own tracking it is an
+   instrument's figure; at 600 it is a landing-page headline, and this object's
+   whole claim is that it is a measurement. */
+.n {
+  font-family: var(--display);
+  font-size: var(--t6);
+  letter-spacing: var(--tr6);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--deep);
+  margin-inline-end: 6px;
+}
+
+/* ---- THE FIVE BINS ----
+   ADJACENCY IS THE MECHANISM (§11-1): five bins touching, in gap order, pale to
+   dark. 2px between them and nothing else — no rule, no gridline, no y-axis.
+   Widen that gap and the ramp stops reading as one object. */
+/* `align-items: start`, NOT `end`, AND THE SHOTS DECIDED IT. Bottom-aligning the
+   five list items looks right in the abstract — the bars share a zero line — but
+   the items are DIFFERENT HEIGHTS (bin 0 carries a second label line), so
+   end-alignment pushed bin 0's whole column up by one line and staggered the
+   counts by 32px. The zero line is already guaranteed by the fixed first grid row
+   and `align-self: end` on the bar itself; the list only has to agree about the
+   TOP. Labels then sit on one line across all five bins, which is what makes the
+   row read as one axis rather than as five stacked objects. */
+.bins {
+  display: flex;
+  align-items: start;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* WIDTH IS THE BIN'S SHARE OF THE AXIS, NOT OF THE COUNT. `flex: var(--w) 1 0`
+   makes the grow factor the bin's own span in percentage points, so the strip
+   is simultaneously a picture of the `0 → máximo` axis every spread bar in the
+   product is drawn on. `flex-basis: 0` is what makes the ratio exact — a
+   content-sized basis would let the label text buy width from its neighbour. */
+/* THE TRACK IS 48 (--s5), NOT THE ~56 THE SPEC'S ~96px OF BAR + LABELS
+   IMPLIES, AND THE GATE DECIDED IT. v7.1 §0.2 predicted this exactly: the ramp's
+   steps are darker and therefore heavier per pixel than #FFB300, so
+   measure.mjs's N2b band (amber ≤ 4% of the densest 100vh window) had to be
+   re-measured rather than assumed. At 56 the strip put /brechas at 4.123% @768
+   and 4.090% @1024 — over. The ruling names the lever: SHORTEN THE TRACK OR
+   DRAW FEWER BARS, NEVER RELAX THE BAND. Five bins are the spec, so the track
+   came down one step on the spacing ladder and the readings are in the build
+   report. A band relaxed to let a build pass has stopped being a gate. */
+.bin {
+  flex: var(--w) 1 0;
+  min-inline-size: 0;
+  display: grid;
+  grid-template-rows: var(--s5) auto;
+  row-gap: 4px;
+  align-content: start;
+}
+
+/* HEIGHT IS LINEAR IN COUNT, FROM A ZERO BASELINE — never log, never sqrt. The
+   largest bin is 8,3× the smallest and drawn 8,3× taller, which is the whole of
+   §1.5: the reader has to see that the biggest group is the near-tie.
+
+   THE COLOUR IS THE BAND RECIPE and nothing local: `data-gap-band` on this node
+   resolves --band-fill and --band-edge out of tokens.css. Bin 0 is --fill with
+   an --edge boundary and is deliberately NOT amber; bins 1–4 are the ramp with
+   its mandatory --loud-edge.
+
+   GROWS FROM THE BASELINE ONCE. `transform-origin: bottom` so the animation
+   moves the top edge and leaves the zero line alone — growing from the centre
+   would animate a quantity that has a fixed bottom. Reduced motion is handled
+   once, globally, by collapsing --med in tokens.css. */
+/* THE FLOOR IS 8px, NOT 2 (The designer's F4). A bar encodes WIDTH = the bin's share
+   of the axis and HEIGHT = its share of the largest count, so the `+50%` bin —
+   15 products spanning 30 percentage points — rendered 495 × 4,1px at 1440: a
+   dark hairline a third of the page wide, sitting on the baseline, reading as an
+   AXIS RULE rather than as data. §3.4 bans a rule under these bars precisely so
+   nothing on this object can be mistaken for one, and the rarest and most
+   alarming bin was drawing one.
+
+   8px is the smallest height at which a 495px-wide band still reads as a bar.
+   The distortion it introduces is bounded and stated: it can only ever affect
+   the smallest bins, it never changes their order, and every bar prints its own
+   count directly underneath it — so the number a reader takes away comes from
+   the label, not from measuring the pixel. Equally wrong on /brechas, and this
+   fixes it there too. */
+.bar {
+  align-self: end;
+  block-size: var(--h);
+  min-block-size: 8px;
+  background: var(--band-fill);
+  border: 1px solid var(--band-edge);
+  transform-origin: bottom;
+  animation: rise var(--med) var(--ease) both;
+}
+
+@keyframes rise {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* THE COUNT SITS UNDER ITS OWN BAR, NEVER INSIDE IT. Inside is unreadable at 15
+   against 176 and is on §3.4's ban list; underneath, each bar carries its own
+   value and the object needs no y-axis at all. */
+.count {
+  font-family: var(--display);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+/* the band label — the eyebrow role, one of --t1's three */
+.band,
+.sub {
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--ink-3);
+}
+
+.sub {
+  font-weight: 500;
+  text-transform: none;
+}
+
+/* ---- THE TWO MARKS, ON THE AXIS ----
+   --ink-3 ticks, not amber: a distribution statistic is not money you keep, and
+   the sequential register means the size of a gap and nothing else (§1.4.3).
+   The maximum is END-ANCHORED because that is what it literally is — the axis's
+   right-hand end, which is also the right-hand end of the last bin. */
+.axis {
+  position: relative;
+  block-size: var(--s3);
+}
+
+.mark {
+  position: absolute;
+  inset-inline-start: var(--x);
+  inset-block-start: 8px;
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+
+.mark::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -8px;
+  inset-inline-start: 0;
+  inline-size: 1px;
+  block-size: 6px;
+  background: var(--ink-3);
+}
+
+.markEnd {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+.markEnd::before {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* ==========================================================================
+   BELOW 768 THE LABELS MOVE, AND THE BARS DO NOT.
+
+   At 390 the two narrowest bins are ~21px wide — enough for a three-digit
+   tabular count and not enough for `5–10%`. The two available shortcuts are
+   both lies: equalising the bin widths breaks the axis the two marks are
+   positioned on, and clipping the label prints `5–…`.
+
+   So the bars keep their exact axis proportions at every width and the LABELS
+   become a legend underneath, each row carrying its own ramp swatch. The
+   teaching mechanism — five bins, adjacent, in order, pale to dark — is
+   untouched; only where the words sit changes. The two label sets never render
+   together, so `display: none` keeps the hidden one out of the a11y tree too.
+   ========================================================================== */
+.legend {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .count,
+  .band,
+  .sub {
+    display: none;
+  }
+
+  .bin {
+    grid-template-rows: var(--s5);
+  }
+
+  .legend {
+    display: grid;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 12px 1fr auto;
+    align-items: center;
+    gap: var(--s1);
+  }
+
+  .swatch {
+    inline-size: 12px;
+    block-size: 12px;
+    background: var(--band-fill);
+    border: 1px solid var(--band-edge);
+  }
+
+  .key {
+    font-size: var(--t2);
+    letter-spacing: var(--tr2);
+    color: var(--ink-2);
+  }
+
+  .val {
+    font-family: var(--display);
+    font-size: var(--t2);
+    letter-spacing: var(--tr2);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    text-align: end;
+  }
+}

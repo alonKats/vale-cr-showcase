@@ -1,0 +1,70 @@
+/* THE SPEC TABLE — v8. Figma 17:219 / 17:220.
+
+   A <dl>, and the rows ZEBRA on --hero. DESIGN.md §Tables: "Data-heavy lists
+   should use alternating row highlights … to aid horizontal eye tracking across
+   price columns" — the same reason applies to a key/value ledger whose value
+   column starts 280px from its key.
+
+   NO CATEGORY-SPECIFIC CODE, here or anywhere: the labels, the units and the
+   enum value labels all come off CategoryProfile, and attrText() is the only
+   place a value becomes words — so "TOP_LOAD" reaches the screen as "Carga
+   superior" and never as a matcher-internal key. */
+
+.spec {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r5);
+  overflow: hidden;
+}
+
+.cell {
+  display: grid;
+  /* 280px in the frame. `minmax(0, 280px)` rather than a fixed 280 so a narrow
+     viewport takes it from the KEY column, which is the one with short strings
+     in it, instead of squeezing the value. */
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: var(--s2);
+  align-items: baseline;
+  padding: var(--s2);
+  font-size: var(--t2);
+  line-height: 1.5;
+}
+
+.cell:nth-child(odd) {
+  background: var(--hero);
+}
+
+.k {
+  margin: 0;
+  color: var(--deep);
+  font-weight: 600;
+}
+
+.v {
+  margin: 0;
+  color: var(--ink-3);
+}
+
+/* THE COVERAGE LINE IS THE HONESTY SURFACE OF THIS REGION and it is derived from
+   the same `published` array the table renders, so the two can never disagree
+   about the denominator. */
+.coverage {
+  margin-block-start: var(--s2);
+  color: var(--ink-3);
+  font-size: var(--t1);
+  line-height: 1.5;
+}
+
+.none {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t2);
+  line-height: 1.5;
+}
+
+@media (max-width: 599px) {
+  .cell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

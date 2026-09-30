@@ -1,0 +1,179 @@
+/* Consumer Reports' move: do the credibility work BEFORE handing over the data.
+   FOUR READINGS OFF ONE INSTRUMENT, NOT FOUR CARDS — one panel, hairlines between
+   the readings, so it reads as a single measurement rather than as a feature grid.
+   Four cards here would be the "three feature cards" anti-pattern with an extra one.
+
+   THIS IS THE REGION ZAP DELIBERATELY DOES NOT HAVE. Their Terms of Use state that
+   price comparisons are ordered at their sole discretion, with no disclosed
+   methodology and no affiliate disclosure. That makes this the cheapest real
+   differentiator in the product, and it is why it moved ABOVE the footer in v4
+   instead of below it. */
+
+.trust {
+  padding-block: var(--s3);
+  border-block-start: 1px solid var(--line);
+}
+
+.in {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.i {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: var(--s2);
+  min-width: 0;
+}
+
+/* the hairline BETWEEN readings, logical so it flips with direction rather than
+   being mirrored by hand */
+.i + .i {
+  border-inline-start: 1px solid var(--line);
+}
+
+/* 34px AND IN --deep (v4.1 §1.4, §3.2 row 4). It was 24 in --ink, which put the four
+   readings one step off the body text they sat beside — the same missing display tier
+   that flattened the h2. --deep on --card is 8.40:1 (already asserted) and it is the
+   fourth of the four surfaces carrying this pass's colour: four chroma anchors in the
+   one region zap deliberately does not have.
+
+   STILL SMALLER THAN THE 44px PRICE ON A PRODUCT PAGE. The largest glyph in the
+   product is always a price — that ordering is what 44 was added for. */
+.n {
+  font-family: var(--display);
+  font-size: var(--t6);
+  font-weight: 600;
+  letter-spacing: var(--tr6);
+  font-variant-numeric: tabular-nums;
+  color: var(--deep);
+  line-height: 1.1;
+}
+
+/* B8 — each reading's sentence is a SENTENCE, and the second one ("257 de 2.170 productos
+   se venden en más de una cadena — solo esos se pueden comparar") is the product's own
+   biggest weakness stated on purpose. Setting the transparency differentiator in fine
+   print is arguing against it. */
+.t {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+
+/* ---- the freshness distribution bar ----
+   The track is decorative --line; the SEGMENTS carry the meaning and their own
+   boundaries. */
+.track {
+  display: flex;
+  height: 6px;
+  margin-block-start: 6px;
+  background: var(--line);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.segFresh,
+.segDay,
+.segStale {
+  display: block;
+  height: 6px;
+}
+
+/* calm: the chain-to-buy-from green, used here as "this part of the claim holds" */
+.segFresh {
+  background: var(--go);
+}
+
+/* v4.1-FIX N1 — AMBER MEANS MONEY, PRODUCT-WIDE, AND FRESHNESS IS NOT MONEY.
+   This segment was --loud. §3.5 states the rule as "every one of amber's five places is a
+   semantic claim about money" and §3.4 place 3 then gave amber to a freshness
+   distribution, in the same file. --deep is the SUPPORTING/DATA accent (DESIGN.md §4)
+   and is exactly the right role: 8.40:1 on --card, already asserted, and no --loud-edge
+   needed because it clears the 3:1 non-text minimum on its own.
+
+   It renders on ZERO nodes today (over_24h and over_48h are both 0), which is why this
+   was worth doing now rather than later: the rule becomes true while nothing on screen
+   changes, instead of becoming true the first bad-freshness day. */
+.segDay {
+  background: var(--deep);
+}
+
+.segStale {
+  background: var(--loud-edge);
+}
+
+/* ---- the method disclosure ---- */
+.how {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-block-start: 4px;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--act);
+  justify-self: start;
+}
+
+.how:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.howMk {
+  flex: none;
+}
+
+/* spans the whole panel: it is one statement, not a fifth reading */
+.method {
+  grid-column: 1 / -1;
+  padding: var(--s2);
+  border-block-start: 1px solid var(--line);
+  background: var(--fill);
+  /* B8 — the method statement. Same argument as Product's `.method`: this is the
+     credibility text and it was the smallest type in the system. */
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.method b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 1023px) {
+  .in {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* at two columns the logical border must reset on every third child, or the
+     second row inherits a leading rule it should not have */
+  .i:nth-child(odd) {
+    border-inline-start: 0;
+  }
+
+  .i:nth-child(n + 3) {
+    border-block-start: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 539px) {
+  .in {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .i + .i {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--line);
+  }
+}

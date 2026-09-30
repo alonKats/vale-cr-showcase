@@ -1,0 +1,57 @@
+{
+  "_comment": "TEMPLATE, not part of the shipped dataset (leading underscore = skipped by load_profiles). Copy this file to add a category: declare which sources carry it, how to tell a member from an accessory, the brand vocabulary, and one extractor per attribute. Everything else is inherited from _defaults.json. No engine code changes.",
+  "id": "microondas",
+  "label": "Microondas",
+  "sources": {
+    "norte": {
+      "category_dir": "microondas",
+      "trusted_category": true,
+      "_note": "`trusted_category` means the source's URL IS the category, so the include filter is skipped for it (a category page lists 'Samsung Galaxy S25 Ultra' with no category word in the title). Exclude patterns and the price floor still apply."
+    },
+    "sur": {
+      "category_dir": "microondas"
+    }
+  },
+  "filter": {
+    "include": ["\\bMICROONDAS\\b"],
+    "exclude": ["\\b(TOSTADOR|TOSTADORA|SANDWICHERA|BASE PARA|SOPORTE|REPUESTO|LIMPIADOR|MOLDE|BANDEJA|PLATO)\\b"],
+    "price_floor_crc": 40000,
+    "price_ceiling_crc": 1500000
+  },
+  "brands": ["SAMSUNG", "WHIRLPOOL", "FRIGIDAIRE", "PANASONIC", "MIDEA", "MABE", "GENERAL ELECTRIC", "OSTER", "LG"],
+  "attributes": [
+    {
+      "key": "capacity_ft3",
+      "label": "Capacidad",
+      "unit": "ft³",
+      "facet": "range",
+      "display": "{value} pies³",
+      "extract": {
+        "kind": "number",
+        "round": 1,
+        "rules": [
+          {"pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:PIES CUBICOS|PIES|P3|CU\\.?\\s?FT\\.?|FT3)", "min_raw": 0.4, "max_raw": 3},
+          {"pattern": "(\\d+(?:[.,]\\d+)?)\\s*(?:LITROS|LTS?\\b|L\\b)", "scale": 0.0353147, "min_raw": 10}
+        ]
+      }
+    },
+    {
+      "key": "install_type",
+      "label": "Instalación",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {"EMPOTRABLE": "Empotrable", "EXTRACTOR": "Con extractor", "MOSTRADOR": "De mostrador"},
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {"value": "EXTRACTOR", "patterns": ["CON EXTRACTOR", "OVER THE RANGE"]},
+          {"value": "EMPOTRABLE", "patterns": ["EMPOTRABLE", "BUILT[- ]IN"]},
+          {"value": "MOSTRADOR", "patterns": ["DE MOSTRADOR", "COUNTERTOP"]}
+        ]
+      }
+    }
+  ],
+  "fingerprint": ["brand", "capacity_ft3", "install_type"],
+  "fingerprint_round": {"capacity_ft3": 0.1},
+  "card_title": "{brand} {capacity_ft3}"
+}

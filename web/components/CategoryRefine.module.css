@@ -1,0 +1,206 @@
+/* THE CATEGORY FILTER BAR — v8. Figma 18:103.
+
+   A white band under the page header carrying two rows: the chip row (sort,
+   then one chip per facet, then the applied values, then `Limpiar filtros`) and
+   a summary line. See CategoryRefine.tsx for why the interaction model changed
+   from one panel to one popover per chip. */
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s3) 0;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s2);
+  flex-wrap: wrap;
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* the 1×24 rule between the sort control and the facets — the one place this
+   bar draws a line, because sorting and filtering are different verbs */
+.div {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+}
+
+/* ---- a facet chip -------------------------------------------------------
+   `.holder` is the positioning context for the popover the chip owns, and it is
+   also what the panel's outside-click check walks: a pointerdown inside the
+   holder is either on the chip or in the panel, and neither should close it. */
+.holder {
+  position: relative;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  box-shadow: var(--shadow-chip);
+  color: var(--deep);
+  font-family: var(--body);
+  font-size: var(--t-row);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease);
+}
+
+.chip:hover,
+.chip[aria-expanded='true'] {
+  border-color: var(--deep);
+}
+
+/* the toggle chip's ON state. It gets the tint fill rather than the applied
+   chip's solid teal: it is still a control you press again to undo, not a value
+   you remove with an ×, and the two must not look identical. */
+.chip[aria-pressed='true'] {
+  background: var(--tint);
+  border-color: var(--deep);
+  font-weight: 700;
+}
+
+.chip:active {
+  transform: scale(var(--press));
+}
+
+/* how many values are set inside a chip's own panel — the chip stays neutral,
+   the count does the work, so a row of six chips does not become six filled
+   pills the moment one value is chosen inside each */
+.chipN {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 5px;
+  border-radius: var(--r-pill);
+  background: var(--deep);
+  color: var(--on-deep);
+  font-family: var(--display);
+  font-size: var(--t-cap);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- an applied value ---------------------------------------------------
+   FILLED TEAL, and it is the only filled thing in the row (18:131). A chip that
+   opens a panel and a chip that removes a filter are different controls, so
+   they do not share a resting appearance. */
+.on {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--deep);
+  border-radius: var(--r-pill);
+  background: var(--deep);
+  color: var(--on-deep);
+  font-size: var(--t-row);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.on button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.on button:hover {
+  opacity: 1;
+}
+
+/* ---- clear --------------------------------------------------------------
+   AMBER, and therefore --loud-ink and not --loud: 18:135 paints it #FEA619,
+   which is 1.97 on this white band and a banned pair. */
+.clear {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--loud-ink);
+  font-family: var(--body);
+  font-size: var(--t2);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---- the summary line ---------------------------------------------------- */
+
+.summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--t2);
+}
+
+.summary b {
+  font-weight: 700;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--edge);
+}
+
+.by {
+  color: var(--ink-3);
+  font-size: var(--t-row);
+  font-weight: 400;
+}
+
+.by b {
+  color: var(--deep);
+  font-weight: 700;
+}
+
+/* the green reading at the right end of the row (18:141). It states a MEASURED
+   maximum over the products actually on this page, so it renders only when
+   there is one — never as standing copy. */
+.gapNote {
+  margin-inline-start: auto;
+  color: var(--go);
+  font-size: var(--t-row);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .bar {
+    padding: var(--s2) 0;
+  }
+
+  .chips {
+    gap: var(--s1);
+  }
+
+  .gapNote {
+    margin-inline-start: 0;
+  }
+}

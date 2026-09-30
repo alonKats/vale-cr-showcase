@@ -1,0 +1,350 @@
+/* THE ANSWER PLATE — see AnswerPlate.tsx for the argument; this file is only
+   its geometry, and the geometry IS the spec: v7.2 §3.4 publishes a band table
+   at 1440 and at 390 and rules that a build differing by more than ±24px at
+   either width has changed the composition.
+
+   So the vertical rhythm is written as the table reads it:
+
+                        1440                  390
+     plate top pad      --s4 32               --s3 24
+     eyebrow → figure   --s3 24               --s2 16
+     figure → h1        --s2 16               --s2 16
+     h1 → price row     --s4 32               --s3 24
+     plate bottom pad   --s4 32               --s3 24
+
+   Three different gaps at each width, from a single `gap: var(--s2)` plus two
+   additive margins, rather than five explicit margins that can drift apart. */
+
+.plate {
+  display: grid;
+  gap: var(--s2);
+  /* §3.4 — the band between the chrome and the plate: --s2 at 390, --s3 at 1440. */
+  margin-block-start: var(--s2);
+  /* THE W1 GROUP'S LOWER BOUNDARY, INHERITED FROM `.w1Foot` (2026-08-26).
+     v7.2 §3.6 put --s5 (48px) ONCE on this template — after the W1 group, before
+     the first rail — and it lived on the wrapper that held the plate AND the
+     distribution strip. The strip is gone from `/` and the wrapper with it, so
+     the boundary moves onto the plate itself: the group is now one object, and
+     a group of one needs no div to carry its own bottom margin.
+
+     THE VALUE IS UNCHANGED AND THAT IS THE POINT. The designer overturned the
+     `calc(var(--s5) - var(--s3))` form in her Wave-H critique §4.7 because the
+     rendered 48px tier boundary came out WEAKER than the 49px rail↔rail one it
+     was supposed to outrank. `var(--s5)` renders 48 + `.sec`'s own 24 = 72
+     against 49, and that arithmetic survives the strip's removal untouched —
+     the element below this is still `.sec`. Re-deriving it here would be the
+     same error a second time. AnswerPlate renders on `/` and nowhere else, so
+     this margin has no other call site to disturb. */
+  margin-block-end: var(--s5);
+  padding: var(--s3);
+  border-radius: var(--r2);
+  /* --ink, exactly as VerdictPlate. White on it is 15.56:1, amber 8.67:1 and
+     --on-deep-2 9.61:1 — more headroom than any light surface in the palette.
+     NO SHADOW, and that is a rule rather than an omission: the plate separates
+     from --ground by 13,8:1 of value and box-shadow exists in exactly two
+     places in this product (the sheet and the sticky chrome). */
+  background: var(--ink);
+  color: var(--card);
+}
+
+.row {
+  margin-block-start: var(--s1);
+}
+
+@media (min-width: 768px) {
+  .plate {
+    margin-block-start: var(--s3);
+    padding: var(--s4);
+  }
+
+  .figure {
+    margin-block-start: var(--s1);
+  }
+
+  .row {
+    margin-block-start: var(--s2);
+  }
+}
+
+/* ---- 1: THE EYEBROW ----
+   The label and the freshness stamp on one line, the stamp end-aligned. It
+   WRAPS at 390 into two lines, which is what §3.4's 36px band budgets for.
+
+   ONLY THE LABEL IS UPPERCASED. The stamp is a sentence with a figure in it
+   ("5.117 precios, ninguno con más de 2 h") and setting a sentence in caps at
+   12px is the shouting a caps label is allowed and a sentence is not. Same
+   size, same weight, same colour; the transform is the only difference. */
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px var(--s2);
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--on-deep-2);
+}
+
+/* the caps label keeps +0.04em, which is letterfit work for capitals rather
+   than the optical correction --tr1 is (tokens.css, the tracking ladder). */
+.label {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* the stamp is INLINE, not a nested flex row: it has to be able to wrap between
+   its two facts at 375 and below, and the separator that survives that wrap is
+   the product's own NBSP-glued ` · ` (lib/format.ts `cuotas()`, Featured.tsx
+   SEP). measure.mjs fails a `·` that starts or ends a rendered line, and gluing
+   both neighbours removes the break opportunity rather than moving it. */
+.stamp {
+  text-align: end;
+}
+
+/* ---- 2: THE FIGURE ----
+   56px. THE PLATE'S ENTIRE AMBER BUDGET, and the only --t8 node in the product.
+   Tabular, because it is money; `nowrap`, because a number never wraps at any
+   size product-wide (VerdictPlate B5 — a mid-number wrap prints `₡155.` / `390`
+   and in a price-comparison product that is a number a person can misread).
+
+   --tr7 rather than a new --tr8: the tracking ladder's rule is "large type
+   closes", 44 already closes at −0.03em, and minting a ninth tracking token for
+   one node would be the opposite of §3.2's "one token line". */
+.figure {
+  font-family: var(--display);
+  font-size: var(--t8);
+  font-weight: 700;
+  letter-spacing: var(--tr7);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--loud);
+}
+
+/* §3.2's width boundary, DECLARED rather than discovered. Space Grotesk tabular
+   at 56px runs ≈0.6em/glyph, so a seven-figure gap (`₡1.234.567`, 10 glyphs
+   ≈336px) fits the 350px inner shell at 390 and OVERFLOWS the 296px one at the
+   320 floor. The figure is derived from the catalogue and will be a seven-figure
+   number the day a ₡1M+ spread tops the percentage board, so the step down is
+   not conditional on today's data.
+
+   IT STEPS TO --t6 34, NOT TO --t7 44, AND §3.2 SAYS --t7. THE GATE RULED.
+   measure.mjs assertion 17c — "--t7 appears on at most ONE node per page and
+   that node must be `[data-verdict-price]`" — failed at /@320 on this exact
+   node, and §7 lists that assertion as untouched and expected to pass. It is
+   also the contradiction inside §3.2 itself: the paragraph titled "Why --t8 and
+   not --t7" spends its length establishing that this figure MAY NOT take 44
+   because 44 is the best/only PRICE and this is a DIFFERENCE — and then steps it
+   down onto 44 at the one width nobody looks at. Both cannot hold. The reserved
+   size wins, because it is the one type rule this project has defended for three
+   versions and it is the rule --t8 was minted to respect.
+
+   34 fits with room: 10 glyphs at 0.6em ≈ 204px inside the 248px inner box at
+   the 320 floor. It also gives --t6 a user again on this page, which §6's
+   deferred list wanted checked. The designer's ruling, flagged in the build report. */
+@media (max-width: 359px) {
+  .figure {
+    font-size: var(--t6);
+    letter-spacing: var(--tr6);
+  }
+}
+
+/* ---- 3: THE h1 ----
+   26/600 on --ink at 15.56:1. It shares --t5 with the h2 at the SAME role
+   signature (26 | 600 | none), so §1.2's "two roles at 26" is unchanged — the
+   card price at 26/700 is the other one. */
+.h1 {
+  font-family: var(--display);
+  font-size: var(--t5);
+  font-weight: 600;
+  letter-spacing: var(--tr5);
+  line-height: 1.15;
+  color: var(--card);
+}
+
+/* ---- 4: THE PRICE ROW ----
+   Two offers side by side at ≥768 and stacked at 390 (§3.4 budgets two rows
+   there). The product link is the last item and is allowed to wrap onto its own
+   line — it is the one element in the plate whose width is the catalogue's to
+   decide. */
+.row {
+  display: grid;
+  gap: var(--s1);
+}
+
+@media (min-width: 768px) {
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s2) var(--s4);
+  }
+}
+
+/* the price over its chain, 2px apart: they are one statement, and any gap that
+   reads as a list separation would let the eye pair a price with the wrong
+   chain. */
+.offer {
+  display: grid;
+  gap: 2px;
+}
+
+.price {
+  font-family: var(--display);
+  font-size: var(--t4);
+  font-weight: 700;
+  letter-spacing: var(--tr4);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--card);
+}
+
+/* --on-deep-2 (9.61 on --ink) on BOTH chains. NOT --go, which is 2.33 here and
+   a banned pair: the cheaper chain is identified by sitting under the lower
+   price, never by hue (§8.1). */
+.chain {
+  font-size: var(--t1);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--on-deep-2);
+}
+
+/* --act-on-dark, 10.07 on --ink — the link colour inside every dark surface in
+   this product. --act itself measures 2.38 there. A TEXT LINK AND NOT A BUTTON:
+   the tallest filled control in the product is the one that costs money, and
+   nothing on this plate costs anything. */
+.name {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+  color: var(--act-on-dark);
+}
+
+.name:hover {
+  color: var(--card);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* THE SAME OVERRIDE `.chrome` AND `.consent` CARRY IN globals.css, and it is
+   required rather than optional: the global focus ring is --act, which measures
+   2.38 on --ink and is invisible on this surface. v5 §4.4 wrote the rule for the
+   product's second --ink surface; this is its third, so it takes the rule with
+   it. --act-on-dark is 10.07 here. Not in v7.2 §3 — flagged in the build report
+   as an addition the existing rule forces. */
+.plate :where(a):focus-visible {
+  outline-color: var(--act-on-dark);
+}
+
+/* THIS BLOCK IS LAST IN THE FILE AND THAT IS LOAD-BEARING, NOT TIDINESS.
+   It overrides `.eyebrow`'s own `display: flex` with `display: contents`, and
+   CSS Modules emit rules in source order at equal specificity — written where
+   the other two media queries live, near the top, the base `.eyebrow` rule 30
+   lines below silently won and the plate rendered with a flex eyebrow inside a
+   two-column grid: the label and the stamp back on one row, i.e. exactly the
+   header bar F1 is about, while `.figure` / `.h1` / `.row` moved correctly.
+   A partially-applied media query is the worst outcome available here, because
+   the composition still looks deliberate. Measured, not assumed. */
+/* ==========================================================================
+   ≥1024 — THE PLATE IS AN ASYMMETRIC TWO-COLUMN INSTRUMENT (The designer, Wave-H
+   critique F1). Her finding, and it is a composition defect rather than a
+   typographic one: at 1440 the plate is 1360 wide and every element inside it
+   ended by x≈580, so 790px of the darkest object on the site was empty and the
+   eyebrow label (x 72…265) and the freshness stamp (x 1070…1368) read as the two
+   ends of a HEADER BAR rather than as a caption on the figure between them. A
+   caption 800px from the thing it captions is not a caption.
+
+   THE FIX IS STRUCTURAL AND IT IS NOT A SMALLER FIGURE — §11 risk 1 and §7 both
+   rule that out explicitly. 56 stays.
+
+     left  (3fr)   eyebrow label · figure · h1        — the claim
+     right (2fr)   the price row, top-aligned with the figure  — the evidence
+                   the freshness stamp, bottom-right — the provenance
+
+   STILL FOUR ELEMENTS AND NO FIFTH (§2.4). Nothing is added, nothing is removed
+   and the DOM is untouched: the same four nodes are placed, which is what makes
+   this one media query rather than a second component. Below 1024 the stacked
+   layout is correct as built and stays — at 390 the label and the stamp fall into
+   a two-line block directly above the figure, which is why 390 already read
+   better than 1440.
+
+   `display: contents` ON THE EYEBROW IS THE WHOLE MECHANISM. The label and the
+   stamp have to land in different columns and different rows, and they are one
+   <p> because they are one line at every width below 1024. Promoting that <p> to
+   a pass-through makes its two spans grid items of the plate WITHOUT a wrapper
+   div, a duplicated node or a second markup path. Inherited type still comes off
+   .eyebrow — a display:contents box generates no box but still inherits and is
+   still inherited FROM.
+
+   THE ROWS ARE DECLARED, NEVER AUTO-PLACED. Auto-placement would put the stamp
+   beside the label in row 1, which is the header bar this fix exists to remove.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .plate {
+    /* 3:2. The figure needs ~302px at 56px and the h1 renders 472,8px on one
+       line; the price row is two ~105px offers and a link. 60/40 is the ratio at
+       which neither column is the one with the hole in it. */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    column-gap: var(--s5);
+    align-items: start;
+  }
+
+  .eyebrow {
+    display: contents;
+  }
+
+  .label {
+    grid-area: 1 / 1;
+  }
+
+  .figure {
+    grid-area: 2 / 1;
+  }
+
+  .h1 {
+    grid-area: 3 / 1;
+  }
+
+  /* row 2, column 2 — and the --s1 is not decoration: the figure carries the same
+     margin at ≥768, so matching it is what makes "top-aligned with the figure"
+     true in pixels rather than in intent.
+
+     AND IT RIGHT-ALIGNS (The designer, Wave-H critique §8.5 N1). Measured before:
+     prices and product link left-aligned at 868,8 while the stamp right-aligned
+     to 1368, so the plate carried FOUR vertical axes — 72 · 868,8 · 1070,6 · 1368
+     — with a ~240×110 open corner at its top right. DESIGN.md §1: everything
+     aligns to a grid. End-aligning this column collapses it to TWO axes (72 and
+     1368), the price block moves into the corner void, and right-aligned numerals
+     are what an instrument does. The 324px inter-column gap that remains is a
+     gutter — bounded by ink on both sides — not dead space.
+
+     TWO declarations because the column is a flex row of grid boxes and they do
+     different jobs, not because one is a fallback: `justify-content` places the
+     flex ITEMS (the two offers, and the link on its wrapped second line),
+     `text-align` places the TEXT inside each `.offer`, whose price and chain are
+     stretched grid items of unequal width and would otherwise left-align inside
+     the wider of the two. Left-aligning the narrower of a stacked price/chain
+     pair is the same misalignment one level down. */
+  .row {
+    grid-area: 2 / 2;
+    margin-block-start: var(--s1);
+    justify-content: flex-end;
+    text-align: end;
+  }
+
+  /* the plate's bottom-right corner. It is the least important of the four things
+     on this object — provenance, not the reading — so it goes where the eye
+     finishes rather than where it starts. */
+  .stamp {
+    grid-area: 3 / 2;
+    align-self: end;
+    justify-self: end;
+  }
+}

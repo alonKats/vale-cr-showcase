@@ -1,0 +1,230 @@
+/* THE CHAIN PRICE TABLE — v8. Figma 17:112 / 17:113.
+
+   Each chain is a CARD ROW, not a table row: white, hairlined, 16px radius, four
+   columns — who · what they call it · how much · the way out. The cheapest row
+   carries a 1.5px teal border and a soft shadow so the answer is findable
+   without reading, which is the whole job of this region.
+
+   THE MIDDLE COLUMN IS THE AUDIT AND IT IS NOT DECORATION. It prints the chain's
+   OWN title and code for this SKU. They differ between chains, and a reader
+   checking whether we matched the same product needs to see what each chain
+   called it — that is what makes the comparison checkable rather than asserted. */
+
+.wrap {
+  min-width: 0;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 240px 160px;
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--pad);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r5);
+}
+
+/* THE CHEAPEST ROW. 1.5px rather than 1 so the emphasis survives a 1px hairline
+   beside it, plus the softest shadow in the palette — the row is lifted, not
+   coloured, because colouring it would put a second green object next to the
+   `EL MÁS BAJO` chip it already carries. */
+.row:first-child {
+  border: 1.5px solid var(--deep);
+  box-shadow: var(--shadow-row);
+}
+
+/* ---- who ---------------------------------------------------------------- */
+
+.chain {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.chainN {
+  color: var(--deep);
+  font-size: var(--t-name);
+  font-weight: 800;
+}
+
+.rowFlag {
+  align-self: flex-start;
+}
+
+/* ---- what the chain calls it -------------------------------------------- */
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--deep);
+  font-size: var(--t2);
+  font-weight: 600;
+  /* two lines then stop: a chain title is 60 characters and this is the fluid
+     column, so an unclamped one decides the row's height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sku,
+.stamp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t1);
+  font-variant-numeric: tabular-nums;
+}
+
+.variants {
+  color: var(--ink-3);
+}
+
+.pin {
+  flex: none;
+  color: var(--ink-3);
+}
+
+.place {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fresh {
+  white-space: nowrap;
+}
+
+/* ---- how much ----------------------------------------------------------- */
+
+.money {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.p {
+  color: var(--deep);
+  font-family: var(--display);
+  font-size: var(--t5);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tr3);
+  white-space: nowrap;
+}
+
+/* the two chips. GREEN for the winner, NEUTRAL for a difference — the delta on a
+   losing row is a quantity, not a warning, and painting it red or amber would
+   make eight ordinary prices look like eight problems. */
+.deltaBase,
+.delta {
+  flex: none;
+  padding: 4px var(--s1);
+  border-radius: var(--r1);
+  font-size: var(--t-cap);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.deltaBase {
+  background: var(--go-fill);
+  color: var(--go);
+}
+
+.delta {
+  background: var(--fill);
+  color: var(--ink-2);
+  text-transform: none;
+}
+
+/* ---- the way out --------------------------------------------------------
+   FILLED, and it reverses a v4 rule deliberately (v4.1-fix B6). The old note
+   read "never a solid button down here — the plate above holds the page's one
+   filled object". Measured consequence: on the page whose entire job is WHICH
+   CHAIN, the chain buttons were the quietest control class in the product. */
+
+.act {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px var(--s2);
+  border-radius: var(--r3);
+  background: var(--deep);
+  color: var(--on-deep);
+  font-size: var(--t-row);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.act:hover {
+  background: var(--act-strong);
+}
+
+.act:active {
+  transform: scale(var(--press));
+}
+
+.filters {
+  margin-block-start: var(--s2);
+  color: var(--ink-3);
+  font-size: var(--t1);
+}
+
+/* ==========================================================================
+   NARROW — the four columns collapse to two, then one. The price and its CTA
+   stay together to the end: they are the row's answer and its action, and
+   separating them puts the figure at the top of a stacked card and the button
+   at the bottom with the audit text between them.
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) 160px;
+    row-gap: var(--s2);
+  }
+
+  .who {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .money {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 599px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--s2);
+  }
+
+  .money {
+    justify-content: flex-start;
+  }
+}

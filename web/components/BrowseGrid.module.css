@@ -1,0 +1,93 @@
+/* "BUSCAR OTRAS CATEGORÍAS POPULARES" — v8. Figma 6:245 / 6:247.
+
+   Seven icon tiles, smaller and flatter than the category scroller's: a 60px
+   tint well over a 28px glyph, no shadow ramp, a single line of 13px label.
+   The scroller says "here is everything"; this says "here is what else people
+   look at", and the size difference is what keeps the two from reading as the
+   same row twice. */
+
+.wrap {
+  max-width: calc(var(--shell) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding: var(--s6) var(--gutter);
+}
+
+.h {
+  margin: 0 0 var(--s3);
+  color: var(--ink);
+  font-size: var(--t4);
+  font-weight: 800;
+  letter-spacing: var(--tr4);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: var(--s2);
+  background: var(--card);
+  border: 1px solid transparent;
+  border-radius: var(--r5);
+  box-shadow: var(--shadow-tile);
+  color: var(--ink);
+  font-size: var(--t-row);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.tile:hover {
+  border-color: var(--line);
+  background: var(--tint);
+}
+
+.tile:active {
+  transform: scale(var(--press));
+}
+
+.well {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--r4);
+  background: var(--tint);
+  color: var(--deep);
+}
+
+.label {
+  /* ONE line then ellipsis — 6:252 sets `text-ellipsis whitespace-nowrap` and
+     the longest label here is "Congeladores y frigobares". The scroller's tiles
+     clamp at two; these are half the height and cannot afford a second. */
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: var(--s5) 16px;
+  }
+
+  .row {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .well {
+    width: 48px;
+    height: 48px;
+  }
+}

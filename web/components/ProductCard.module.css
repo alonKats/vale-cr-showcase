@@ -1,0 +1,442 @@
+/* THE PRODUCT CARDS — v8. THREE variants, because the design draws three:
+
+     .rail   6:123   the home page's rails. r24, p18, drop-shadow, a filled
+                     "MÁS BARATO EN …" badge on top, THREE rival rows with dots,
+                     a tint-filled CTA.
+     .grid   18:144  the category and search grids. r16, a hairline border, a
+                     200px image area with the gap badge floated over it, TWO
+                     store rows plus a "+N tiendas más" summary, an OUTLINE CTA.
+     .mini   17:247  "Modelos parecidos" on the product page. No store rows at
+                     all — a caption, a title, a price and a CTA.
+
+   They are not one component with three skins. The .rail card lists the chains
+   that did NOT win; the .grid card lists the chains that did, starting with the
+   winner. That is a difference in what the card SAYS, not in how it looks, so
+   collapsing them would mean a prop that changes the meaning of the data. */
+
+/* ---- shared ------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  list-style: none;
+}
+
+/* The whole card is a link. The <a> covers it via ::after rather than wrapping
+   the content, so the store rows below stay selectable text and the CTA is not
+   an anchor inside an anchor — which is invalid HTML and which browsers
+   silently un-nest, taking the outer link's href with it. */
+.hit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.hit {
+  color: inherit;
+  text-decoration: none;
+}
+
+.media {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.title {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 700;
+  /* two lines then ellipsis. A card whose title is allowed a third line is a
+     card whose grid row height is decided by its longest product name. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t-cap);
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+/* EVERY ₡ FIGURE IN THE PRODUCT IS Space Grotesk — DESIGN.md §Typography makes
+   that split explicit and all three frames obey it without exception. Tabular
+   figures on top of that, so a column of prices aligns on the decimal. */
+.price {
+  display: block;
+  color: var(--deep);
+  font-family: var(--display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tr3);
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* ---- the badges ---------------------------------------------------------- */
+
+/* the filled pill on the home card (6:124) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--go-fill-2);
+  color: var(--go-2);
+  font-size: var(--t-cap);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+/* the savings chip floated over the image on the grid card (18:147) */
+.gap {
+  padding: 4px var(--s1);
+  border-radius: var(--r2);
+  background: var(--go-wash);
+  color: var(--go);
+  font-size: var(--t-cap);
+  font-weight: 700;
+}
+
+/* ---- the store rows ------------------------------------------------------ */
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1);
+  font-size: var(--t-row);
+}
+
+.chain {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: 0;
+  color: var(--ink);
+  font-weight: 400;
+  /* a chain name never wraps: "Gollo (Tienda)" on two lines inside a 71px row
+     block is what pushes a card 17px taller than the three beside it */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--line-2);
+}
+
+.rowPrice {
+  flex: none;
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* THE NEXT-CHEAPEST RIVAL — WEIGHT ONLY, NEVER GREEN.
+
+   6:138 paints this row's dot and price in green (#00875A) and the first
+   build reproduced that. It is wrong with real data and the mockup hides why:
+   its rival is ₡254.888 against a ₡254.700 winner, so the green sits on a number
+   that is within a rounding error of the best price and reads as "also good".
+
+   In the catalogue the winner is BY DEFINITION the cheapest, so a rival is
+   always worse — often enormously. The rendered home page had `Gollo ₡349.990`
+   in savings-green beside a `₡194.600` winner: 80% more expensive, coloured with
+   the same token as "Ahorrá 15%" and "EL MÁS BAJO" two cards away. That breaks
+   the one colour rule this design is strict about — green means a better price —
+   and it breaks it on the most-viewed surface in the product.
+
+   So the row keeps its emphasis and loses its hue: the next-cheapest rival is
+   the useful one (it is where you go if the winner is out of stock or nowhere
+   near you) and 600 weight says so without making a price claim. */
+.best .chain {
+  font-weight: 600;
+}
+
+.more {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t-cap);
+}
+
+/* ---- the calls to action ------------------------------------------------- */
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: var(--r4);
+  background: var(--tint);
+  color: var(--deep);
+  font-size: var(--t-row);
+  font-weight: 700;
+  text-align: center;
+}
+
+.ctaOutline {
+  composes: cta;
+  padding: 10px;
+  border: 1.5px solid var(--deep);
+  border-radius: var(--r3);
+  background: none;
+}
+
+.card:hover .cta,
+.card:hover .ctaOutline {
+  background: var(--deep);
+  color: var(--on-deep);
+}
+
+/* =========================================================================
+   VARIANT · .rail — the home page (6:123)
+   ========================================================================= */
+
+.rail {
+  gap: var(--s2);
+  padding: 18px;
+  border-radius: var(--r7);
+  box-shadow: var(--shadow-card);
+}
+
+.rail .media {
+  height: var(--card-media);
+  border-radius: var(--r4);
+}
+
+.rail .brand {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t2);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rail .title {
+  font-size: var(--t-lede);
+  -webkit-line-clamp: 2;
+}
+
+.rail .price {
+  font-size: var(--t5);
+}
+
+/* THE SAME FIX ON THE RAIL CARD. It used to give the slack to `.rows`, which
+   only moved the gap rather than removing it — the store list grew and the white
+   collected between its last row and the divider. The trailing divider takes the
+   slack instead, so it and the button travel to the bottom together and every
+   card in a rail still ends its CTA on one line.
+
+   `:last-of-type` and not `:last-child`: a card whose product is sold by exactly
+   one chain renders no rival list and therefore only ONE <hr>, and that one is
+   the divider above the CTA. Both cases select the right rule. */
+.rail .rule:last-of-type {
+  margin-top: auto;
+}
+
+/* =========================================================================
+   VARIANT · .grid — category, search, refine (18:144)
+   ========================================================================= */
+
+/* NOT `justify-content: space-between`. The grid makes
+   every card in a row the same height, and space-between hands the leftover
+   height to the GAP BETWEEN the two children — so a card with one line less than
+   its tallest neighbour showed 50px of white between the photo and the title,
+   measured. Only the card that happened to carry a `+N tiendas más` line looked
+   right, which is why three of four in a row were wrong and one was not.
+
+   Everything packs to the top and the CTA alone is pushed down by `margin-top:
+   auto`, so the buttons still land on one line across the row — which is the
+   thing space-between was reaching for — and the slack collects in one place
+   where nothing is drawn instead of between the photo and its own title. */
+.grid {
+  border: 1px solid var(--line);
+  border-radius: var(--r5);
+  box-shadow: var(--shadow-flat);
+  overflow: hidden;
+}
+
+.gridMedia {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 200px;
+  padding: var(--s2);
+  background: var(--well);
+}
+
+.gridMedia img {
+  width: var(--card-media);
+  height: var(--card-media);
+  object-fit: contain;
+}
+
+/* the chip + (absent) heart row floated over the image */
+.over {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s1);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--pad);
+  /* takes the card's whole remaining height, so the `margin-top: auto` below has
+     something to push against */
+  flex: 1 1 auto;
+}
+
+/* the CTA is always the body's last child, with or without the `+N tiendas más`
+   line above it */
+.body > .ctaOutline {
+  margin-top: auto;
+}
+
+.grid .title {
+  font-size: var(--t2);
+}
+
+.model {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: var(--t-cap);
+}
+
+.grid .eyebrow {
+  font-weight: 600;
+}
+
+.grid .price {
+  font-size: var(--t-fig);
+}
+
+.grid .row {
+  font-size: var(--t1);
+}
+
+.grid .chain {
+  font-weight: 600;
+}
+
+/* the grid card's rows carry no dots — 18:162 has a bare name and a price */
+.grid .dot {
+  display: none;
+}
+
+/* =========================================================================
+   VARIANT · .mini — "Modelos parecidos" on the product page (17:247)
+   ========================================================================= */
+
+.mini {
+  gap: var(--s2);
+  padding: var(--pad);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r5);
+}
+
+.mini .media {
+  height: var(--card-media);
+  border-radius: var(--r4);
+}
+
+.mini .cap {
+  margin: 0;
+  color: var(--loud-ink);
+  font-size: var(--t-cap);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tr1);
+}
+
+.mini .title {
+  font-size: var(--t2);
+  -webkit-line-clamp: 1;
+}
+
+.mini .price {
+  font-size: var(--t5);
+}
+
+/* `Modelos parecidos` is a 4-up grid, so these stretch to the tallest card as
+   well — and a card whose product has no "más barato" caption is one line
+   shorter than its neighbours. */
+.mini > .ctaOutline {
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   MOBILE
+   ========================================================================== */
+
+@media (max-width: 700px) {
+  .rail,
+  .mini {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .rail .title {
+    font-size: var(--t2);
+  }
+
+  .rail .price,
+  .mini .price {
+    font-size: var(--t-fig);
+  }
+
+  .body {
+    padding: 14px;
+  }
+
+  .gridMedia {
+    height: 168px;
+  }
+
+  .gridMedia img {
+    width: 132px;
+    height: 132px;
+  }
+}

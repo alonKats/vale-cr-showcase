@@ -1,0 +1,266 @@
+{
+  "id": "celulares",
+  "label": "Celulares",
+  "sources": {
+    "norte": {
+      "category_dir": "celulares",
+      "trusted_category": true
+    },
+    "sur": {
+      "category_dir": "celulares"
+    }
+  },
+  "filter": {
+    "include": [
+      "\\b(CELULAR|SMARTPHONE|IPHONE)\\b"
+    ],
+    "exclude": [
+      "\\b(FUNDA|CARGADOR|PROTECTOR|VIDRIO|CABLE|POWER ?BANK|SOPORTE|AUDIFONO|AUDIFONOS|SMARTWATCH|TABLET|CASE|FORRO|FIJO|INALAMBRICO DE CASA|SELFIE|ADAPTADOR|MEMORIA|SIM|CHIP|ACCESORIO|REPUESTO|SOMBRILLA|COMBO)\\b"
+    ],
+    "price_floor_crc": 40000,
+    "price_ceiling_crc": 2500000
+  },
+  "brands": [
+    "SAMSUNG",
+    "APPLE",
+    "XIAOMI",
+    "MOTOROLA",
+    "HONOR",
+    "HUAWEI",
+    "OPPO",
+    "REALME",
+    "TECNO",
+    "INFINIX",
+    "NOKIA",
+    "ONEPLUS",
+    "GOOGLE",
+    "ALCATEL",
+    "REDMI",
+    "POCO",
+    "ZTE",
+    "BLU",
+    "VIVO",
+    "LG",
+    "FOSSIBOT",
+    "OUKITEL",
+    "BLACKVIEW",
+    "DOOGEE",
+    "UMIDIGI"
+  ],
+  "attributes": [
+    {
+      "key": "line",
+      "label": "Modelo",
+      "facet": "enum",
+      "display": "{value}",
+      "extract": {
+        "kind": "text",
+        "rules": [
+          {
+            "pattern": "\\bIPHONE\\s*(\\d{1,2}\\s*(?:PRO\\s*MAX|PRO|PLUS|MINI|AIR|E)?)\\b"
+          },
+          {
+            "pattern": "\\b(?:GALAXY\\s*)?(Z\\s*(?:FOLD|FLIP)\\s*\\d{1,2})\\b"
+          },
+          {
+            "pattern": "\\b(?:GALAXY\\s*)?([ZAMSF]\\d{2,3}\\s*(?:ULTRA|PLUS|FE|PRO)?)\\b"
+          },
+          {
+            "pattern": "\\bREDMI\\s*((?:NOTE\\s*)?\\d{1,2}[A-Z]?\\s*(?:PRO\\s*PLUS|PRO|PLUS|C|S)?)\\b"
+          },
+          {
+            "pattern": "\\bPOCO\\s*([A-Z]\\d{1,2}\\s*(?:PRO|ULTRA)?)\\b"
+          },
+          {
+            "pattern": "\\bMOTO\\s*([GE]\\s*\\d{1,3}\\s*(?:PRO|PLUS|POWER)?)\\b"
+          },
+          {
+            "pattern": "\\bEDGE\\s*(\\d{1,2}\\s*(?:PRO|ULTRA|NEO|FUSION)?)\\b"
+          },
+          {
+            "pattern": "\\bMAGIC\\s*(\\d{1,2}\\s*(?:PRO|ULTRA|LITE)?)\\b"
+          },
+          {
+            "pattern": "\\bHONOR\\s*(X?\\d{1,3}[A-Z]?\\s*(?:PRO|ULTRA|SMART|LITE)?)\\b"
+          },
+          {
+            "pattern": "\\bXIAOMI\\s*(\\d{1,2}[A-Z]?\\s*(?:PRO|ULTRA|LITE|T)?)\\b"
+          },
+          {
+            "pattern": "\\bNOVA\\s*(\\d{1,2}[A-Z]?\\s*(?:PRO|SE|I)?)\\b"
+          },
+          {
+            "pattern": "\\bSPARK\\s*(\\d{1,2}\\s*(?:PRO|GO)?)\\b"
+          },
+          {
+            "pattern": "\\bHOT\\s*(\\d{1,2}\\s*(?:PRO|PLUS|I)?)\\b"
+          }
+        ]
+      }
+    },
+    {
+      "key": "storage_gb",
+      "label": "Almacenamiento",
+      "unit": "GB",
+      "facet": "range",
+      "display": "{value} GB de almacenamiento",
+      "extract": {
+        "kind": "number",
+        "round": 0,
+        "rules": [
+          {
+            "pattern": "(\\d)\\s*TB\\b",
+            "scale": 1024,
+            "min_raw": 1,
+            "max_raw": 4
+          },
+          {
+            "pattern": "(\\d{1,3})\\s*GB\\s*(?:DE\\s*)?(?:ALMACENAMIENTO|ROM|MEMORIA INTERNA)",
+            "min_raw": 16
+          },
+          {
+            "pattern": "\\d{1,3}\\s*GB\\s*(?:DE\\s*)?RAM\\D{0,12}?(\\d{2,4})\\s*GB",
+            "min_raw": 16
+          },
+          {
+            "pattern": "(\\d{2,4})\\s*GB\\s*$",
+            "min_raw": 16
+          }
+        ]
+      }
+    },
+    {
+      "key": "ram_gb",
+      "label": "RAM",
+      "unit": "GB",
+      "facet": "range",
+      "display": "{value} GB de RAM",
+      "extract": {
+        "kind": "number",
+        "round": 0,
+        "rules": [
+          {
+            "pattern": "(\\d{1,2})\\s*GB\\s*(?:DE\\s*)?RAM",
+            "min_raw": 1,
+            "max_raw": 24
+          },
+          {
+            "pattern": "RAM\\s*(?:DE\\s*)?(\\d{1,2})\\s*GB",
+            "min_raw": 1,
+            "max_raw": 24
+          },
+          {
+            "pattern": "(\\d{1,2})\\s*GB\\s*(?:\\+|Y|/|,)?\\s*(?=\\d{2,4}\\s*(?:GB|TB)\\b)",
+            "min_raw": 1,
+            "max_raw": 24
+          }
+        ]
+      }
+    },
+    {
+      "key": "network",
+      "label": "Red",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "5G": "5G",
+        "4G": "4G"
+      },
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "5G",
+            "patterns": [
+              "\\b5G\\b"
+            ]
+          },
+          {
+            "value": "4G",
+            "patterns": [
+              "\\b4G\\b",
+              "\\bLTE\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "color",
+      "label": "Color",
+      "facet": "enum",
+      "display": "{value}",
+      "value_labels": {
+        "BLACK": "Negro",
+        "WHITE": "Blanco",
+        "BLUE": "Azul",
+        "GREEN": "Verde",
+        "GRAY": "Gris",
+        "PINK": "Rosado",
+        "PURPLE": "Morado",
+        "GOLD": "Dorado"
+      },
+      "collapsible": true,
+      "extract": {
+        "kind": "enum",
+        "values": [
+          {
+            "value": "BLACK",
+            "patterns": [
+              "\\b(NEGR[OA]|BLACK|MIDNIGHT)\\b"
+            ]
+          },
+          {
+            "value": "WHITE",
+            "patterns": [
+              "\\b(BLANC[OA]|WHITE)\\b"
+            ]
+          },
+          {
+            "value": "BLUE",
+            "patterns": [
+              "\\b(AZUL|BLUE)\\b"
+            ]
+          },
+          {
+            "value": "GREEN",
+            "patterns": [
+              "\\b(VERDE|GREEN)\\b"
+            ]
+          },
+          {
+            "value": "GRAY",
+            "patterns": [
+              "\\b(GRIS|GRAY|GREY|GRAFITO|TITANIO)\\b"
+            ]
+          },
+          {
+            "value": "PINK",
+            "patterns": [
+              "\\b(ROSAD[OA]|ROSA|PINK)\\b"
+            ]
+          },
+          {
+            "value": "PURPLE",
+            "patterns": [
+              "\\b(MORAD[OA]|LILA|PURPLE|VIOLETA)\\b"
+            ]
+          },
+          {
+            "value": "GOLD",
+            "patterns": [
+              "\\b(DORAD[OA]|GOLD)\\b"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "fingerprint": [
+    "brand",
+    "line",
+    "storage_gb",
+    "ram_gb"
+  ],
+  "card_title": "{brand} {line} {storage_gb}"
+}

@@ -1,0 +1,328 @@
+[
+ {
+  "id": "celulares",
+  "label": "Celulares",
+  "attributes": [
+   {
+    "key": "line",
+    "label": "Modelo",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "storage_gb",
+    "label": "Almacenamiento",
+    "unit": "GB",
+    "facet": "range",
+    "display": "{value} GB de almacenamiento",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "ram_gb",
+    "label": "RAM",
+    "unit": "GB",
+    "facet": "range",
+    "display": "{value} GB de RAM",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "network",
+    "label": "Red",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "5G",
+     "4G"
+    ],
+    "value_labels": {
+     "5G": "5G",
+     "4G": "4G"
+    },
+    "collapsible": false
+   },
+   {
+    "key": "color",
+    "label": "Color",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "BLACK",
+     "WHITE",
+     "BLUE",
+     "GREEN",
+     "GRAY",
+     "PINK",
+     "PURPLE",
+     "GOLD"
+    ],
+    "value_labels": {
+     "BLACK": "Negro",
+     "WHITE": "Blanco",
+     "BLUE": "Azul",
+     "GREEN": "Verde",
+     "GRAY": "Gris",
+     "PINK": "Rosado",
+     "PURPLE": "Morado",
+     "GOLD": "Dorado"
+    },
+    "collapsible": true
+   }
+  ],
+  "card_title": "{brand} {line} {storage_gb}",
+  "match_keys": [
+   "brand",
+   "model"
+  ],
+  "retailers": [
+   "norte",
+   "sur"
+  ]
+ },
+ {
+  "id": "microondas",
+  "label": "Microondas",
+  "attributes": [
+   {
+    "key": "capacity_ft3",
+    "label": "Capacidad",
+    "unit": "ft3",
+    "facet": "range",
+    "display": "{value} pies3",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "watts",
+    "label": "Potencia",
+    "unit": "W",
+    "facet": "range",
+    "display": "{value} W",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "install_type",
+    "label": "Instalacion",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "EXTRACTOR",
+     "EMPOTRABLE",
+     "MOSTRADOR"
+    ],
+    "value_labels": {
+     "EMPOTRABLE": "Empotrable",
+     "EXTRACTOR": "Con extractor",
+     "MOSTRADOR": "De mostrador"
+    },
+    "collapsible": false
+   },
+   {
+    "key": "finish",
+    "label": "Acabado",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "STAINLESS",
+     "BLACK",
+     "WHITE",
+     "SILVER"
+    ],
+    "value_labels": {
+     "STAINLESS": "Acero inoxidable",
+     "BLACK": "Negro",
+     "WHITE": "Blanco",
+     "SILVER": "Plateado"
+    },
+    "collapsible": true
+   }
+  ],
+  "card_title": "{brand} {capacity_ft3}",
+  "match_keys": [
+   "brand",
+   "model"
+  ],
+  "retailers": [
+   "norte",
+   "sur"
+  ]
+ },
+ {
+  "id": "pantallas",
+  "label": "Pantallas y TV",
+  "attributes": [
+   {
+    "key": "screen_in",
+    "label": "Pulgadas",
+    "unit": "\"",
+    "facet": "range",
+    "display": "{value} pulgadas",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "panel",
+    "label": "Panel",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "OLED",
+     "QNED",
+     "NANOCELL",
+     "QLED",
+     "LED",
+     "LCD"
+    ],
+    "value_labels": {
+     "OLED": "OLED",
+     "QNED": "QNED",
+     "NANOCELL": "NanoCell",
+     "QLED": "QLED",
+     "LED": "LED",
+     "LCD": "LCD"
+    },
+    "collapsible": false
+   },
+   {
+    "key": "resolution",
+    "label": "Resolución",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "8K",
+     "4K",
+     "FHD",
+     "HD"
+    ],
+    "value_labels": {
+     "8K": "8K",
+     "4K": "4K",
+     "FHD": "Full HD",
+     "HD": "HD"
+    },
+    "collapsible": false
+   },
+   {
+    "key": "smart_os",
+    "label": "Sistema",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "ROKU",
+     "GOOGLE_TV",
+     "ANDROID_TV",
+     "WEBOS",
+     "TIZEN",
+     "VIDAA",
+     "FIRE_TV"
+    ],
+    "value_labels": {
+     "ROKU": "Roku",
+     "GOOGLE_TV": "Google TV",
+     "ANDROID_TV": "Android TV",
+     "WEBOS": "webOS",
+     "TIZEN": "Tizen",
+     "VIDAA": "VIDAA",
+     "FIRE_TV": "Fire TV"
+    },
+    "collapsible": false
+   }
+  ],
+  "card_title": "{brand} {panel} {screen_in}",
+  "match_keys": [
+   "brand",
+   "model"
+  ],
+  "retailers": [
+   "norte",
+   "sur"
+  ]
+ },
+ {
+  "id": "refrigeradoras",
+  "label": "Refrigeradoras",
+  "attributes": [
+   {
+    "key": "capacity_ft3",
+    "label": "Capacidad",
+    "unit": "ft³",
+    "facet": "range",
+    "display": "{value} pies³",
+    "values": null,
+    "value_labels": null,
+    "collapsible": false
+   },
+   {
+    "key": "door_config",
+    "label": "Configuración",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "SIDE_BY_SIDE",
+     "FRENCH_DOOR",
+     "TOP_FREEZER",
+     "BOTTOM_FREEZER",
+     "SINGLE_DOOR",
+     "TWO_DOOR"
+    ],
+    "value_labels": {
+     "SIDE_BY_SIDE": "Side by side",
+     "FRENCH_DOOR": "French door",
+     "TOP_FREEZER": "Congelador superior",
+     "BOTTOM_FREEZER": "Congelador inferior",
+     "SINGLE_DOOR": "Una puerta",
+     "TWO_DOOR": "Dos puertas"
+    },
+    "collapsible": false
+   },
+   {
+    "key": "finish",
+    "label": "Acabado",
+    "unit": null,
+    "facet": "enum",
+    "display": "{value}",
+    "values": [
+     "STAINLESS",
+     "BLACK",
+     "WHITE",
+     "GRAY"
+    ],
+    "value_labels": {
+     "STAINLESS": "Acero inoxidable",
+     "BLACK": "Negro",
+     "WHITE": "Blanco",
+     "GRAY": "Gris"
+    },
+    "collapsible": false
+   }
+  ],
+  "card_title": "{brand} {door_config} {capacity_ft3}",
+  "match_keys": [
+   "brand",
+   "model"
+  ],
+  "retailers": [
+   "norte",
+   "sur"
+  ]
+ }
+]

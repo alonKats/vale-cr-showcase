@@ -1,0 +1,560 @@
+/* ==========================================================================
+   THE DOCUMENT TEMPLATE — six trust routes, one shape (design-v5 §1 + §2)
+
+   ---- THE MEASURE IS 44ch, AND THE UNIT LIES ----
+   1ch in Plus Jakarta Sans is the advance of `0` — 10.2484px at 14px (0.732em), a
+   TABULAR figure and deliberately wide. The average character in es-CR prose
+   measures 6.5866px (0.4705em). THE RATIO IS 1.556, so `ch` OVER-REPORTS A LINE
+   LENGTH BY 56%: the eight `max-width: 68ch` declarations this codebase shipped
+   render 105.8 characters per line against DESIGN.md §5's 60–75 band. On a
+   two-line `.note` nobody notices; on 1.500 words of continuous legal prose it is
+   a return-sweep failure and the reader loses the line.
+
+   44ch renders 450.9px = 68.5 characters, dead centre of the band — and it is the
+   value VerdictPlate.module.css already applies to the T4 statement, the single
+   most important sentence in the product. So the long-form measure is a value the
+   design has already chosen once, for the surface it was chosen for.
+
+   measure.mjs assertion 19 asserts the CHARACTER COUNT, never the `ch` value, so
+   a typeface change cannot silently reopen this.
+
+   ---- WHAT THIS FILE DOES NOT ADD ----
+   No colour token, no type step, no spacing step, no second shell. The prose
+   constraint is a GRID TRACK, not a token: DESIGN.md §6 (amended 2026-08-04) says
+   1360 governs the data grid and ~1200–1240 governs prose, and both hold at once
+   because the document is 880 of a 1360 shell. Everything sits inside the
+   ordinary `pg.shell`, so the breadcrumb, the h1 and the document's left edge
+   align with the chrome's left edge at every width. Alignment is the precision
+   signal; a document that floats free of the chrome is the first thing that reads
+   as bolted on.
+   ========================================================================== */
+
+/* ---------- the head block ----------
+   NO `·` IN THE STAMP. measure.mjs assertion 5 fails a middot that starts,
+   ends or sits alone on a rendered line, and this line wraps at 320. The comma in
+   POLICY_STAMP carries the same join and cannot fail. It is also the floor's
+   third role (eyebrow) and must stay under 60 characters — assertion 17a. */
+.stamp {
+  margin-block-start: var(--s1);
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---------- the grid ----------
+   ONE nav element, two layouts. Below 1024 it is a --fill panel in row 1 above
+   the document; at and above 1024 the same element becomes a 200px sticky column
+   beside it. Two elements would be two landmarks with one name and two copies of
+   one list to keep in step.
+
+   | viewport | shell | rail | doc card | text (capped) | trailing ground |
+   |----------|-------|------|----------|---------------|-----------------|
+   | 1440     | 1360  | 200  | 880      | 450.9         | 256             |
+   | 1240     | 1200  | 200  | 880      | 450.9         | 96              |
+   | 1144     | 1104  | 200  | 880      | 450.9         | 0   (cap binds) |
+   | 1024     |  984  | 200  | 760      | 450.9         | 0               |
+   | 1023     |  983  |  —   | 880      | 450.9         | 103  DECLARED BOUNDARY
+   |  768     |  728  |  —   | 728      | 450.9         | 0               |
+   |  390     |  366  |  —   | 366      | 334.0 (50.7c) | 0               |
+   |  320     |  296  |  —   | 296      | 264.0 (40.1c) | 0               |
+
+   THE 1023/1024 JUMP IS A DECLARED BOUNDARY, not a bug — the same construction and
+   the same precedent as the card grid's 234 → 317 at that exact pair, and it is
+   already a gated width PAIR. It is also the softer discontinuity of the two: the
+   prose measure is 450.9 on both sides, so the only thing that moves is how wide
+   the tables are. Nothing a reader is reading changes width.
+
+   880 IS MEASURED, NOT CHOSEN: it is the smallest 8-multiple that holds the widest
+   real object these pages carry (the /metodologia claims table ≈ 870 with padding)
+   without a cell wrapping past three lines at 1440.
+
+   320 READS 40.1 CHARACTERS, BELOW DESIGN.md's 45 FLOOR, AND IT IS ACCEPTED. The
+   viewport governs there and no CSS can buy characters that do not fit — the same
+   precedent as the 2.28% amber reading at 320 that tokens.css N2 accepts. The gate
+   asserts the floor at ≥390 only and REPORTS the 320 figure. */
+.doc {
+  display: grid;
+  gap: var(--s3);
+  grid-template-columns: minmax(0, 880px);
+  margin-block-start: var(--s3);
+}
+
+/* /metodologia only: at <1024 the claims table renders ABOVE the flat index panel.
+   Here the table IS the content and the index serves the prose beneath it; putting
+   111px of wayfinding above the page's whole argument on a 390 fold would be the
+   shared template winning an argument it should lose. */
+.lead {
+  order: -1;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  padding: var(--s4);
+}
+
+.paper {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  padding: var(--s4);
+}
+
+@media (max-width: 767px) {
+  .lead,
+  .paper {
+    /* NOT a rhythm preference — it is what protects the measure. At --s4 (32) the
+       390 reading falls to 48.3 characters and 320 to 34.6. That is the whole
+       reason this breakpoint exists. */
+    padding: var(--s2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .doc {
+    grid-template-columns: 200px minmax(0, 880px);
+  }
+
+  .index {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .lead,
+  .paper {
+    grid-column: 2;
+    order: 0;
+  }
+}
+
+/* ---------- the index ----------
+   IT HAS NO ACTIVE STATE, ON PURPOSE, AND NOTHING HERE RESERVES A KEYLINE FOR
+   ONE. measure.mjs assertion 14 (defect class B4) fails any interactive element
+   with a transparent border ≥1px that no NON-HOVER state ever fills. A scroll-spy
+   would need JS, an IntersectionObserver and a state nothing else in this product
+   has, and the payoff is knowing where you are in a document you can already see.
+   There is no active state, no track, and nothing to leave unfilled.
+
+   NOT `.chip` EITHER: the chip primitive reserves a transparent border filled by
+   [aria-pressed] / [data-on], states an <a> in a static index can never enter. It
+   would pass assertion 14 mechanically and be dishonest. Plain links. */
+.indexK {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.index a {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--act);
+  line-height: 1.35;
+}
+
+.index a:hover {
+  color: var(--act-strong);
+}
+
+@media (max-width: 1023px) {
+  /* --act on --fill measures 5.32:1 — the TIGHTEST text pair on these pages,
+     with 0.82 of margin over AA at 14px. It is asserted in pairs-v4.json. Named
+     here so nobody darkens this panel without re-running the gate. Hover is
+     --act-strong on --fill = 6.94.
+
+     AND IT NEVER NESTS: the closing correction block inside the document card is
+     also --fill, and --fill on --fill is 1.00 with no boundary to see. They are
+     siblings in two different containers and they never touch. */
+  .index {
+    background: var(--fill);
+    border-radius: var(--r2);
+    padding: var(--s2);
+  }
+
+  .indexList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1) var(--s2);
+    margin-block-start: var(--s1);
+  }
+
+  .index a {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .index {
+    position: sticky;
+    /* 108 — the shipped idiom (Product.module.css). Without it every index link
+       lands 92px under the sticky chrome. */
+    inset-block-start: calc(var(--chrome-h) + var(--s2));
+    align-self: start;
+    /* THE LONG-LIST STATE. /terminos runs 9 sections; a 12-section page must not
+       push its own rail off the bottom of the viewport. Scrolls internally, never
+       the page. */
+    max-height: calc(100dvh - var(--chrome-h) - 2 * var(--s2));
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .indexList {
+    margin-block-start: var(--s1);
+  }
+
+  .index a {
+    /* the focus ring wraps the whole row rather than a ragged text box */
+    display: block;
+    font-weight: 500;
+    text-decoration: none;
+    padding-block: 6px;
+  }
+
+  .index a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+/* ---------- the prose ----------
+   BODY INK IS --ink-2 (13.94 on --card), NOT --ink-3. A role correction, not a
+   token change: --ink-3 is the caption/qualifier ink and it is correct on `.note`
+   and `.method`, which are qualifiers beside data. On a document page THE PROSE IS
+   THE CONTENT, and the content colour in this product is --ink-2. --ink-3 survives
+   on the stamp, the table column headers and the list markers.
+
+   LEADING 1.6, NOT 1.5. 1.5 is the app default and correct beside data; at a
+   68-character measure continuous prose wants the extra 1.4px of ride. 1.6 already
+   exists in the system on `.method` — the block whose job is closest to this — so
+   it is a value the design has chosen once already. */
+.prose p,
+.prose li,
+.prose dd {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 44ch;
+}
+
+/* THE PARAGRAPH GAP MUST EXCEED THE LEADING OR PARAGRAPHS DO NOT SEPARATE.
+   24 > 22.4 by 1.07×. --s2 (16) is 0.71× the leading and produces a WALL — the
+   reader cannot see where one paragraph ends and the next begins. This is the one
+   declaration this system genuinely did not have, which makes it the one most
+   likely to be "tidied" back to 16 by someone matching the app's spacing
+   elsewhere. Asserted (assertion 20) rather than remembered. */
+.prose p + p,
+.prose p + ul,
+.prose p + ol,
+.prose p + dl,
+.prose ul + p,
+.prose ol + p,
+.prose dl + p,
+.prose table + p {
+  margin-block-start: var(--s3);
+}
+
+/* THE LADDER IS h1 > h2 > h3 AND IT STOPS (assertion 22). If a legal page needs an
+   h4 the document is badly structured, not badly styled.
+
+   h2 is `pg.secH` verbatim — 26/600/none at ≥768, 20 below. DO NOT give it a
+   different weight or a text-transform: assertion 17b caps --t5 at TWO role
+   signatures and both are already spent (26|600|none for the h2, 26|700|none for
+   the card price). A prose h2 at 26/600 costs nothing; at 26/700 it fails the
+   build.
+
+   h3 is --t3 16, NOT --t4 20, because --t4 IS h2 below 768 — an h3 at 20 would
+   make the two identical exactly where the document is longest to scroll. Its role
+   signature is 16|600|none, which is the rail label's existing signature, so it
+   adds no role to --t3 either. The 4px step is small and SPACE CARRIES THE REST:
+   h2 opens a new `.sec` with a --line hairline above it, h3 gets 24 above and no
+   rule, and it is set in the display face against body text in the body face.
+
+   NO HEADING IS EVER COLOURED. `.secHCat`'s --deep span exists to make a REPEATING
+   heading scannable on a browse page; on a document, colouring a heading is
+   rainbow hierarchy. */
+.prose h2,
+.prose h3 {
+  /* 108 — without it every index link lands under the sticky chrome */
+  scroll-margin-block-start: calc(var(--chrome-h) + var(--s2));
+}
+
+.prose h2 {
+  margin-block-end: var(--s2);
+}
+
+.prose h3 {
+  font-family: var(--display);
+  font-size: var(--t3);
+  font-weight: 600;
+  letter-spacing: var(--tr3);
+  line-height: 1.3;
+  color: var(--ink);
+  margin-block-start: var(--s3);
+  margin-block-end: var(--s1);
+}
+
+/* globals.css strips list-style and padding globally — correct for the app, wrong
+   for a document. The prose scope restores them.
+   NEVER `·` AS A BULLET CHARACTER: assertion 5 fails a middot at a rendered
+   line boundary. A ::marker is not a text node and is safe; a typed one is not.
+   Tabular markers so 1.…10. align — this product ships no non-aligning numerals
+   anywhere else. */
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: var(--s3);
+  max-width: 44ch;
+}
+
+.prose li + li {
+  /* tighter than paragraphs, on purpose: a list is one thought */
+  margin-block-start: var(--s1);
+}
+
+.prose li::marker {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* LINKS IN PROSE ARE UNDERLINED AT REST, and this is a genuine defect fix rather
+   than a preference. `Page.module.css .link` underlines on HOVER ONLY, which is
+   defensible where the link is the only styled object in a meta line and is not
+   defensible inside a paragraph: an unmarked inline link is then distinguished
+   from body text BY HUE ALONE, which fails WCAG SC 1.4.1. Asserted (21). */
+.prose a {
+  color: var(--act);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--act-strong);
+}
+
+/* THE WITHDRAWAL CONTROL IS A <button>, NOT A LINK, because the choice is state
+   and not a destination — but it sits inside a paragraph, so it carries the prose
+   link's treatment for exactly the SC 1.4.1 reason assertion 21 exists. */
+.reopen {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 600;
+  color: var(--act);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.reopen:hover {
+  color: var(--act-strong);
+}
+
+/* An identifier, not prose: a cookie name is a string you type. The display face
+   already carries tabular figures and it is the one this product ships — a
+   monospace stack would be a fourth family for one word. */
+.prose code {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- evidence escapes the measure ----------
+   The prose is narrow because a reader needs it narrow; the evidence is wide
+   because a table needs it wide. On a comparison instrument, even the legal pages
+   put the table at full width — and the white to the right of the paragraphs is
+   the column those tables live in. */
+.wide {
+  max-width: none;
+}
+
+/* SpecTable's idiom verbatim: 1px --line, --r2, overflow hidden, alternating
+   --card / --fill rows, NO vertical rules. Two corrections for this context —
+   cells are --t2 14 rather than --t1 12 because they carry SENTENCES (B8's rule is
+   absolute), and --t1 survives for the column headers only, which is the floor's
+   declared third role.
+
+   The border/radius live on the wrapper: a border-radius on a <table> does not
+   clip its own cell backgrounds. */
+.tableWrap {
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  overflow: hidden;
+  background: var(--card);
+  margin-block-start: var(--s3);
+}
+
+.prose th {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: start;
+  vertical-align: bottom;
+  padding: 10px var(--s2);
+  background: var(--fill);
+}
+
+.prose td {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.5;
+  color: var(--ink-2);
+  vertical-align: top;
+  padding: 10px var(--s2);
+}
+
+.prose tbody tr:nth-child(even) td {
+  background: var(--fill);
+}
+
+/* the numeric column: tabular, so a column of figures aligns */
+.figure {
+  font-variant-numeric: tabular-nums;
+}
+
+.cap {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: start;
+  padding: var(--s2) var(--s2) 0;
+}
+
+/* BELOW 768 THE TABLE STACKS — it never scrolls horizontally. A reader cannot
+   compare cells they cannot see simultaneously, and assertion 7 already fails a
+   document that overflows its viewport.
+
+   The thead goes to the a11y tree only and each td carries its own uppercase key
+   RENDERED FROM THE SAME HEADER CONSTANT AS THE th — one source string, two
+   renders, exactly SpecTable's key/value idiom. */
+@media (max-width: 767px) {
+  .prose thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .prose tbody tr {
+    display: block;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .prose tbody tr:first-child {
+    border-block-start: 0;
+  }
+
+  .prose tbody tr:nth-child(even) {
+    background: var(--fill);
+  }
+
+  .prose tbody tr:nth-child(even) td {
+    background: transparent;
+  }
+
+  .prose td {
+    display: block;
+    padding-block: 6px;
+  }
+
+  .prose td::before {
+    content: attr(data-k);
+    display: block;
+    font-size: var(--t1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .prose td:first-child {
+    padding-block-start: var(--s2);
+  }
+
+  .prose td:last-child {
+    padding-block-end: var(--s2);
+  }
+}
+
+/* ---------- the closing block, on all six pages ----------
+   Consumer law asks for a visible route to report a wrong price, and a
+   documented correction process is itself a defence. Making it
+   the terminal object on every trust page costs one component and closes that item
+   everywhere at once. */
+.fix {
+  background: var(--fill);
+  border-radius: var(--r2);
+  padding: var(--s2);
+  margin-block-start: var(--s3);
+}
+
+/* A CALLOUT'S INLINE PADDING COMES OFF THE MEASURE, AND AT 390 THAT WAS A RAZOR
+   EDGE. The document card is already at --s2 below 768; a --s2 callout inside it
+   takes another 32px, so /acerca's no-commission block measured 45.2 characters at
+   390 against assertion 19's floor of 45 — passing by two tenths of a character,
+   which is not passing, it is the 232px `--card-min` edge again in another costume.
+   Inline padding drops to --s1 below 768 and the reading goes to 47.9. Same
+   reasoning as §1.1's card-padding drop: it is not a rhythm preference, it is what
+   protects the measure. */
+@media (max-width: 767px) {
+  .fix {
+    padding-inline: var(--s1);
+  }
+}
+
+.fix p {
+  /* --ink-2 on --fill is 11.34 — asserted */
+  color: var(--ink-2);
+}
+
+/* ---------- a definition list (/contacto's channels) ---------- */
+.dl {
+  display: grid;
+  gap: var(--s1);
+  margin-block-start: var(--s3);
+}
+
+.dl dt {
+  font-size: var(--t1);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.dl dd {
+  margin-inline-start: 0;
+  margin-block-end: var(--s2);
+}
+
+/* ---------- print — the owner's call, four lines and nothing more (§5.6) ----------
+   A legal page is the one surface in this product a person may genuinely want to
+   keep a copy of; an ARCO request is exactly that scenario. Ungated and
+   unmeasured, which is why it is four lines. */
+@media print {
+  .index,
+  .stamp {
+    display: none;
+  }
+
+  .lead,
+  .paper {
+    border: 0;
+    padding: 0;
+  }
+}

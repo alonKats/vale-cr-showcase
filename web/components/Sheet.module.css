@@ -1,0 +1,187 @@
+/* THE OVERLAY FRAME — chrome only.
+
+   v4 cuts this file from 532 lines to ~130. Everything that styled the product BODY
+   (`.det`, `.blk`, `.led*`, `.rev*`, `.us*`, `.stage`, `.foot`…) moved to
+   Product.module.css, where it belongs: the body is shared verbatim with the
+   statically generated page, so its stylesheet should not live inside the overlay's.
+   What is left is the sheet, the scrim, the close affordance and the deep-link
+   skeleton.
+
+   This is the SECOND AND LAST place a box-shadow exists in the whole product (the
+   other is the sticky chrome). Anywhere else is a build failure. */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--scrim);
+  border: 0;
+  cursor: pointer;
+  /* a full-viewport button, so a click anywhere off the sheet closes it and the
+     affordance is reachable by keyboard with a real accessible name */
+}
+
+.sheet {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: 61;
+  max-height: 92vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ground);
+  border-start-start-radius: var(--r2);
+  border-start-end-radius: var(--r2);
+  box-shadow: var(--shadow-sheet);
+  animation: rise var(--slow) var(--ease);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(3%);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* sticky inside the sheet: the close button must stay reachable at any scroll
+   depth, and a product body is long. */
+.head {
+  position: sticky
+  ;
+  inset-block-start: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: var(--s1) var(--pad);
+  background: var(--ground);
+  border-block-end: 1px solid var(--line);
+}
+
+.x {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--edge);
+  border-radius: var(--r-pill);
+  background: var(--card);
+  color: var(--ink);
+  flex: none;
+}
+
+.x:hover {
+  background: var(--fill);
+}
+
+.acts {
+  display: flex;
+  gap: var(--s1);
+  flex-wrap: wrap;
+}
+
+/* the sheet's own measure. Same 1200 cap as every page, so the body renders at the
+   width it was designed at rather than at whatever the viewport is. */
+.in {
+  width: min(var(--shell), 100% - 2 * var(--pad));
+  margin-inline: auto;
+  padding-block-end: var(--s4);
+}
+
+/* ---- the deep-link skeleton ----
+   A link that arrives before products.json does. Nothing is faked and nothing spins:
+   the frame is real and the numbers land a moment later.
+
+   THIS BLOCK'S OLD COMMENT CLAIMED "the geometry matches the loaded header exactly —
+   same three columns, same 260px shot — so nothing reflows when the data lands", AND
+   THAT CLAIM WAS ALREADY FALSE BEFORE THE v4.1-FIX PASS. The loaded header is
+   `1fr 380px 340px` (v4.1 §5.4) and this declared `1fr 340px 300px`; worse, the markup
+   in Sheet.tsx puts only TWO children in a three-column grid, so the skeleton's stage
+   sits in the IDENTITY column rather than the shot's. Found while squaring the plates
+   (B7) and recorded here rather than left as a comment asserting a parity it does not
+   have.
+
+   WHAT IS FIXED HERE: the stage takes the shot's plate recipe, so the skeleton no longer
+   contradicts B7 with a 260px-tall landscape box where a square now lands.
+   WHAT IS FLAGGED, NOT FIXED: the column set and the two-children markup. Re-cutting the
+   skeleton's grid is a layout change to a surface outside the critique's scope, on an
+   `aria-hidden` decorative frame, and it wants the designer's eye rather than my guess. → build
+   report. */
+.det {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px 300px;
+  gap: var(--s3);
+  align-items: start;
+  padding-block: var(--s3);
+}
+
+.stage {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  border-radius: var(--r2);
+}
+
+@media (max-width: 1023px) {
+  .det {
+    grid-template-columns: minmax(0, 1fr) 260px 280px;
+    gap: var(--s2);
+  }
+
+  /* the CAP moves, not the recipe — `height` would defeat `aspect-ratio` and put the
+     letterbox back, which is the whole of B7. */
+  .stage {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sheet {
+    max-height: 96vh;
+  }
+
+  .det {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* matches `.shot`'s ≤767 cap, which is the measured fold trade (Product.module.css). */
+  .stage {
+    max-width: 240px;
+  }
+}
+
+/* ---------- the failed / stalled state ----------
+   Sized off the same measure the trust pages use rather than a new number:
+   `44ch` is the value v5 settled on after `68ch` was measured to render 105.8
+   characters in Plus Jakarta Sans (§5's 60–75 band). Two short sentences and a
+   control — no illustration, no icon, no apology. */
+.stall {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s3);
+  max-width: 44ch;
+  padding-block: var(--s5);
+}
+
+.stallLead {
+  font-size: var(--t4);
+  letter-spacing: var(--tr4);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.stallBody {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  color: var(--ink-3);
+  margin: 0;
+}

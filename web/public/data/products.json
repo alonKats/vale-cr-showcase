@@ -1,0 +1,1066 @@
+[
+ {
+  "id": "apple-42533508",
+  "category": "celulares",
+  "brand": "APPLE",
+  "model": null,
+  "name": "Celular Apple iPhone 16 8GB RAM 128GB de almacenamiento Azul",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "line": "16",
+   "storage_gb": 128,
+   "ram_gb": 8,
+   "network": null,
+   "color": null
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 529900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/celular-apple-iphone-16-8gb-ram-128gb-de-almacenamiento-verde",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 549900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/celular-apple-iphone-16-8gb-ram-128gb-de-almacenamiento-azul",
+    "credit": null,
+    "variant_count": 3,
+    "variant_price_max_crc": 569900,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 0
+ },
+ {
+  "id": "samsung-01dc4046",
+  "category": "celulares",
+  "brand": "SAMSUNG",
+  "model": null,
+  "name": "Celular Samsung Galaxy A16 4GB RAM 128GB 4G Negro",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "line": "A16",
+   "storage_gb": 128,
+   "ram_gb": 4,
+   "network": "4G",
+   "color": "BLACK"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 99900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/celular-samsung-galaxy-a16-4gb-ram-128gb-4g-negro",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 129900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/celular-samsung-galaxy-a16-4g-4gb-ram-128gb-negro",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 3
+ },
+ {
+  "id": "samsung-60e44b23",
+  "category": "celulares",
+  "brand": "SAMSUNG",
+  "model": null,
+  "name": "Celular Samsung Galaxy S25 Ultra 12GB RAM 256GB 5G Negro",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "line": "S25 ULTRA",
+   "storage_gb": 256,
+   "ram_gb": 12,
+   "network": "5G",
+   "color": null
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 899900,
+    "list_price_crc": 999900,
+    "in_stock": true,
+    "url": "https://norte.example/p/celular-samsung-galaxy-s25-ultra-12gb-ram-256gb-5g-negro",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 949900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/celular-samsung-galaxy-s25-ultra-5g-12gb-ram-256gb-titanio",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 1
+ },
+ {
+  "id": "xiaomi-79e60dfd",
+  "category": "celulares",
+  "brand": "XIAOMI",
+  "model": null,
+  "name": "Celular Xiaomi Redmi Note 14 8GB RAM 256GB 4G Azul",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "line": "NOTE 14",
+   "storage_gb": 256,
+   "ram_gb": 8,
+   "network": "4G",
+   "color": null
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 129900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/celular-xiaomi-redmi-note-14-8gb-ram-256gb-4g-azul",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 159900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/celular-xiaomi-redmi-note-14-4g-8gb-ram-256gb-negro",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 3
+ },
+ {
+  "id": "motorola-83cbf951",
+  "category": "celulares",
+  "brand": "MOTOROLA",
+  "model": null,
+  "name": "Celular Motorola Moto G85 5G 8GB RAM 256GB Gris",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "line": "G85",
+   "storage_gb": 256,
+   "ram_gb": 8,
+   "network": "5G",
+   "color": "GRAY"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 199900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/celular-motorola-moto-g85-5g-8gb-ram-256gb-gris",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "lg-098f9553",
+  "category": "microondas",
+  "brand": "LG",
+  "model": null,
+  "name": "Microondas LG NeoChef 0.9 pies inox 1000 W",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 0.9,
+   "watts": 1000,
+   "install_type": null,
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 109900,
+    "list_price_crc": 119900,
+    "in_stock": true,
+    "url": "https://sur.example/p/microondas-lg-neochef-0-9-pies-inox-1000-w",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 129900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/microondas-lg-neochef-0-9-pies-1000w-acero-inoxidable",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 2
+ },
+ {
+  "id": "samsung-ms23k3513ak",
+  "category": "microondas",
+  "brand": "SAMSUNG",
+  "model": "MS23K3513AK",
+  "name": "Microondas Samsung 0.8 pies 800W de mostrador negro MS23K3513AK",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 0.8,
+   "watts": 800,
+   "install_type": "MOSTRADOR",
+   "finish": "BLACK"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 69900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/horno-microondas-samsung-ms23k3513ak-0-8-pies-800-w-negro",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 74900,
+    "list_price_crc": 89900,
+    "in_stock": true,
+    "url": "https://norte.example/p/microondas-samsung-0-8-pies-800w-de-mostrador-negro-ms23k3513ak",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 1
+ },
+ {
+  "id": "whirlpool-wm1807b",
+  "category": "microondas",
+  "brand": "WHIRLPOOL",
+  "model": "WM1807B",
+  "name": "Microondas Whirlpool 0.7 pies 700 W de mostrador blanco WM1807B",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 0.7,
+   "watts": 700,
+   "install_type": "MOSTRADOR",
+   "finish": "WHITE"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 59900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/microondas-whirlpool-0-7-pies-700-w-de-mostrador-blanco-wm1807b",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 79900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/microondas-whirlpool-wm1807b-0-7-pies-blanco-700w",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 3
+ },
+ {
+  "id": "panasonic-nn-sb458s",
+  "category": "microondas",
+  "brand": "PANASONIC",
+  "model": "NN-SB458S",
+  "name": "Microondas Panasonic 1.2 pies 1200W inverter acero inoxidable NN-SB458S",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 1.2,
+   "watts": null,
+   "install_type": null,
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 99900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/microondas-panasonic-1-2-pies-1200w-inverter-acero-inoxidable-nn-sb458s",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "frigidaire-ffcm1155us",
+  "category": "microondas",
+  "brand": "FRIGIDAIRE",
+  "model": "FFCM1155US",
+  "name": "Microondas Frigidaire 1.1 pies 1100W de mostrador acero FFCM1155US",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 1.1,
+   "watts": null,
+   "install_type": "MOSTRADOR",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 89900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/microondas-frigidaire-1-1-pies-1100w-de-mostrador-acero-ffcm1155us",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "mabe-da09bc3f",
+  "category": "microondas",
+  "brand": "MABE",
+  "model": null,
+  "name": "Microondas Mabe 1.1 pies over the range inox 1000W",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 1.1,
+   "watts": null,
+   "install_type": "EXTRACTOR",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 219900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/microondas-mabe-1-1-pies-over-the-range-inox-1000w",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "samsung-qn55q60dapxpa",
+  "category": "pantallas",
+  "brand": "SAMSUNG",
+  "model": "QN55Q60DAPXPA",
+  "name": "Pantalla Samsung 55 pulgadas QLED 4K Tizen QN55Q60DAPXPA",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 55,
+   "panel": "QLED",
+   "resolution": "4K",
+   "smart_os": "TIZEN"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 399900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/smart-tv-samsung-qn55q60dapxpa-55-qled-4k",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 449900,
+    "list_price_crc": 499900,
+    "in_stock": true,
+    "url": "https://norte.example/p/pantalla-samsung-55-pulgadas-qled-4k-tizen-qn55q60dapxpa",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 2
+ },
+ {
+  "id": "xiaomi-669eec6c",
+  "category": "pantallas",
+  "brand": "XIAOMI",
+  "model": null,
+  "name": "Pantalla Xiaomi 43 pulgadas LED 4K Google TV",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 43,
+   "panel": "LED",
+   "resolution": "4K",
+   "smart_os": "GOOGLE_TV"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 199900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/smart-tv-xiaomi-43-pulgadas-4k-led-google-tv",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 219900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/pantalla-xiaomi-43-pulgadas-led-4k-google-tv",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 2
+ },
+ {
+  "id": "lg-65ut8050psb",
+  "category": "pantallas",
+  "brand": "LG",
+  "model": "65UT8050PSB",
+  "name": "Televisor LG 65 pulgadas LED 4K webOS 65UT8050PSB",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 65,
+   "panel": "LED",
+   "resolution": "4K",
+   "smart_os": "WEBOS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 549900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/televisor-lg-65-pulgadas-led-4k-webos-65ut8050psb",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 699900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/pantalla-lg-65ut8050psb-65-pulgadas-uhd-4k-webos",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 3
+ },
+ {
+  "id": "sony-kd-55x77l",
+  "category": "pantallas",
+  "brand": "SONY",
+  "model": "KD-55X77L",
+  "name": "Televisor Sony 55 pulgadas LED 4K Google TV KD-55X77L",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 55,
+   "panel": "LED",
+   "resolution": "4K",
+   "smart_os": "GOOGLE_TV"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 579900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/pantalla-sony-kd-55x77l-55-pulgadas-4k-google-tv",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 599900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/televisor-sony-55-pulgadas-led-4k-google-tv-kd-55x77l",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 0
+ },
+ {
+  "id": "hisense-50a6k",
+  "category": "pantallas",
+  "brand": "HISENSE",
+  "model": "50A6K",
+  "name": "Pantalla Hisense 50 pulgadas LED 4K VIDAA 50A6K",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 50,
+   "panel": "LED",
+   "resolution": "4K",
+   "smart_os": "VIDAA"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 259900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/pantalla-hisense-50-pulgadas-led-4k-vidaa-50a6k",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "tcl-43s5400a",
+  "category": "pantallas",
+  "brand": "TCL",
+  "model": "43S5400A",
+  "name": "Pantalla TCL 43 pulgadas LED FHD Android TV 43S5400A",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "screen_in": 43,
+   "panel": "LED",
+   "resolution": "FHD",
+   "smart_os": "ANDROID_TV"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 169900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/pantalla-tcl-43-pulgadas-led-fhd-android-tv-43s5400a",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "mabe-rma250fymrs0",
+  "category": "refrigeradoras",
+  "brand": "MABE",
+  "model": "RMA250FYMRS0",
+  "name": "Refrigeradora Mabe 10 pies dos puertas gris RMA250FYMRS0",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 10.0,
+   "door_config": "TWO_DOOR",
+   "finish": "GRAY"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 289900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-mabe-10-pies-dos-puertas-gris-rma250fymrs0",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 289900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/refrigeradora-mabe-rma250fymrs0-10-pies-2-puertas-grafito",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 0
+ },
+ {
+  "id": "samsung-rs27t5200s9",
+  "category": "refrigeradoras",
+  "brand": "SAMSUNG",
+  "model": "RS27T5200S9",
+  "name": "Refrigeradora Samsung Side by Side 27 pies acero inoxidable RS27T5200S9",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 27.0,
+   "door_config": "SIDE_BY_SIDE",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 899900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-samsung-side-by-side-27-pies-acero-inoxidable-rs27t5200s9",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 1049900,
+    "list_price_crc": 1149900,
+    "in_stock": true,
+    "url": "https://sur.example/p/refrigeradora-samsung-rs27t5200s9-side-by-side-27-pies-inox",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 2
+ },
+ {
+  "id": "whirlpool-2255acbf",
+  "category": "refrigeradoras",
+  "brand": "WHIRLPOOL",
+  "model": null,
+  "name": "Refrigeradora Whirlpool French Door 20 pies acero inoxidable",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 20.0,
+   "door_config": "FRENCH_DOOR",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 1099900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/refrigeradora-whirlpool-20-pies-french-door-inox",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   },
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 1199900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-whirlpool-french-door-20-pies-acero-inoxidable",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 2,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": 1
+ },
+ {
+  "id": "hisense-8f9c5a81",
+  "category": "refrigeradoras",
+  "brand": "HISENSE",
+  "model": null,
+  "name": "Refrigeradora Hisense 18 pies bottom freezer acero",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 18.0,
+   "door_config": "BOTTOM_FREEZER",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 429900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-hisense-18-pies-bottom-freezer-acero",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "lg-lt57bpsx",
+  "category": "refrigeradoras",
+  "brand": "LG",
+  "model": "LT57BPSX",
+  "name": "Refrigeradora LG Top Freezer 15 pies plateada LT57BPSX",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 15.0,
+   "door_config": "TOP_FREEZER",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 449900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-lg-top-freezer-15-pies-plateada-lt57bpsx",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "whirlpool-wrs315sdhm",
+  "category": "refrigeradoras",
+  "brand": "WHIRLPOOL",
+  "model": "WRS315SDHM",
+  "name": "Refrigeradora Whirlpool Side by Side 25 pies acero inoxidable WRS315SDHM",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 25.0,
+   "door_config": "SIDE_BY_SIDE",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Norte",
+    "price_crc": 749900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://norte.example/p/refrigeradora-whirlpool-side-by-side-25-pies-acero-inoxidable-wrs315sdhm",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ },
+ {
+  "id": "frigidaire-frss2623as",
+  "category": "refrigeradoras",
+  "brand": "FRIGIDAIRE",
+  "model": "FRSS2623AS",
+  "name": "Refrigeradora Frigidaire French Door 26 pies acero inoxidable FRSS2623AS",
+  "image": null,
+  "image_srcset": null,
+  "attributes": {
+   "capacity_ft3": 26.0,
+   "door_config": "FRENCH_DOOR",
+   "finish": "STAINLESS"
+  },
+  "offers": [
+   {
+    "retailer": "Tienda Sur",
+    "price_crc": 969900,
+    "list_price_crc": null,
+    "in_stock": true,
+    "url": "https://sur.example/p/refrigeradora-frigidaire-french-door-26-pies-acero-inoxidable-frss2623as",
+    "credit": null,
+    "variant_count": 1,
+    "variant_price_max_crc": null,
+    "scraped_at": "2026-09-30T15:18:02Z"
+   }
+  ],
+  "retailer_count": 1,
+  "reviews": {
+   "cr": null,
+   "us": null
+  },
+  "us_reference": null,
+  "markup_pct": null,
+  "markup_basis": "pre_tax",
+  "scraped_at": "2026-09-30T15:18:02Z",
+  "gap_band": null
+ }
+]

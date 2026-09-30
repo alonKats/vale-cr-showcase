@@ -1,0 +1,575 @@
+/* ==========================================================================
+   `/brechas` — THE LEADERBOARD ROW AND THE STANDFIRST (v6.1 §4.3)
+
+   THE ROW IS `OfferTable`'s row idiom with a different set of cells — same
+   `--row-h` token, same `data-row` gate hook, same `--card` on `--line` on
+   `--r2`, same fixed-height promise. The three-figure standfirst that used to
+   live in this file is now `GapStrip` (v7 §2.3); the guard sentences stayed.
+
+   WHY A DISTRIBUTION FIGURE IS `--deep` AND NOT AMBER, since this is the page
+   where the temptation is strongest: amber means MONEY YOU KEEP on a specific
+   product (tokens.css, v4.1-fix N1). A distribution statistic is not money
+   anybody keeps — nobody saves 80% — so `--deep`, the supporting/data accent, is
+   the correct role, and it is why the strip's own headline figure and its two
+   axis marks are not on the ramp either.
+
+   ONE `--loud` OBJECT PER ROW: the gap chip, and nothing else on the row may be
+   amber. v7.1 makes that chip's fill its BAND (§1.2) — twenty chips down one
+   column is the second place after the strip where four ambers read as a ramp
+   rather than as four colours. measure.mjs asserts it structurally through `[data-row]`, which is why
+   the row carries that attribute rather than a class of its own invention.
+
+   THE SECOND FIGURE IS NOT LOUD AND THAT IS THE POINT. Both boards show BOTH the
+   percentage and the colones on every row — they differ only in sort order — so
+   the reader can see that an 80% gap on a ₡155k stove and a ₡975.000 gap on an
+   8K TV are both true and neither is "the biggest". Making the ₡ figure amber
+   too would put two filled objects on one row and break the invariant; making it
+   invisible would leave the two boards showing different facts. It is a `--t2`
+   figure under the chip: present, comparable down its own column, quiet.
+   ========================================================================== */
+
+/* ---------- the standfirst ----------
+   THE THREE-FIGURE STANDFIRST IS GONE — `.stand` / `.i` / `.n` / `.t` deleted
+   with it. Three identical 421×37 boxes restating 525 · 14,2% · 80% were
+   replaced by `GapStrip` (v7 §2.3 / v7.1 §3.4), which states the same three
+   figures with their relationship visible AND doubles as the amber ramp's
+   legend. The rules are removed rather than left orphaned: a stylesheet that
+   still describes a deleted object is how the next pass rebuilds it by
+   accident. `.guards` below is unaffected — it was never part of the plate. */
+
+/* THE TWO GUARD SENTENCES (§4.5). They are not fine print and they are not set
+   as fine print: the denominator is what stops the leaderboard reading as
+   cherry-picked, and "a brecha is not an accusation" is what stops it reading as
+   one. `--ink-2` is the document body ink (13.94 on --card), the same role Doc's
+   prose uses, because on this page these two sentences ARE the content. */
+/* TWO COLUMNS AT ≥1024, AND THE REASON IS NOT SYMMETRY (The designer Tier-2 §6). The two
+   guard sentences shipped as one 44ch column stacked under a standfirst panel that
+   spans the whole 1360 shell — ~950px of dead ground directly beneath the object
+   that proves the page can fill it. The board fills; the prose under it undid that.
+
+   THE FIX IS A SECOND COLUMN, NOT A WIDER ONE, and that is forced rather than
+   chosen: the measure is 44ch (~68 characters) because DESIGN.md §5 bands prose at
+   60–75, so widening one column to 1360 would render ~205 characters per line. The
+   only way to spend the width without breaking the measure is to spend it sideways.
+   `1fr` tracks rather than `44ch` tracks so the second column STARTS at the middle
+   of the shell instead of hugging the first — the ink then runs to ~1140 of 1360
+   rather than stopping at 948.
+
+   ≥1024 ONLY. At 983 of shell each track would be 480 and still capped at 450 by
+   the measure; below that a track falls under ~60 characters, which is the same
+   defect pointed the other way. */
+.guards {
+  margin-block-start: var(--s2);
+  display: grid;
+  gap: var(--s1);
+}
+
+@media (min-width: 1024px) {
+  .guards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s3);
+  }
+}
+
+.guard {
+  /* 44ch, like every prose measure in this product since v5 §1.5. `1ch` is the
+     advance of a tabular `0` and over-reports a line by 1.556×, so 44ch renders
+     ~68 characters — inside DESIGN.md §5's 60–75 band, where 60ch would render
+     ~93 and lose the return sweep. */
+  max-width: 44ch;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.guard b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- the leaderboard ---------- */
+.rows {
+  display: grid;
+  gap: var(--s1);
+}
+
+/* SIX TRACKS FOR SIX CELLS — rank / photo / identity / price / the gap / the
+   chain. IT WAS DECLARED WITH FIVE AND THE SIXTH CELL WENT INTO AN IMPLICIT
+   `auto` COLUMN, which took the 28px the leftover space allowed and wrapped the
+   chain ribbon onto four lines: 65px of content in an 88px box that also had to
+   hold everything else. The gate caught it as `row-content-overflows-box` at
+   every width ≥768, which is exactly what a fixed-height promise is for — the
+   rendering looked plausible and was 36px over budget.
+   KEEP THE TRACK COUNT AND THE CELL COUNT IN STEP.
+
+   The four right-hand columns are FIXED so the figures form real columns: a
+   leaderboard's job is comparison down a column, and a column whose width is
+   decided by each row's own content is a list wearing a table's clothes.
+
+   The height is `--row-h`, the same token the offer row keeps, and measure.mjs
+   asserts the rendered height EQUALS it on every run. That is a promise about
+   content too: nothing in a cell may overflow its box, which is why the identity
+   cell clamps its title at two lines rather than growing. */
+/* THE FOUR FIXED TRACKS ARE SIZED FROM THE ARTIFACT'S LONGEST STRING, NOT FROM
+   THE TEN ROWS ON THE BOARD TODAY. Measured in the real fonts (scripts/tracks):
+     · the longest price      `₡1.199.900`                       108.48 at --t4
+     · the longest gap        `₡538.500 de diferencia`           157.50 at --t2
+     · the longest category   `Congeladores y frigobares`        155.47 at --t1
+     · the longest chain      `Más barato en Tienda Universal`   176.42 at --t1
+   A track sized to the current board is a track that breaks on the next catalogue
+   refresh, which is the same failure mode `LONGEST_PRICE` exists to prevent in
+   measure.mjs. The price track was 124/150 against a 108px worst case — 42px of
+   slack it did not need — and the gap and chain tracks were short. The width was
+   MOVED between the tracks, not added: the identity column pays 4px at 768 and
+   12px at ≥1024, and it had the most to give (The designer's own read of the 1440 row is
+   that the middle of it is dead ground). */
+.row {
+  display: grid;
+  grid-template-columns: 24px 56px minmax(0, 1fr) 116px 160px 132px;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--row-h);
+  padding-inline: var(--s2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+}
+
+/* The rank is a caption, not a headline. It reads down the column and it is the
+   one number on the row that is about the LIST rather than about the product, so
+   it takes the base size in the quiet ink and gets out of the way. */
+.rank {
+  font-family: var(--display);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  text-align: end;
+}
+
+/* `--plate`'s fifth object, and it obeys the same rule as the other four:
+   SQUARE. measure.mjs fails any element carrying the radial vignette whose width
+   and height differ by more than a pixel — a letterboxed plate is a vignette
+   centred on nothing. */
+.thumb {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--plate);
+  border-radius: var(--r1);
+  overflow: hidden;
+}
+
+.thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* THE IDENTITY CELL, AND IT HAS TWO SHAPES.
+   Below 1024 the category is a caption stacked under the product name, because
+   there is not enough width for both as columns — at 768 a seventh track leaves
+   74px for the product name, which is not a column, it is a rumour of one.
+   At ≥1024 `display: contents` promotes them to two REAL cells (§4.3's row shape
+   lists product and category separately), and that is what fills the middle of
+   the row: measured at 1440 before the split, product names ended around x=560
+   and the first figure began at x=900 — ~340px of empty card on every one of 20
+   rows, which is precisely the dead-ground defect v6 §2.4 names on the other
+   templates. The DOM is identical at both widths; only the display changes. */
+.who {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.name:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+}
+
+/* the category, linked: this row is also a way INTO the category, and the
+   category page is the head-term page the whole SEO architecture rests on.
+
+   `--act`, NOT `--ink-3` (The designer Tier-2 §5). It shipped in the muted caption ink,
+   which made fourteen real links on the page whose entire second job is onward
+   travel look like fourteen labels. The link colour in this product is `--act`
+   everywhere else, and `--act on --card` (#0B57C8 on #FFFFFF) is ALREADY an
+   asserted pair in pairs-v4.json at min 4.5 — so this introduces no new colour and
+   no new assertion. No underline at rest, matching `.name` directly above it: these
+   are row cells in a leaderboard, not prose links, and measure.mjs's SC 1.4.1
+   assertion scopes itself to a [data-prose] region for exactly that reason. */
+.cat {
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  color: var(--act);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cat:hover {
+  color: var(--act-strong);
+  text-decoration: underline;
+}
+
+.money {
+  display: grid;
+  gap: 1px;
+  justify-items: end;
+  text-align: end;
+}
+
+/* `--t4`, tabular, at every width — the offer-row price's own recipe, because
+   this IS an offer row's price: the cheapest published price for that model. */
+.p {
+  font-family: var(--display);
+  font-size: var(--t4);
+  font-weight: 600;
+  letter-spacing: var(--tr4);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* the chain to go to. `Flag` owns both honesty guards itself (never on a single
+   offer, never on a near-tie) so this cell cannot render a claim the product
+   does not support even if a future caller forgets. */
+/* START-ALIGNED, AND IT IS NOT A TASTE CALL. `Flag` is an inline-flex whose
+   first child is a 4px CSS caret and whose label is allowed to WRAP (never
+   truncate — an ellipsis would eat the chain name, which is the one actionable
+   string in the cell). End-aligning the cell right-aligned the wrapped lines
+   inside a box the caret still started at, so the caret rendered ~80px away from
+   the words it points at and read as a stray green triangle. Verified in the
+   1440 capture before this line existed.
+
+   The figures stay end-aligned because they are figures and they form columns.
+   The chain is a LABEL, not a figure, and it reads from its own edge. */
+.chain {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  text-align: start;
+  min-width: 0;
+}
+
+.gapCell {
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+}
+
+/* THE ONE FILLED OBJECT ON THE ROW. `ProductCard`'s chip recipe verbatim —
+   `--loud` fill, its mandatory `--loud-edge` boundary, `--on-loud` ink at 12px
+   700 tabular. It carries the WORD as well as the number for the same reason the
+   card's does: a bare amber `80%` reads as a discount in a retail context, and
+   80% is not a discount — it is the spread between two published prices. */
+.gap {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  /* THE BAND RECIPE — identical to ProductCard's chip, deliberately. §1.4.1
+     names ADJACENCY as the mechanism that makes four ambers read as one ramp,
+     and a leaderboard is twenty gap objects in one column: it is the second
+     place after the distribution strip where the rule is legible without being
+     told. Same three `var()`s, same fallbacks. */
+  border: 1px solid var(--band-edge, var(--loud-edge));
+  border-radius: var(--r1);
+  background: var(--band-fill, var(--loud));
+  color: var(--band-ink, var(--on-loud));
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: var(--tr1);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+/* THE SECOND FIGURE, AND IT NOW CARRIES ITS OWN UNIT (The designer Tier-2 §1). `nowrap`
+   over the whole thing, figure and words together, is what makes the label a
+   promise rather than a decoration: the number can never be left alone at the end
+   of a line with `de diferencia` orphaned onto the next one, which is precisely the
+   state a reader would screenshot and quote as a price. The tracks above are sized
+   so the whole string fits on one line at every width. */
+/* the category table's superlative cell — the product link and its band chip on
+   one line, the chip pushed off the name by --s1 so a two-line product name
+   never has the chip hanging under its first word */
+.topCell {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+.gapCrc {
+  font-family: var(--display);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+/* the words, in the same ink and size as the figure — not a caption under it. A
+   unit set smaller than its number reads as a footnote to the number, and the
+   whole point of §1 is that this number is not a price with a footnote. */
+.gapU {
+  font-family: inherit;
+  font-variant-numeric: normal;
+}
+
+/* AT 320 THE WORDS ARE READ, NOT SEEN — AND THE GATE IS WHAT DECIDED THAT.
+   Below 768 the chip and the figure share ONE line, which is where `--row-h-sm`'s
+   24px of headroom came from (see the ≤767 block); the 4-row stack then fits 144px
+   of content with 1,6px of slack. `₡538.500 de diferencia` is 157,5 wide and the
+   right-hand column at 320 is 182, so the flex row wraps and the stack measures
+   190 against a 176 token — `row-content-overflows-box`, caught on the first run
+   after the label went in.
+
+   AT 390 IT FITS (254 of column against 241,5 of content) and it stays visible, so
+   the boundary is 389/390 and the gate tests BOTH SIDES of it — this file's own
+   rule about declared boundaries. Below it the unit survives as hidden text, which
+   is the half of §1 that was actually load-bearing: the misquote risk the designer named is
+   a reader lifting the figure out of the row, and at 320 the amber chip that says
+   `brecha` sits on the SAME LINE as the figure rather than in a column above it.
+
+   The recipe is `primitives .sr` verbatim. It is duplicated rather than composed
+   because a global utility class cannot be switched on at a breakpoint from the
+   markup, and a `:global(.sr)` reach-in would couple this file to that one in the
+   direction the module system exists to prevent. */
+@media (max-width: 389px) {
+  .gapU {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- ≥1024: SEVEN TRACKS, the category as its own column ----------
+   THIS BLOCK MUST SIT AFTER `.who`, NOT BEFORE IT. A media query carries no
+   extra specificity, so the first version — declared up beside `.row` — lost to
+   the plain `.who { display: grid }` further down the file on SOURCE ORDER alone.
+   The build was green, the gate was green, and the seventh track rendered EMPTY
+   at the right edge of every row while the category stayed stacked under the
+   name. A rule that loses the cascade is indistinguishable from a rule nobody
+   wrote, and only the screenshot showed it. */
+@media (min-width: 1024px) {
+  .row {
+    grid-template-columns: 28px 64px minmax(0, 1fr) 160px 120px 168px 200px;
+    gap: var(--s2);
+  }
+
+  .who {
+    display: contents;
+  }
+
+  /* THE CHAIN RIBBON STOPS WRAPPING AT ≥1024, AND THIS IS v4.1 §6.4's PROBLEM
+     REAPPEARING AT THE OTHER END OF THE SCALE (The designer Tier-2 §4). At 1440 the
+     168px track fitted `MÁS BARATO EN SIMAN` and not `MÁS BARATO EN UNIMART`, so
+     SIX OF TEN ROWS wrapped to two lines: the row heights stayed equal (the token
+     guarantees that) and the rhythm still read broken, because the ragged right
+     edge and the caret sitting beside line 1 of a two-line label are what the eye
+     scans, not the box.
+
+     TWO CHANGES, AND BOTH ARE NEEDED — either alone is worse than neither:
+       · `nowrap`, so the label is one line on every row at this width;
+       · SENTENCE CASE, because the uppercase treatment is what made it not fit.
+         `MÁS BARATO EN TIENDA UNIVERSAL` measures 222.95 and `Más barato en
+         Tienda Universal` measures 176.42 — 21% narrower for the same words. The
+         0.04em goes with it: that value is letterfit FOR CAPITALS (v6 §3.2's
+         stated tracking exemption), so keeping it on lowercase would be carrying
+         a correction for a treatment that is no longer there. `--tr1` is what a
+         12px lowercase string takes.
+
+     THE TRACK IS 200 AND IT IS DERIVED, NOT EYEBALLED, and it is NOT sized to
+     Unimart. `Más barato en Tienda Universal` — the longest chain name products.json
+     contains — was INJECTED INTO A LIVE ROW and re-measured at **190.02** including
+     the caret and its gap. 192 was the first number tried and it left 1,98px, which
+     is not slack; note that the gate cannot catch this one, because it measures the
+     ten rows the board happens to carry and the worst-case chain need not be among
+     them. 200 leaves ~10. The 8px comes out of the identity column (500 → 492 at
+     1440, 124 → 116 at 1024), which clamps at two lines by design — a name that
+     clamps one word earlier is recoverable, a ribbon that overflows its row is not.
+
+     SCOPED TO ≥1024 ON PURPOSE. At 768–1023 the track is 132 and ALL TEN rows
+     wrap — a uniform two-line label, which reads as a deliberate two-line label
+     and is not the defect. It is the MIX of one- and two-line rows that breaks the
+     rhythm, and that only happens where the string is near the track width.
+
+     A DESCENDANT SELECTOR, NOT A CLASS PASSED TO `Flag`. Two single-class rules in
+     two different stylesheets have equal specificity and resolve on bundle order,
+     which is the exact cascade trap that shipped an empty seventh column in this
+     file's first version. `.chain > span` is (0,1,1) and cannot lose. */
+  .chain > span {
+    text-transform: none;
+    letter-spacing: var(--tr1);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- the sparse-category footnote and the method block ---------- */
+.foot {
+  max-width: 44ch;
+  margin-block-start: var(--s2);
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* `Cómo se mide`. Same recipe as `TrustBand`'s and `Detail`'s method blocks —
+   --t2 at 1.6 in --ink-2 — because it is the same object: the credibility text
+   that lets a reader check the number above it. The paragraph gap EXCEEDS the
+   leading (24 > 22.4), which is the one declaration a prose system usually does
+   not have and the one most likely to be "tidied" back to 16. */
+.method {
+  max-width: 44ch;
+  font-size: var(--t2);
+  letter-spacing: var(--tr2);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.method p + p {
+  margin-block-start: var(--s3);
+}
+
+.method b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.method a {
+  color: var(--act);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.method a:hover {
+  color: var(--act-strong);
+}
+
+/* NOTE ON THE GAP TOKEN: `var(--s1)`, never a typed 12px. `--pad` IS 12px below
+   540, so a 12px literal reads to the css-idiom gate as the shell gutter used as
+   a grid gap — which is exactly the kind of accidental coupling the token map
+   exists to surface. */
+
+/* 767 AND BELOW — the row restacks and its height token changes with it
+   (`--row-h-sm`, which measure.mjs reads from the same media query).
+
+   FOUR ROWS IN ONE COLUMN, WITH THE PLATE SPANNING ALL OF THEM, and no wrapper
+   element: the cells are placed rather than nested, so the DOM is identical at
+   every width and the ≥768 column layout is not a special case of a stack. That
+   also keeps the reading order — identity, price, gap, chain — the same for a
+   screen reader at both layouts.
+
+   `align-content: space-between` fills the token instead of leaving a hole at the
+   bottom of a fixed box. A fixed-height box with a hole in it is the least
+   precise object a system can ship (v6 §4.3 P1), and a token that its content
+   does not reach is the same defect as one its content overflows. */
+/* 767 AND BELOW — TWO COLUMNS AND FOUR ROWS, WITH A BUDGET OF 144px.
+
+   `--row-h-sm` is 176 and the row spends 32 on padding, so everything below has
+   to fit in 144. Measured, worst real case: identity 56 (a two-line title plus
+   the category) + price 23 + the gap line 19 + a TWO-LINE chain ribbon 32,4 +
+   three 4px gaps = 142,4. That is 1,6px of slack and it is deliberate — the
+   token has to fit the worst case, not the typical one, and `Más barato en Hola
+   Compras` IS the worst case at this width.
+
+   TWO THINGS EARNED THAT BUDGET, and neither is a shrink:
+     · THE GAP CELL BECOMES ONE LINE — the amber chip and the colones figure sit
+       side by side instead of stacked. −24px, and it reads better: the two halves
+       of one fact on one line.
+     · THE RANK MOVES ABOVE THE PHOTO rather than taking a column of its own. The
+       plate then spans rows 2–4 in the same 72px track. −32px of width, which is
+       what keeps the gap line from wrapping at 320.
+
+   The 320 case is the one that decides this layout: 296 of shell, 264 inside the
+   padding, 180 for the right-hand column. The gap line needs 152. */
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    align-content: space-between;
+    height: var(--row-h-sm);
+    padding: var(--s2);
+    column-gap: var(--s1);
+    row-gap: 4px;
+  }
+
+  .rank {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .thumb {
+    grid-column: 1;
+    grid-row: 2 / -1;
+    align-self: center;
+  }
+
+  .who {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .money {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* the chip and its colones figure on ONE line — the two halves of one fact */
+  .gapCell {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s1);
+  }
+
+  .chain {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  .money,
+  .gapCell {
+    justify-items: start;
+    text-align: start;
+  }
+
+  .stand {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .i + .i {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--line);
+  }
+}

@@ -1,0 +1,195 @@
+/* THE HOME HERO — v8. Figma 6:43 (band) · 14:4 (left) · 16:940 (the photograph).
+
+   THIS IS THE THING v4 FORBADE. HomeScreen's own header read: "WHAT T1 MUST
+   NEVER GROW: a headline, a subhead, two buttons, three feature cards." The
+   redesign draws a headline, a subhead and three trust badges over a product
+   photograph. The prohibition is reversed by the person who wrote it; it is not
+   worked around. */
+
+.hero {
+  position: relative;
+  background: var(--hero);
+  /* THE DOT FIELD — 900-odd <ellipse> nodes in the Figma (16:3), one
+     background-image here. 2px dots at 12% teal on a 28px grid; the position
+     offset puts the first dot at 14,14 the way the frame's does. */
+  background-image: var(--dots-hero);
+  background-size: var(--dots-hero-size);
+  background-position: 14px 14px;
+  overflow: hidden;
+}
+
+.in {
+  position: relative;
+  max-width: calc(var(--shell) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  /* 560 / 880 in the frame. As a ratio rather than two fixed widths, because the
+     frame is one width and the site is not. */
+  grid-template-columns: minmax(0, 39fr) minmax(0, 61fr);
+  align-items: center;
+  gap: var(--s4);
+  min-height: 500px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s4);
+  padding-block: var(--s7) var(--s6);
+}
+
+/* ---- the headline -------------------------------------------------------- */
+
+.head {
+  margin: 0;
+  font-size: var(--t7);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: var(--tr4);
+  color: var(--ink);
+}
+
+/* The second line is a BLOCK inside the h1, not a second heading: the sentence
+   is one question and splitting it across an h1 and an h2 would put half a
+   question into the document outline. */
+.head b {
+  display: block;
+  font-size: var(--t8);
+  font-weight: 800;
+  /* --loud-ink, NOT --loud. The Figma paints this #FEA619, which measures 1.87
+     on --hero and fails even the 3.0 allowance large text gets; it is a BANNED
+     pair in design/pairs-v8.json. DESIGN.md's own `secondary` is the text amber
+     and this is it. */
+  color: var(--loud-ink);
+}
+
+/* the 200×6 amber taper under the second line. Decorative and announced to
+   nobody: it carries no meaning the sentence does not already carry. */
+.swoosh {
+  display: block;
+  width: 200px;
+  max-width: 100%;
+  height: 6px;
+  margin-top: var(--s1);
+  border-radius: var(--r2);
+  background: var(--swoosh);
+}
+
+.blurb {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--ink-2);
+  font-size: var(--t-lede);
+  line-height: 1.5;
+}
+
+/* ---- the three trust badges --------------------------------------------- */
+
+.badges {
+  display: flex;
+  gap: 28px;
+  /* they wrap rather than squeeze: three 3-line labels at 12px do not survive
+     being narrowed, and a wrapped pair reads better than three clipped ones */
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 140px;
+  min-width: 0;
+  color: var(--ink);
+  font-size: var(--t1);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* The Figma's own break points, one <span> per line. They are what let three
+   badges sit on one baseline grid instead of ragging at 1, 2 and 3 lines. */
+.label span {
+  display: block;
+}
+
+/* The Figma ships these as three 38px circles at 12% alpha with NOTHING
+   inside them. An <img> per empty disc is three requests for three fills, so
+   they are CSS. The hue is per-badge and set inline from the component, which
+   is the one place a colour may leave tokens.css — see HeroBanner.tsx. */
+.disc {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-pill);
+  background: var(--disc);
+}
+
+/* ---- the photograph -----------------------------------------------------
+   16:940, committed to public/ rather than hot-linked: the Figma asset URL
+   expires in seven days. */
+
+.art {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.art img {
+  width: 100%;
+  height: auto;
+  max-height: 495px;
+  object-fit: contain;
+  object-position: center right;
+}
+
+/* ==========================================================================
+   MOBILE — DESIGN.md §Typography: "Use headline-lg-mobile for all top-level
+   titles on screens smaller than 768px", and §Layout: single column, 16px.
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .in {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s3);
+    min-height: 0;
+    padding-inline: 16px;
+  }
+
+  .left {
+    padding-block: var(--s5) var(--s3);
+    gap: var(--s3);
+  }
+
+  .head {
+    /* --t-mark IS 28px, which is DESIGN.md's `headline-lg-mobile`, and the guide
+       makes it mandatory below 768: "Use headline-lg-mobile for all top-level
+       titles on screens smaller than 768px." */
+    font-size: var(--t-mark);
+  }
+
+  .head b {
+    /* The second line keeps its one-step lead over the first — that size step is
+       what makes the two lines read as one question rather than as a title and a
+       subtitle. One step up the ramp, not an invented value. */
+    font-size: var(--t6);
+  }
+
+  .blurb {
+    font-size: var(--t2);
+  }
+
+  /* The photograph goes FIRST on a phone and is capped: it is the thing that
+     says what this site is about in one glance, and 495px of it above a 28px
+     headline would push the headline off a 667pt screen. */
+  .art {
+    order: -1;
+    justify-content: center;
+  }
+
+  .art img {
+    max-height: 220px;
+  }
+}
